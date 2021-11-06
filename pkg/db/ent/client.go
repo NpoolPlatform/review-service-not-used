@@ -8,6 +8,7 @@ import (
 	"log"
 
 	"github.com/NpoolPlatform/review-service/pkg/db/ent/migrate"
+	"github.com/google/uuid"
 
 	"github.com/NpoolPlatform/review-service/pkg/db/ent/review"
 
@@ -161,7 +162,7 @@ func (c *ReviewClient) UpdateOne(r *Review) *ReviewUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *ReviewClient) UpdateOneID(id int) *ReviewUpdateOne {
+func (c *ReviewClient) UpdateOneID(id uuid.UUID) *ReviewUpdateOne {
 	mutation := newReviewMutation(c.config, OpUpdateOne, withReviewID(id))
 	return &ReviewUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -178,7 +179,7 @@ func (c *ReviewClient) DeleteOne(r *Review) *ReviewDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *ReviewClient) DeleteOneID(id int) *ReviewDeleteOne {
+func (c *ReviewClient) DeleteOneID(id uuid.UUID) *ReviewDeleteOne {
 	builder := c.Delete().Where(review.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -193,12 +194,12 @@ func (c *ReviewClient) Query() *ReviewQuery {
 }
 
 // Get returns a Review entity by its id.
-func (c *ReviewClient) Get(ctx context.Context, id int) (*Review, error) {
+func (c *ReviewClient) Get(ctx context.Context, id uuid.UUID) (*Review, error) {
 	return c.Query().Where(review.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *ReviewClient) GetX(ctx context.Context, id int) *Review {
+func (c *ReviewClient) GetX(ctx context.Context, id uuid.UUID) *Review {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)

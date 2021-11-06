@@ -8,13 +8,26 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/NpoolPlatform/review-service/pkg/db/ent/review"
+	"github.com/google/uuid"
 )
 
 // Review is the model entity for the Review schema.
 type Review struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
-	ID int `json:"id,omitempty"`
+	ID uuid.UUID `json:"id,omitempty"`
+	// EntityType holds the value of the "entity_type" field.
+	EntityType string `json:"entity_type,omitempty"`
+	// Domain holds the value of the "domain" field.
+	Domain string `json:"domain,omitempty"`
+	// ObjectID holds the value of the "object_id" field.
+	ObjectID uuid.UUID `json:"object_id,omitempty"`
+	// ReviewerID holds the value of the "reviewer_id" field.
+	ReviewerID uuid.UUID `json:"reviewer_id,omitempty"`
+	// State holds the value of the "state" field.
+	State review.State `json:"state,omitempty"`
+	// Message holds the value of the "message" field.
+	Message string `json:"message,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -22,8 +35,10 @@ func (*Review) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case review.FieldID:
-			values[i] = new(sql.NullInt64)
+		case review.FieldEntityType, review.FieldDomain, review.FieldState, review.FieldMessage:
+			values[i] = new(sql.NullString)
+		case review.FieldID, review.FieldObjectID, review.FieldReviewerID:
+			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Review", columns[i])
 		}
@@ -40,11 +55,47 @@ func (r *Review) assignValues(columns []string, values []interface{}) error {
 	for i := range columns {
 		switch columns[i] {
 		case review.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value != nil {
+				r.ID = *value
 			}
-			r.ID = int(value.Int64)
+		case review.FieldEntityType:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field entity_type", values[i])
+			} else if value.Valid {
+				r.EntityType = value.String
+			}
+		case review.FieldDomain:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field domain", values[i])
+			} else if value.Valid {
+				r.Domain = value.String
+			}
+		case review.FieldObjectID:
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field object_id", values[i])
+			} else if value != nil {
+				r.ObjectID = *value
+			}
+		case review.FieldReviewerID:
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field reviewer_id", values[i])
+			} else if value != nil {
+				r.ReviewerID = *value
+			}
+		case review.FieldState:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field state", values[i])
+			} else if value.Valid {
+				r.State = review.State(value.String)
+			}
+		case review.FieldMessage:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field message", values[i])
+			} else if value.Valid {
+				r.Message = value.String
+			}
 		}
 	}
 	return nil
@@ -73,6 +124,18 @@ func (r *Review) String() string {
 	var builder strings.Builder
 	builder.WriteString("Review(")
 	builder.WriteString(fmt.Sprintf("id=%v", r.ID))
+	builder.WriteString(", entity_type=")
+	builder.WriteString(r.EntityType)
+	builder.WriteString(", domain=")
+	builder.WriteString(r.Domain)
+	builder.WriteString(", object_id=")
+	builder.WriteString(fmt.Sprintf("%v", r.ObjectID))
+	builder.WriteString(", reviewer_id=")
+	builder.WriteString(fmt.Sprintf("%v", r.ReviewerID))
+	builder.WriteString(", state=")
+	builder.WriteString(fmt.Sprintf("%v", r.State))
+	builder.WriteString(", message=")
+	builder.WriteString(r.Message)
 	builder.WriteByte(')')
 	return builder.String()
 }

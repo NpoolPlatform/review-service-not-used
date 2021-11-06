@@ -2,11 +2,29 @@
 
 package review
 
+import (
+	"fmt"
+
+	"github.com/google/uuid"
+)
+
 const (
 	// Label holds the string label denoting the review type in the database.
 	Label = "review"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldEntityType holds the string denoting the entity_type field in the database.
+	FieldEntityType = "entity_type"
+	// FieldDomain holds the string denoting the domain field in the database.
+	FieldDomain = "domain"
+	// FieldObjectID holds the string denoting the object_id field in the database.
+	FieldObjectID = "object_id"
+	// FieldReviewerID holds the string denoting the reviewer_id field in the database.
+	FieldReviewerID = "reviewer_id"
+	// FieldState holds the string denoting the state field in the database.
+	FieldState = "state"
+	// FieldMessage holds the string denoting the message field in the database.
+	FieldMessage = "message"
 	// Table holds the table name of the review in the database.
 	Table = "reviews"
 )
@@ -14,6 +32,12 @@ const (
 // Columns holds all SQL columns for review fields.
 var Columns = []string{
 	FieldID,
+	FieldEntityType,
+	FieldDomain,
+	FieldObjectID,
+	FieldReviewerID,
+	FieldState,
+	FieldMessage,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -24,4 +48,33 @@ func ValidColumn(column string) bool {
 		}
 	}
 	return false
+}
+
+var (
+	// DefaultID holds the default value on creation for the "id" field.
+	DefaultID func() uuid.UUID
+)
+
+// State defines the type for the "state" enum field.
+type State string
+
+// State values.
+const (
+	StateWait     State = "wait"
+	StateApproved State = "approved"
+	StateRejected State = "rejected"
+)
+
+func (s State) String() string {
+	return string(s)
+}
+
+// StateValidator is a validator for the "state" field enum values. It is called by the builders before save.
+func StateValidator(s State) error {
+	switch s {
+	case StateWait, StateApproved, StateRejected:
+		return nil
+	default:
+		return fmt.Errorf("review: invalid enum value for state field: %q", s)
+	}
 }

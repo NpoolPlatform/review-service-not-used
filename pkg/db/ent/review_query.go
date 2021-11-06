@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/review-service/pkg/db/ent/predicate"
 	"github.com/NpoolPlatform/review-service/pkg/db/ent/review"
+	"github.com/google/uuid"
 )
 
 // ReviewQuery is the builder for querying Review entities.
@@ -84,8 +85,8 @@ func (rq *ReviewQuery) FirstX(ctx context.Context) *Review {
 
 // FirstID returns the first Review ID from the query.
 // Returns a *NotFoundError when no Review ID was found.
-func (rq *ReviewQuery) FirstID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (rq *ReviewQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
+	var ids []uuid.UUID
 	if ids, err = rq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -97,7 +98,7 @@ func (rq *ReviewQuery) FirstID(ctx context.Context) (id int, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (rq *ReviewQuery) FirstIDX(ctx context.Context) int {
+func (rq *ReviewQuery) FirstIDX(ctx context.Context) uuid.UUID {
 	id, err := rq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -135,8 +136,8 @@ func (rq *ReviewQuery) OnlyX(ctx context.Context) *Review {
 // OnlyID is like Only, but returns the only Review ID in the query.
 // Returns a *NotSingularError when exactly one Review ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (rq *ReviewQuery) OnlyID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (rq *ReviewQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
+	var ids []uuid.UUID
 	if ids, err = rq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -152,7 +153,7 @@ func (rq *ReviewQuery) OnlyID(ctx context.Context) (id int, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (rq *ReviewQuery) OnlyIDX(ctx context.Context) int {
+func (rq *ReviewQuery) OnlyIDX(ctx context.Context) uuid.UUID {
 	id, err := rq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -178,8 +179,8 @@ func (rq *ReviewQuery) AllX(ctx context.Context) []*Review {
 }
 
 // IDs executes the query and returns a list of Review IDs.
-func (rq *ReviewQuery) IDs(ctx context.Context) ([]int, error) {
-	var ids []int
+func (rq *ReviewQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
+	var ids []uuid.UUID
 	if err := rq.Select(review.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -187,7 +188,7 @@ func (rq *ReviewQuery) IDs(ctx context.Context) ([]int, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (rq *ReviewQuery) IDsX(ctx context.Context) []int {
+func (rq *ReviewQuery) IDsX(ctx context.Context) []uuid.UUID {
 	ids, err := rq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -249,6 +250,19 @@ func (rq *ReviewQuery) Clone() *ReviewQuery {
 
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		EntityType string `json:"entity_type,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.Review.Query().
+//		GroupBy(review.FieldEntityType).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
+//
 func (rq *ReviewQuery) GroupBy(field string, fields ...string) *ReviewGroupBy {
 	group := &ReviewGroupBy{config: rq.config}
 	group.fields = append([]string{field}, fields...)
@@ -263,6 +277,17 @@ func (rq *ReviewQuery) GroupBy(field string, fields ...string) *ReviewGroupBy {
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		EntityType string `json:"entity_type,omitempty"`
+//	}
+//
+//	client.Review.Query().
+//		Select(review.FieldEntityType).
+//		Scan(ctx, &v)
+//
 func (rq *ReviewQuery) Select(fields ...string) *ReviewSelect {
 	rq.fields = append(rq.fields, fields...)
 	return &ReviewSelect{ReviewQuery: rq}
@@ -329,7 +354,7 @@ func (rq *ReviewQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   review.Table,
 			Columns: review.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeUUID,
 				Column: review.FieldID,
 			},
 		},

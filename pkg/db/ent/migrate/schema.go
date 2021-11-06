@@ -10,7 +10,13 @@ import (
 var (
 	// ReviewsColumns holds the columns for the "reviews" table.
 	ReviewsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "entity_type", Type: field.TypeString},
+		{Name: "domain", Type: field.TypeString},
+		{Name: "object_id", Type: field.TypeUUID},
+		{Name: "reviewer_id", Type: field.TypeUUID},
+		{Name: "state", Type: field.TypeEnum, Enums: []string{"wait", "approved", "rejected"}},
+		{Name: "message", Type: field.TypeString},
 	}
 	// ReviewsTable holds the schema information for the "reviews" table.
 	ReviewsTable = &schema.Table{

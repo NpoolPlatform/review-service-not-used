@@ -7,8 +7,11 @@ import (
 	"fmt"
 	"sync"
 
-	"entgo.io/ent"
 	"github.com/NpoolPlatform/review-service/pkg/db/ent/predicate"
+	"github.com/NpoolPlatform/review-service/pkg/db/ent/review"
+	"github.com/google/uuid"
+
+	"entgo.io/ent"
 )
 
 const (
@@ -28,7 +31,13 @@ type ReviewMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *int
+	id            *uuid.UUID
+	entity_type   *string
+	domain        *string
+	object_id     *uuid.UUID
+	reviewer_id   *uuid.UUID
+	state         *review.State
+	message       *string
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*Review, error)
@@ -55,7 +64,7 @@ func newReviewMutation(c config, op Op, opts ...reviewOption) *ReviewMutation {
 }
 
 // withReviewID sets the ID field of the mutation.
-func withReviewID(id int) reviewOption {
+func withReviewID(id uuid.UUID) reviewOption {
 	return func(m *ReviewMutation) {
 		var (
 			err   error
@@ -105,13 +114,235 @@ func (m ReviewMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of Review entities.
+func (m *ReviewMutation) SetID(id uuid.UUID) {
+	m.id = &id
+}
+
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
-func (m *ReviewMutation) ID() (id int, exists bool) {
+func (m *ReviewMutation) ID() (id uuid.UUID, exists bool) {
 	if m.id == nil {
 		return
 	}
 	return *m.id, true
+}
+
+// SetEntityType sets the "entity_type" field.
+func (m *ReviewMutation) SetEntityType(s string) {
+	m.entity_type = &s
+}
+
+// EntityType returns the value of the "entity_type" field in the mutation.
+func (m *ReviewMutation) EntityType() (r string, exists bool) {
+	v := m.entity_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldEntityType returns the old "entity_type" field's value of the Review entity.
+// If the Review object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ReviewMutation) OldEntityType(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldEntityType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldEntityType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldEntityType: %w", err)
+	}
+	return oldValue.EntityType, nil
+}
+
+// ResetEntityType resets all changes to the "entity_type" field.
+func (m *ReviewMutation) ResetEntityType() {
+	m.entity_type = nil
+}
+
+// SetDomain sets the "domain" field.
+func (m *ReviewMutation) SetDomain(s string) {
+	m.domain = &s
+}
+
+// Domain returns the value of the "domain" field in the mutation.
+func (m *ReviewMutation) Domain() (r string, exists bool) {
+	v := m.domain
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDomain returns the old "domain" field's value of the Review entity.
+// If the Review object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ReviewMutation) OldDomain(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldDomain is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldDomain requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDomain: %w", err)
+	}
+	return oldValue.Domain, nil
+}
+
+// ResetDomain resets all changes to the "domain" field.
+func (m *ReviewMutation) ResetDomain() {
+	m.domain = nil
+}
+
+// SetObjectID sets the "object_id" field.
+func (m *ReviewMutation) SetObjectID(u uuid.UUID) {
+	m.object_id = &u
+}
+
+// ObjectID returns the value of the "object_id" field in the mutation.
+func (m *ReviewMutation) ObjectID() (r uuid.UUID, exists bool) {
+	v := m.object_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldObjectID returns the old "object_id" field's value of the Review entity.
+// If the Review object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ReviewMutation) OldObjectID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldObjectID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldObjectID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldObjectID: %w", err)
+	}
+	return oldValue.ObjectID, nil
+}
+
+// ResetObjectID resets all changes to the "object_id" field.
+func (m *ReviewMutation) ResetObjectID() {
+	m.object_id = nil
+}
+
+// SetReviewerID sets the "reviewer_id" field.
+func (m *ReviewMutation) SetReviewerID(u uuid.UUID) {
+	m.reviewer_id = &u
+}
+
+// ReviewerID returns the value of the "reviewer_id" field in the mutation.
+func (m *ReviewMutation) ReviewerID() (r uuid.UUID, exists bool) {
+	v := m.reviewer_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldReviewerID returns the old "reviewer_id" field's value of the Review entity.
+// If the Review object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ReviewMutation) OldReviewerID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldReviewerID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldReviewerID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldReviewerID: %w", err)
+	}
+	return oldValue.ReviewerID, nil
+}
+
+// ResetReviewerID resets all changes to the "reviewer_id" field.
+func (m *ReviewMutation) ResetReviewerID() {
+	m.reviewer_id = nil
+}
+
+// SetState sets the "state" field.
+func (m *ReviewMutation) SetState(r review.State) {
+	m.state = &r
+}
+
+// State returns the value of the "state" field in the mutation.
+func (m *ReviewMutation) State() (r review.State, exists bool) {
+	v := m.state
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldState returns the old "state" field's value of the Review entity.
+// If the Review object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ReviewMutation) OldState(ctx context.Context) (v review.State, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldState is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldState requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldState: %w", err)
+	}
+	return oldValue.State, nil
+}
+
+// ResetState resets all changes to the "state" field.
+func (m *ReviewMutation) ResetState() {
+	m.state = nil
+}
+
+// SetMessage sets the "message" field.
+func (m *ReviewMutation) SetMessage(s string) {
+	m.message = &s
+}
+
+// Message returns the value of the "message" field in the mutation.
+func (m *ReviewMutation) Message() (r string, exists bool) {
+	v := m.message
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMessage returns the old "message" field's value of the Review entity.
+// If the Review object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ReviewMutation) OldMessage(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldMessage is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldMessage requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMessage: %w", err)
+	}
+	return oldValue.Message, nil
+}
+
+// ResetMessage resets all changes to the "message" field.
+func (m *ReviewMutation) ResetMessage() {
+	m.message = nil
 }
 
 // Where appends a list predicates to the ReviewMutation builder.
@@ -133,7 +364,25 @@ func (m *ReviewMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ReviewMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 6)
+	if m.entity_type != nil {
+		fields = append(fields, review.FieldEntityType)
+	}
+	if m.domain != nil {
+		fields = append(fields, review.FieldDomain)
+	}
+	if m.object_id != nil {
+		fields = append(fields, review.FieldObjectID)
+	}
+	if m.reviewer_id != nil {
+		fields = append(fields, review.FieldReviewerID)
+	}
+	if m.state != nil {
+		fields = append(fields, review.FieldState)
+	}
+	if m.message != nil {
+		fields = append(fields, review.FieldMessage)
+	}
 	return fields
 }
 
@@ -141,6 +390,20 @@ func (m *ReviewMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *ReviewMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case review.FieldEntityType:
+		return m.EntityType()
+	case review.FieldDomain:
+		return m.Domain()
+	case review.FieldObjectID:
+		return m.ObjectID()
+	case review.FieldReviewerID:
+		return m.ReviewerID()
+	case review.FieldState:
+		return m.State()
+	case review.FieldMessage:
+		return m.Message()
+	}
 	return nil, false
 }
 
@@ -148,6 +411,20 @@ func (m *ReviewMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *ReviewMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case review.FieldEntityType:
+		return m.OldEntityType(ctx)
+	case review.FieldDomain:
+		return m.OldDomain(ctx)
+	case review.FieldObjectID:
+		return m.OldObjectID(ctx)
+	case review.FieldReviewerID:
+		return m.OldReviewerID(ctx)
+	case review.FieldState:
+		return m.OldState(ctx)
+	case review.FieldMessage:
+		return m.OldMessage(ctx)
+	}
 	return nil, fmt.Errorf("unknown Review field %s", name)
 }
 
@@ -156,6 +433,48 @@ func (m *ReviewMutation) OldField(ctx context.Context, name string) (ent.Value, 
 // type.
 func (m *ReviewMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case review.FieldEntityType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetEntityType(v)
+		return nil
+	case review.FieldDomain:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDomain(v)
+		return nil
+	case review.FieldObjectID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetObjectID(v)
+		return nil
+	case review.FieldReviewerID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetReviewerID(v)
+		return nil
+	case review.FieldState:
+		v, ok := value.(review.State)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetState(v)
+		return nil
+	case review.FieldMessage:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMessage(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Review field %s", name)
 }
@@ -177,6 +496,8 @@ func (m *ReviewMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *ReviewMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown Review numeric field %s", name)
 }
 
@@ -202,6 +523,26 @@ func (m *ReviewMutation) ClearField(name string) error {
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *ReviewMutation) ResetField(name string) error {
+	switch name {
+	case review.FieldEntityType:
+		m.ResetEntityType()
+		return nil
+	case review.FieldDomain:
+		m.ResetDomain()
+		return nil
+	case review.FieldObjectID:
+		m.ResetObjectID()
+		return nil
+	case review.FieldReviewerID:
+		m.ResetReviewerID()
+		return nil
+	case review.FieldState:
+		m.ResetState()
+		return nil
+	case review.FieldMessage:
+		m.ResetMessage()
+		return nil
+	}
 	return fmt.Errorf("unknown Review field %s", name)
 }
 

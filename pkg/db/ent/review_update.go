@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/review-service/pkg/db/ent/predicate"
 	"github.com/NpoolPlatform/review-service/pkg/db/ent/review"
+	"github.com/google/uuid"
 )
 
 // ReviewUpdate is the builder for updating Review entities.
@@ -26,6 +27,42 @@ func (ru *ReviewUpdate) Where(ps ...predicate.Review) *ReviewUpdate {
 	return ru
 }
 
+// SetEntityType sets the "entity_type" field.
+func (ru *ReviewUpdate) SetEntityType(s string) *ReviewUpdate {
+	ru.mutation.SetEntityType(s)
+	return ru
+}
+
+// SetDomain sets the "domain" field.
+func (ru *ReviewUpdate) SetDomain(s string) *ReviewUpdate {
+	ru.mutation.SetDomain(s)
+	return ru
+}
+
+// SetObjectID sets the "object_id" field.
+func (ru *ReviewUpdate) SetObjectID(u uuid.UUID) *ReviewUpdate {
+	ru.mutation.SetObjectID(u)
+	return ru
+}
+
+// SetReviewerID sets the "reviewer_id" field.
+func (ru *ReviewUpdate) SetReviewerID(u uuid.UUID) *ReviewUpdate {
+	ru.mutation.SetReviewerID(u)
+	return ru
+}
+
+// SetState sets the "state" field.
+func (ru *ReviewUpdate) SetState(r review.State) *ReviewUpdate {
+	ru.mutation.SetState(r)
+	return ru
+}
+
+// SetMessage sets the "message" field.
+func (ru *ReviewUpdate) SetMessage(s string) *ReviewUpdate {
+	ru.mutation.SetMessage(s)
+	return ru
+}
+
 // Mutation returns the ReviewMutation object of the builder.
 func (ru *ReviewUpdate) Mutation() *ReviewMutation {
 	return ru.mutation
@@ -38,12 +75,18 @@ func (ru *ReviewUpdate) Save(ctx context.Context) (int, error) {
 		affected int
 	)
 	if len(ru.hooks) == 0 {
+		if err = ru.check(); err != nil {
+			return 0, err
+		}
 		affected, err = ru.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*ReviewMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = ru.check(); err != nil {
+				return 0, err
 			}
 			ru.mutation = mutation
 			affected, err = ru.sqlSave(ctx)
@@ -85,13 +128,23 @@ func (ru *ReviewUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (ru *ReviewUpdate) check() error {
+	if v, ok := ru.mutation.State(); ok {
+		if err := review.StateValidator(v); err != nil {
+			return &ValidationError{Name: "state", err: fmt.Errorf("ent: validator failed for field \"state\": %w", err)}
+		}
+	}
+	return nil
+}
+
 func (ru *ReviewUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   review.Table,
 			Columns: review.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeUUID,
 				Column: review.FieldID,
 			},
 		},
@@ -102,6 +155,48 @@ func (ru *ReviewUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := ru.mutation.EntityType(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: review.FieldEntityType,
+		})
+	}
+	if value, ok := ru.mutation.Domain(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: review.FieldDomain,
+		})
+	}
+	if value, ok := ru.mutation.ObjectID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: review.FieldObjectID,
+		})
+	}
+	if value, ok := ru.mutation.ReviewerID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: review.FieldReviewerID,
+		})
+	}
+	if value, ok := ru.mutation.State(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: review.FieldState,
+		})
+	}
+	if value, ok := ru.mutation.Message(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: review.FieldMessage,
+		})
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ru.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -120,6 +215,42 @@ type ReviewUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *ReviewMutation
+}
+
+// SetEntityType sets the "entity_type" field.
+func (ruo *ReviewUpdateOne) SetEntityType(s string) *ReviewUpdateOne {
+	ruo.mutation.SetEntityType(s)
+	return ruo
+}
+
+// SetDomain sets the "domain" field.
+func (ruo *ReviewUpdateOne) SetDomain(s string) *ReviewUpdateOne {
+	ruo.mutation.SetDomain(s)
+	return ruo
+}
+
+// SetObjectID sets the "object_id" field.
+func (ruo *ReviewUpdateOne) SetObjectID(u uuid.UUID) *ReviewUpdateOne {
+	ruo.mutation.SetObjectID(u)
+	return ruo
+}
+
+// SetReviewerID sets the "reviewer_id" field.
+func (ruo *ReviewUpdateOne) SetReviewerID(u uuid.UUID) *ReviewUpdateOne {
+	ruo.mutation.SetReviewerID(u)
+	return ruo
+}
+
+// SetState sets the "state" field.
+func (ruo *ReviewUpdateOne) SetState(r review.State) *ReviewUpdateOne {
+	ruo.mutation.SetState(r)
+	return ruo
+}
+
+// SetMessage sets the "message" field.
+func (ruo *ReviewUpdateOne) SetMessage(s string) *ReviewUpdateOne {
+	ruo.mutation.SetMessage(s)
+	return ruo
 }
 
 // Mutation returns the ReviewMutation object of the builder.
@@ -141,12 +272,18 @@ func (ruo *ReviewUpdateOne) Save(ctx context.Context) (*Review, error) {
 		node *Review
 	)
 	if len(ruo.hooks) == 0 {
+		if err = ruo.check(); err != nil {
+			return nil, err
+		}
 		node, err = ruo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*ReviewMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = ruo.check(); err != nil {
+				return nil, err
 			}
 			ruo.mutation = mutation
 			node, err = ruo.sqlSave(ctx)
@@ -188,13 +325,23 @@ func (ruo *ReviewUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (ruo *ReviewUpdateOne) check() error {
+	if v, ok := ruo.mutation.State(); ok {
+		if err := review.StateValidator(v); err != nil {
+			return &ValidationError{Name: "state", err: fmt.Errorf("ent: validator failed for field \"state\": %w", err)}
+		}
+	}
+	return nil
+}
+
 func (ruo *ReviewUpdateOne) sqlSave(ctx context.Context) (_node *Review, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   review.Table,
 			Columns: review.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeUUID,
 				Column: review.FieldID,
 			},
 		},
@@ -222,6 +369,48 @@ func (ruo *ReviewUpdateOne) sqlSave(ctx context.Context) (_node *Review, err err
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := ruo.mutation.EntityType(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: review.FieldEntityType,
+		})
+	}
+	if value, ok := ruo.mutation.Domain(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: review.FieldDomain,
+		})
+	}
+	if value, ok := ruo.mutation.ObjectID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: review.FieldObjectID,
+		})
+	}
+	if value, ok := ruo.mutation.ReviewerID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: review.FieldReviewerID,
+		})
+	}
+	if value, ok := ruo.mutation.State(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: review.FieldState,
+		})
+	}
+	if value, ok := ruo.mutation.Message(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: review.FieldMessage,
+		})
 	}
 	_node = &Review{config: ruo.config}
 	_spec.Assign = _node.assignValues

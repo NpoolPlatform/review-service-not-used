@@ -7,10 +7,12 @@ import (
 	"errors"
 	"fmt"
 
+	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/review-service/pkg/db/ent/review"
+	"github.com/google/uuid"
 )
 
 // ReviewCreate is the builder for creating a Review entity.
@@ -19,6 +21,48 @@ type ReviewCreate struct {
 	mutation *ReviewMutation
 	hooks    []Hook
 	conflict []sql.ConflictOption
+}
+
+// SetEntityType sets the "entity_type" field.
+func (rc *ReviewCreate) SetEntityType(s string) *ReviewCreate {
+	rc.mutation.SetEntityType(s)
+	return rc
+}
+
+// SetDomain sets the "domain" field.
+func (rc *ReviewCreate) SetDomain(s string) *ReviewCreate {
+	rc.mutation.SetDomain(s)
+	return rc
+}
+
+// SetObjectID sets the "object_id" field.
+func (rc *ReviewCreate) SetObjectID(u uuid.UUID) *ReviewCreate {
+	rc.mutation.SetObjectID(u)
+	return rc
+}
+
+// SetReviewerID sets the "reviewer_id" field.
+func (rc *ReviewCreate) SetReviewerID(u uuid.UUID) *ReviewCreate {
+	rc.mutation.SetReviewerID(u)
+	return rc
+}
+
+// SetState sets the "state" field.
+func (rc *ReviewCreate) SetState(r review.State) *ReviewCreate {
+	rc.mutation.SetState(r)
+	return rc
+}
+
+// SetMessage sets the "message" field.
+func (rc *ReviewCreate) SetMessage(s string) *ReviewCreate {
+	rc.mutation.SetMessage(s)
+	return rc
+}
+
+// SetID sets the "id" field.
+func (rc *ReviewCreate) SetID(u uuid.UUID) *ReviewCreate {
+	rc.mutation.SetID(u)
+	return rc
 }
 
 // Mutation returns the ReviewMutation object of the builder.
@@ -32,6 +76,7 @@ func (rc *ReviewCreate) Save(ctx context.Context) (*Review, error) {
 		err  error
 		node *Review
 	)
+	rc.defaults()
 	if len(rc.hooks) == 0 {
 		if err = rc.check(); err != nil {
 			return nil, err
@@ -89,8 +134,39 @@ func (rc *ReviewCreate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (rc *ReviewCreate) defaults() {
+	if _, ok := rc.mutation.ID(); !ok {
+		v := review.DefaultID()
+		rc.mutation.SetID(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (rc *ReviewCreate) check() error {
+	if _, ok := rc.mutation.EntityType(); !ok {
+		return &ValidationError{Name: "entity_type", err: errors.New(`ent: missing required field "entity_type"`)}
+	}
+	if _, ok := rc.mutation.Domain(); !ok {
+		return &ValidationError{Name: "domain", err: errors.New(`ent: missing required field "domain"`)}
+	}
+	if _, ok := rc.mutation.ObjectID(); !ok {
+		return &ValidationError{Name: "object_id", err: errors.New(`ent: missing required field "object_id"`)}
+	}
+	if _, ok := rc.mutation.ReviewerID(); !ok {
+		return &ValidationError{Name: "reviewer_id", err: errors.New(`ent: missing required field "reviewer_id"`)}
+	}
+	if _, ok := rc.mutation.State(); !ok {
+		return &ValidationError{Name: "state", err: errors.New(`ent: missing required field "state"`)}
+	}
+	if v, ok := rc.mutation.State(); ok {
+		if err := review.StateValidator(v); err != nil {
+			return &ValidationError{Name: "state", err: fmt.Errorf(`ent: validator failed for field "state": %w`, err)}
+		}
+	}
+	if _, ok := rc.mutation.Message(); !ok {
+		return &ValidationError{Name: "message", err: errors.New(`ent: missing required field "message"`)}
+	}
 	return nil
 }
 
@@ -102,8 +178,9 @@ func (rc *ReviewCreate) sqlSave(ctx context.Context) (*Review, error) {
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != nil {
+		_node.ID = _spec.ID.Value.(uuid.UUID)
+	}
 	return _node, nil
 }
 
@@ -113,12 +190,64 @@ func (rc *ReviewCreate) createSpec() (*Review, *sqlgraph.CreateSpec) {
 		_spec = &sqlgraph.CreateSpec{
 			Table: review.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeUUID,
 				Column: review.FieldID,
 			},
 		}
 	)
 	_spec.OnConflict = rc.conflict
+	if id, ok := rc.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
+	if value, ok := rc.mutation.EntityType(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: review.FieldEntityType,
+		})
+		_node.EntityType = value
+	}
+	if value, ok := rc.mutation.Domain(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: review.FieldDomain,
+		})
+		_node.Domain = value
+	}
+	if value, ok := rc.mutation.ObjectID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: review.FieldObjectID,
+		})
+		_node.ObjectID = value
+	}
+	if value, ok := rc.mutation.ReviewerID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: review.FieldReviewerID,
+		})
+		_node.ReviewerID = value
+	}
+	if value, ok := rc.mutation.State(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: review.FieldState,
+		})
+		_node.State = value
+	}
+	if value, ok := rc.mutation.Message(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: review.FieldMessage,
+		})
+		_node.Message = value
+	}
 	return _node, _spec
 }
 
@@ -126,11 +255,17 @@ func (rc *ReviewCreate) createSpec() (*Review, *sqlgraph.CreateSpec) {
 // of the `INSERT` statement. For example:
 //
 //	client.Review.Create().
+//		SetEntityType(v).
 //		OnConflict(
 //			// Update the row with the new values
 //			// the was proposed for insertion.
 //			sql.ResolveWithNewValues(),
 //		).
+//		// Override some of the fields with custom
+//		// update values.
+//		Update(func(u *ent.ReviewUpsert) {
+//			SetEntityType(v+v).
+//		}).
 //		Exec(ctx)
 //
 func (rc *ReviewCreate) OnConflict(opts ...sql.ConflictOption) *ReviewUpsertOne {
@@ -167,17 +302,97 @@ type (
 	}
 )
 
-// UpdateNewValues updates the fields using the new values that were set on create.
+// SetEntityType sets the "entity_type" field.
+func (u *ReviewUpsert) SetEntityType(v string) *ReviewUpsert {
+	u.Set(review.FieldEntityType, v)
+	return u
+}
+
+// UpdateEntityType sets the "entity_type" field to the value that was provided on create.
+func (u *ReviewUpsert) UpdateEntityType() *ReviewUpsert {
+	u.SetExcluded(review.FieldEntityType)
+	return u
+}
+
+// SetDomain sets the "domain" field.
+func (u *ReviewUpsert) SetDomain(v string) *ReviewUpsert {
+	u.Set(review.FieldDomain, v)
+	return u
+}
+
+// UpdateDomain sets the "domain" field to the value that was provided on create.
+func (u *ReviewUpsert) UpdateDomain() *ReviewUpsert {
+	u.SetExcluded(review.FieldDomain)
+	return u
+}
+
+// SetObjectID sets the "object_id" field.
+func (u *ReviewUpsert) SetObjectID(v uuid.UUID) *ReviewUpsert {
+	u.Set(review.FieldObjectID, v)
+	return u
+}
+
+// UpdateObjectID sets the "object_id" field to the value that was provided on create.
+func (u *ReviewUpsert) UpdateObjectID() *ReviewUpsert {
+	u.SetExcluded(review.FieldObjectID)
+	return u
+}
+
+// SetReviewerID sets the "reviewer_id" field.
+func (u *ReviewUpsert) SetReviewerID(v uuid.UUID) *ReviewUpsert {
+	u.Set(review.FieldReviewerID, v)
+	return u
+}
+
+// UpdateReviewerID sets the "reviewer_id" field to the value that was provided on create.
+func (u *ReviewUpsert) UpdateReviewerID() *ReviewUpsert {
+	u.SetExcluded(review.FieldReviewerID)
+	return u
+}
+
+// SetState sets the "state" field.
+func (u *ReviewUpsert) SetState(v review.State) *ReviewUpsert {
+	u.Set(review.FieldState, v)
+	return u
+}
+
+// UpdateState sets the "state" field to the value that was provided on create.
+func (u *ReviewUpsert) UpdateState() *ReviewUpsert {
+	u.SetExcluded(review.FieldState)
+	return u
+}
+
+// SetMessage sets the "message" field.
+func (u *ReviewUpsert) SetMessage(v string) *ReviewUpsert {
+	u.Set(review.FieldMessage, v)
+	return u
+}
+
+// UpdateMessage sets the "message" field to the value that was provided on create.
+func (u *ReviewUpsert) UpdateMessage() *ReviewUpsert {
+	u.SetExcluded(review.FieldMessage)
+	return u
+}
+
+// UpdateNewValues updates the fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
 //	client.Review.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
+//			sql.ResolveWith(func(u *sql.UpdateSet) {
+//				u.SetIgnore(review.FieldID)
+//			}),
 //		).
 //		Exec(ctx)
 //
 func (u *ReviewUpsertOne) UpdateNewValues() *ReviewUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
+		if _, exists := u.create.mutation.ID(); exists {
+			s.SetIgnore(review.FieldID)
+		}
+	}))
 	return u
 }
 
@@ -209,6 +424,90 @@ func (u *ReviewUpsertOne) Update(set func(*ReviewUpsert)) *ReviewUpsertOne {
 	return u
 }
 
+// SetEntityType sets the "entity_type" field.
+func (u *ReviewUpsertOne) SetEntityType(v string) *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetEntityType(v)
+	})
+}
+
+// UpdateEntityType sets the "entity_type" field to the value that was provided on create.
+func (u *ReviewUpsertOne) UpdateEntityType() *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateEntityType()
+	})
+}
+
+// SetDomain sets the "domain" field.
+func (u *ReviewUpsertOne) SetDomain(v string) *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetDomain(v)
+	})
+}
+
+// UpdateDomain sets the "domain" field to the value that was provided on create.
+func (u *ReviewUpsertOne) UpdateDomain() *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateDomain()
+	})
+}
+
+// SetObjectID sets the "object_id" field.
+func (u *ReviewUpsertOne) SetObjectID(v uuid.UUID) *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetObjectID(v)
+	})
+}
+
+// UpdateObjectID sets the "object_id" field to the value that was provided on create.
+func (u *ReviewUpsertOne) UpdateObjectID() *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateObjectID()
+	})
+}
+
+// SetReviewerID sets the "reviewer_id" field.
+func (u *ReviewUpsertOne) SetReviewerID(v uuid.UUID) *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetReviewerID(v)
+	})
+}
+
+// UpdateReviewerID sets the "reviewer_id" field to the value that was provided on create.
+func (u *ReviewUpsertOne) UpdateReviewerID() *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateReviewerID()
+	})
+}
+
+// SetState sets the "state" field.
+func (u *ReviewUpsertOne) SetState(v review.State) *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetState(v)
+	})
+}
+
+// UpdateState sets the "state" field to the value that was provided on create.
+func (u *ReviewUpsertOne) UpdateState() *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateState()
+	})
+}
+
+// SetMessage sets the "message" field.
+func (u *ReviewUpsertOne) SetMessage(v string) *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetMessage(v)
+	})
+}
+
+// UpdateMessage sets the "message" field to the value that was provided on create.
+func (u *ReviewUpsertOne) UpdateMessage() *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateMessage()
+	})
+}
+
 // Exec executes the query.
 func (u *ReviewUpsertOne) Exec(ctx context.Context) error {
 	if len(u.create.conflict) == 0 {
@@ -225,7 +524,12 @@ func (u *ReviewUpsertOne) ExecX(ctx context.Context) {
 }
 
 // Exec executes the UPSERT query and returns the inserted/updated ID.
-func (u *ReviewUpsertOne) ID(ctx context.Context) (id int, err error) {
+func (u *ReviewUpsertOne) ID(ctx context.Context) (id uuid.UUID, err error) {
+	if u.create.driver.Dialect() == dialect.MySQL {
+		// In case of "ON CONFLICT", there is no way to get back non-numeric ID
+		// fields from the database since MySQL does not support the RETURNING clause.
+		return id, errors.New("ent: ReviewUpsertOne.ID is not supported by MySQL driver. Use ReviewUpsertOne.Exec instead")
+	}
 	node, err := u.create.Save(ctx)
 	if err != nil {
 		return id, err
@@ -234,7 +538,7 @@ func (u *ReviewUpsertOne) ID(ctx context.Context) (id int, err error) {
 }
 
 // IDX is like ID, but panics if an error occurs.
-func (u *ReviewUpsertOne) IDX(ctx context.Context) int {
+func (u *ReviewUpsertOne) IDX(ctx context.Context) uuid.UUID {
 	id, err := u.ID(ctx)
 	if err != nil {
 		panic(err)
@@ -257,6 +561,7 @@ func (rcb *ReviewCreateBulk) Save(ctx context.Context) ([]*Review, error) {
 	for i := range rcb.builders {
 		func(i int, root context.Context) {
 			builder := rcb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*ReviewMutation)
 				if !ok {
@@ -285,10 +590,6 @@ func (rcb *ReviewCreateBulk) Save(ctx context.Context) ([]*Review, error) {
 				}
 				mutation.id = &nodes[i].ID
 				mutation.done = true
-				if specs[i].ID.Value != nil {
-					id := specs[i].ID.Value.(int64)
-					nodes[i].ID = int(id)
-				}
 				return nodes[i], nil
 			})
 			for i := len(builder.hooks) - 1; i >= 0; i-- {
@@ -336,6 +637,11 @@ func (rcb *ReviewCreateBulk) ExecX(ctx context.Context) {
 //			// the was proposed for insertion.
 //			sql.ResolveWithNewValues(),
 //		).
+//		// Override some of the fields with custom
+//		// update values.
+//		Update(func(u *ent.ReviewUpsert) {
+//			SetEntityType(v+v).
+//		}).
 //		Exec(ctx)
 //
 func (rcb *ReviewCreateBulk) OnConflict(opts ...sql.ConflictOption) *ReviewUpsertBulk {
@@ -371,11 +677,22 @@ type ReviewUpsertBulk struct {
 //	client.Review.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
+//			sql.ResolveWith(func(u *sql.UpdateSet) {
+//				u.SetIgnore(review.FieldID)
+//			}),
 //		).
 //		Exec(ctx)
 //
 func (u *ReviewUpsertBulk) UpdateNewValues() *ReviewUpsertBulk {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
+		for _, b := range u.create.builders {
+			if _, exists := b.mutation.ID(); exists {
+				s.SetIgnore(review.FieldID)
+				return
+			}
+		}
+	}))
 	return u
 }
 
@@ -405,6 +722,90 @@ func (u *ReviewUpsertBulk) Update(set func(*ReviewUpsert)) *ReviewUpsertBulk {
 		set(&ReviewUpsert{UpdateSet: update})
 	}))
 	return u
+}
+
+// SetEntityType sets the "entity_type" field.
+func (u *ReviewUpsertBulk) SetEntityType(v string) *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetEntityType(v)
+	})
+}
+
+// UpdateEntityType sets the "entity_type" field to the value that was provided on create.
+func (u *ReviewUpsertBulk) UpdateEntityType() *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateEntityType()
+	})
+}
+
+// SetDomain sets the "domain" field.
+func (u *ReviewUpsertBulk) SetDomain(v string) *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetDomain(v)
+	})
+}
+
+// UpdateDomain sets the "domain" field to the value that was provided on create.
+func (u *ReviewUpsertBulk) UpdateDomain() *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateDomain()
+	})
+}
+
+// SetObjectID sets the "object_id" field.
+func (u *ReviewUpsertBulk) SetObjectID(v uuid.UUID) *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetObjectID(v)
+	})
+}
+
+// UpdateObjectID sets the "object_id" field to the value that was provided on create.
+func (u *ReviewUpsertBulk) UpdateObjectID() *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateObjectID()
+	})
+}
+
+// SetReviewerID sets the "reviewer_id" field.
+func (u *ReviewUpsertBulk) SetReviewerID(v uuid.UUID) *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetReviewerID(v)
+	})
+}
+
+// UpdateReviewerID sets the "reviewer_id" field to the value that was provided on create.
+func (u *ReviewUpsertBulk) UpdateReviewerID() *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateReviewerID()
+	})
+}
+
+// SetState sets the "state" field.
+func (u *ReviewUpsertBulk) SetState(v review.State) *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetState(v)
+	})
+}
+
+// UpdateState sets the "state" field to the value that was provided on create.
+func (u *ReviewUpsertBulk) UpdateState() *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateState()
+	})
+}
+
+// SetMessage sets the "message" field.
+func (u *ReviewUpsertBulk) SetMessage(v string) *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetMessage(v)
+	})
+}
+
+// UpdateMessage sets the "message" field to the value that was provided on create.
+func (u *ReviewUpsertBulk) UpdateMessage() *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateMessage()
+	})
 }
 
 // Exec executes the query.
