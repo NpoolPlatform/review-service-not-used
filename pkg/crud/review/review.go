@@ -7,6 +7,7 @@ import (
 
 	"github.com/NpoolPlatform/review-service/pkg/db"
 	"github.com/NpoolPlatform/review-service/pkg/db/ent"
+	"github.com/NpoolPlatform/review-service/pkg/db/ent/review"
 
 	"github.com/google/uuid"
 
@@ -57,7 +58,30 @@ func Create(ctx context.Context, in *npool.CreateReviewRequest) (*npool.CreateRe
 }
 
 func Update(ctx context.Context, in *npool.UpdateReviewRequest) (*npool.UpdateReviewResponse, error) {
-	return nil, nil
+	id, err := uuid.Parse(in.GetInfo().GetID())
+	if err != nil {
+		return nil, xerrors.Errorf("invalid id: %v", err)
+	}
+
+	reviewerID, err := uuid.Parse(in.GetInfo().GetReviewerID())
+	if err != nil {
+		return nil, xerrors.Errorf("invalid reviewer id: %v", err)
+	}
+
+	info, err := db.Client().
+		Review.
+		UpdateOneID(id).
+		SetState(review.State(in.GetInfo().GetState())).
+		SetMessage(in.GetInfo().GetMessage()).
+		SetReviewerID(reviewerID).
+		Save(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail update review: %v", err)
+	}
+
+	return &npool.UpdateReviewResponse{
+		Info: dbRowToReview(info),
+	}, nil
 }
 
 func GetReviewsByDomain(ctx context.Context, in *npool.GetReviewsByDomainRequest) (*npool.GetReviewsByDomainResponse, error) {

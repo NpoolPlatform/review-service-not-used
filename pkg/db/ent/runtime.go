@@ -14,6 +14,20 @@ import (
 func init() {
 	reviewFields := schema.Review{}.Fields()
 	_ = reviewFields
+	// reviewDescCreateAt is the schema descriptor for create_at field.
+	reviewDescCreateAt := reviewFields[7].Descriptor()
+	// review.DefaultCreateAt holds the default value on creation for the create_at field.
+	review.DefaultCreateAt = reviewDescCreateAt.Default.(func() uint32)
+	// reviewDescUpdateAt is the schema descriptor for update_at field.
+	reviewDescUpdateAt := reviewFields[8].Descriptor()
+	// review.DefaultUpdateAt holds the default value on creation for the update_at field.
+	review.DefaultUpdateAt = reviewDescUpdateAt.Default.(func() uint32)
+	// review.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
+	review.UpdateDefaultUpdateAt = reviewDescUpdateAt.UpdateDefault.(func() uint32)
+	// reviewDescDeleteAt is the schema descriptor for delete_at field.
+	reviewDescDeleteAt := reviewFields[9].Descriptor()
+	// review.DefaultDeleteAt holds the default value on creation for the delete_at field.
+	review.DefaultDeleteAt = reviewDescDeleteAt.Default.(func() uint32)
 	// reviewDescID is the schema descriptor for id field.
 	reviewDescID := reviewFields[0].Descriptor()
 	// review.DefaultID holds the default value on creation for the id field.

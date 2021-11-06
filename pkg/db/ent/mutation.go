@@ -38,6 +38,12 @@ type ReviewMutation struct {
 	reviewer_id   *uuid.UUID
 	state         *review.State
 	message       *string
+	create_at     *uint32
+	addcreate_at  *uint32
+	update_at     *uint32
+	addupdate_at  *uint32
+	delete_at     *uint32
+	adddelete_at  *uint32
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*Review, error)
@@ -345,6 +351,174 @@ func (m *ReviewMutation) ResetMessage() {
 	m.message = nil
 }
 
+// SetCreateAt sets the "create_at" field.
+func (m *ReviewMutation) SetCreateAt(u uint32) {
+	m.create_at = &u
+	m.addcreate_at = nil
+}
+
+// CreateAt returns the value of the "create_at" field in the mutation.
+func (m *ReviewMutation) CreateAt() (r uint32, exists bool) {
+	v := m.create_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateAt returns the old "create_at" field's value of the Review entity.
+// If the Review object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ReviewMutation) OldCreateAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldCreateAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldCreateAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateAt: %w", err)
+	}
+	return oldValue.CreateAt, nil
+}
+
+// AddCreateAt adds u to the "create_at" field.
+func (m *ReviewMutation) AddCreateAt(u uint32) {
+	if m.addcreate_at != nil {
+		*m.addcreate_at += u
+	} else {
+		m.addcreate_at = &u
+	}
+}
+
+// AddedCreateAt returns the value that was added to the "create_at" field in this mutation.
+func (m *ReviewMutation) AddedCreateAt() (r uint32, exists bool) {
+	v := m.addcreate_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetCreateAt resets all changes to the "create_at" field.
+func (m *ReviewMutation) ResetCreateAt() {
+	m.create_at = nil
+	m.addcreate_at = nil
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (m *ReviewMutation) SetUpdateAt(u uint32) {
+	m.update_at = &u
+	m.addupdate_at = nil
+}
+
+// UpdateAt returns the value of the "update_at" field in the mutation.
+func (m *ReviewMutation) UpdateAt() (r uint32, exists bool) {
+	v := m.update_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateAt returns the old "update_at" field's value of the Review entity.
+// If the Review object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ReviewMutation) OldUpdateAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldUpdateAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldUpdateAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateAt: %w", err)
+	}
+	return oldValue.UpdateAt, nil
+}
+
+// AddUpdateAt adds u to the "update_at" field.
+func (m *ReviewMutation) AddUpdateAt(u uint32) {
+	if m.addupdate_at != nil {
+		*m.addupdate_at += u
+	} else {
+		m.addupdate_at = &u
+	}
+}
+
+// AddedUpdateAt returns the value that was added to the "update_at" field in this mutation.
+func (m *ReviewMutation) AddedUpdateAt() (r uint32, exists bool) {
+	v := m.addupdate_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUpdateAt resets all changes to the "update_at" field.
+func (m *ReviewMutation) ResetUpdateAt() {
+	m.update_at = nil
+	m.addupdate_at = nil
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (m *ReviewMutation) SetDeleteAt(u uint32) {
+	m.delete_at = &u
+	m.adddelete_at = nil
+}
+
+// DeleteAt returns the value of the "delete_at" field in the mutation.
+func (m *ReviewMutation) DeleteAt() (r uint32, exists bool) {
+	v := m.delete_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteAt returns the old "delete_at" field's value of the Review entity.
+// If the Review object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ReviewMutation) OldDeleteAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldDeleteAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldDeleteAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteAt: %w", err)
+	}
+	return oldValue.DeleteAt, nil
+}
+
+// AddDeleteAt adds u to the "delete_at" field.
+func (m *ReviewMutation) AddDeleteAt(u uint32) {
+	if m.adddelete_at != nil {
+		*m.adddelete_at += u
+	} else {
+		m.adddelete_at = &u
+	}
+}
+
+// AddedDeleteAt returns the value that was added to the "delete_at" field in this mutation.
+func (m *ReviewMutation) AddedDeleteAt() (r uint32, exists bool) {
+	v := m.adddelete_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetDeleteAt resets all changes to the "delete_at" field.
+func (m *ReviewMutation) ResetDeleteAt() {
+	m.delete_at = nil
+	m.adddelete_at = nil
+}
+
 // Where appends a list predicates to the ReviewMutation builder.
 func (m *ReviewMutation) Where(ps ...predicate.Review) {
 	m.predicates = append(m.predicates, ps...)
@@ -364,7 +538,7 @@ func (m *ReviewMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ReviewMutation) Fields() []string {
-	fields := make([]string, 0, 6)
+	fields := make([]string, 0, 9)
 	if m.entity_type != nil {
 		fields = append(fields, review.FieldEntityType)
 	}
@@ -382,6 +556,15 @@ func (m *ReviewMutation) Fields() []string {
 	}
 	if m.message != nil {
 		fields = append(fields, review.FieldMessage)
+	}
+	if m.create_at != nil {
+		fields = append(fields, review.FieldCreateAt)
+	}
+	if m.update_at != nil {
+		fields = append(fields, review.FieldUpdateAt)
+	}
+	if m.delete_at != nil {
+		fields = append(fields, review.FieldDeleteAt)
 	}
 	return fields
 }
@@ -403,6 +586,12 @@ func (m *ReviewMutation) Field(name string) (ent.Value, bool) {
 		return m.State()
 	case review.FieldMessage:
 		return m.Message()
+	case review.FieldCreateAt:
+		return m.CreateAt()
+	case review.FieldUpdateAt:
+		return m.UpdateAt()
+	case review.FieldDeleteAt:
+		return m.DeleteAt()
 	}
 	return nil, false
 }
@@ -424,6 +613,12 @@ func (m *ReviewMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldState(ctx)
 	case review.FieldMessage:
 		return m.OldMessage(ctx)
+	case review.FieldCreateAt:
+		return m.OldCreateAt(ctx)
+	case review.FieldUpdateAt:
+		return m.OldUpdateAt(ctx)
+	case review.FieldDeleteAt:
+		return m.OldDeleteAt(ctx)
 	}
 	return nil, fmt.Errorf("unknown Review field %s", name)
 }
@@ -475,6 +670,27 @@ func (m *ReviewMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetMessage(v)
 		return nil
+	case review.FieldCreateAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateAt(v)
+		return nil
+	case review.FieldUpdateAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateAt(v)
+		return nil
+	case review.FieldDeleteAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteAt(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Review field %s", name)
 }
@@ -482,13 +698,31 @@ func (m *ReviewMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *ReviewMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addcreate_at != nil {
+		fields = append(fields, review.FieldCreateAt)
+	}
+	if m.addupdate_at != nil {
+		fields = append(fields, review.FieldUpdateAt)
+	}
+	if m.adddelete_at != nil {
+		fields = append(fields, review.FieldDeleteAt)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *ReviewMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case review.FieldCreateAt:
+		return m.AddedCreateAt()
+	case review.FieldUpdateAt:
+		return m.AddedUpdateAt()
+	case review.FieldDeleteAt:
+		return m.AddedDeleteAt()
+	}
 	return nil, false
 }
 
@@ -497,6 +731,27 @@ func (m *ReviewMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *ReviewMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case review.FieldCreateAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreateAt(v)
+		return nil
+	case review.FieldUpdateAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdateAt(v)
+		return nil
+	case review.FieldDeleteAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeleteAt(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Review numeric field %s", name)
 }
@@ -541,6 +796,15 @@ func (m *ReviewMutation) ResetField(name string) error {
 		return nil
 	case review.FieldMessage:
 		m.ResetMessage()
+		return nil
+	case review.FieldCreateAt:
+		m.ResetCreateAt()
+		return nil
+	case review.FieldUpdateAt:
+		m.ResetUpdateAt()
+		return nil
+	case review.FieldDeleteAt:
+		m.ResetDeleteAt()
 		return nil
 	}
 	return fmt.Errorf("unknown Review field %s", name)

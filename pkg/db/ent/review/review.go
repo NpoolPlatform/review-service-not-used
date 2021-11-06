@@ -25,6 +25,12 @@ const (
 	FieldState = "state"
 	// FieldMessage holds the string denoting the message field in the database.
 	FieldMessage = "message"
+	// FieldCreateAt holds the string denoting the create_at field in the database.
+	FieldCreateAt = "create_at"
+	// FieldUpdateAt holds the string denoting the update_at field in the database.
+	FieldUpdateAt = "update_at"
+	// FieldDeleteAt holds the string denoting the delete_at field in the database.
+	FieldDeleteAt = "delete_at"
 	// Table holds the table name of the review in the database.
 	Table = "reviews"
 )
@@ -38,6 +44,9 @@ var Columns = []string{
 	FieldReviewerID,
 	FieldState,
 	FieldMessage,
+	FieldCreateAt,
+	FieldUpdateAt,
+	FieldDeleteAt,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -51,6 +60,14 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// DefaultCreateAt holds the default value on creation for the "create_at" field.
+	DefaultCreateAt func() uint32
+	// DefaultUpdateAt holds the default value on creation for the "update_at" field.
+	DefaultUpdateAt func() uint32
+	// UpdateDefaultUpdateAt holds the default value on update for the "update_at" field.
+	UpdateDefaultUpdateAt func() uint32
+	// DefaultDeleteAt holds the default value on creation for the "delete_at" field.
+	DefaultDeleteAt func() uint32
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

@@ -63,6 +63,61 @@ func (ru *ReviewUpdate) SetMessage(s string) *ReviewUpdate {
 	return ru
 }
 
+// SetCreateAt sets the "create_at" field.
+func (ru *ReviewUpdate) SetCreateAt(u uint32) *ReviewUpdate {
+	ru.mutation.ResetCreateAt()
+	ru.mutation.SetCreateAt(u)
+	return ru
+}
+
+// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
+func (ru *ReviewUpdate) SetNillableCreateAt(u *uint32) *ReviewUpdate {
+	if u != nil {
+		ru.SetCreateAt(*u)
+	}
+	return ru
+}
+
+// AddCreateAt adds u to the "create_at" field.
+func (ru *ReviewUpdate) AddCreateAt(u uint32) *ReviewUpdate {
+	ru.mutation.AddCreateAt(u)
+	return ru
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (ru *ReviewUpdate) SetUpdateAt(u uint32) *ReviewUpdate {
+	ru.mutation.ResetUpdateAt()
+	ru.mutation.SetUpdateAt(u)
+	return ru
+}
+
+// AddUpdateAt adds u to the "update_at" field.
+func (ru *ReviewUpdate) AddUpdateAt(u uint32) *ReviewUpdate {
+	ru.mutation.AddUpdateAt(u)
+	return ru
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (ru *ReviewUpdate) SetDeleteAt(u uint32) *ReviewUpdate {
+	ru.mutation.ResetDeleteAt()
+	ru.mutation.SetDeleteAt(u)
+	return ru
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (ru *ReviewUpdate) SetNillableDeleteAt(u *uint32) *ReviewUpdate {
+	if u != nil {
+		ru.SetDeleteAt(*u)
+	}
+	return ru
+}
+
+// AddDeleteAt adds u to the "delete_at" field.
+func (ru *ReviewUpdate) AddDeleteAt(u uint32) *ReviewUpdate {
+	ru.mutation.AddDeleteAt(u)
+	return ru
+}
+
 // Mutation returns the ReviewMutation object of the builder.
 func (ru *ReviewUpdate) Mutation() *ReviewMutation {
 	return ru.mutation
@@ -74,6 +129,7 @@ func (ru *ReviewUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	ru.defaults()
 	if len(ru.hooks) == 0 {
 		if err = ru.check(); err != nil {
 			return 0, err
@@ -125,6 +181,14 @@ func (ru *ReviewUpdate) Exec(ctx context.Context) error {
 func (ru *ReviewUpdate) ExecX(ctx context.Context) {
 	if err := ru.Exec(ctx); err != nil {
 		panic(err)
+	}
+}
+
+// defaults sets the default values of the builder before save.
+func (ru *ReviewUpdate) defaults() {
+	if _, ok := ru.mutation.UpdateAt(); !ok {
+		v := review.UpdateDefaultUpdateAt()
+		ru.mutation.SetUpdateAt(v)
 	}
 }
 
@@ -198,6 +262,48 @@ func (ru *ReviewUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: review.FieldMessage,
 		})
 	}
+	if value, ok := ru.mutation.CreateAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: review.FieldCreateAt,
+		})
+	}
+	if value, ok := ru.mutation.AddedCreateAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: review.FieldCreateAt,
+		})
+	}
+	if value, ok := ru.mutation.UpdateAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: review.FieldUpdateAt,
+		})
+	}
+	if value, ok := ru.mutation.AddedUpdateAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: review.FieldUpdateAt,
+		})
+	}
+	if value, ok := ru.mutation.DeleteAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: review.FieldDeleteAt,
+		})
+	}
+	if value, ok := ru.mutation.AddedDeleteAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: review.FieldDeleteAt,
+		})
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ru.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{review.Label}
@@ -253,6 +359,61 @@ func (ruo *ReviewUpdateOne) SetMessage(s string) *ReviewUpdateOne {
 	return ruo
 }
 
+// SetCreateAt sets the "create_at" field.
+func (ruo *ReviewUpdateOne) SetCreateAt(u uint32) *ReviewUpdateOne {
+	ruo.mutation.ResetCreateAt()
+	ruo.mutation.SetCreateAt(u)
+	return ruo
+}
+
+// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
+func (ruo *ReviewUpdateOne) SetNillableCreateAt(u *uint32) *ReviewUpdateOne {
+	if u != nil {
+		ruo.SetCreateAt(*u)
+	}
+	return ruo
+}
+
+// AddCreateAt adds u to the "create_at" field.
+func (ruo *ReviewUpdateOne) AddCreateAt(u uint32) *ReviewUpdateOne {
+	ruo.mutation.AddCreateAt(u)
+	return ruo
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (ruo *ReviewUpdateOne) SetUpdateAt(u uint32) *ReviewUpdateOne {
+	ruo.mutation.ResetUpdateAt()
+	ruo.mutation.SetUpdateAt(u)
+	return ruo
+}
+
+// AddUpdateAt adds u to the "update_at" field.
+func (ruo *ReviewUpdateOne) AddUpdateAt(u uint32) *ReviewUpdateOne {
+	ruo.mutation.AddUpdateAt(u)
+	return ruo
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (ruo *ReviewUpdateOne) SetDeleteAt(u uint32) *ReviewUpdateOne {
+	ruo.mutation.ResetDeleteAt()
+	ruo.mutation.SetDeleteAt(u)
+	return ruo
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (ruo *ReviewUpdateOne) SetNillableDeleteAt(u *uint32) *ReviewUpdateOne {
+	if u != nil {
+		ruo.SetDeleteAt(*u)
+	}
+	return ruo
+}
+
+// AddDeleteAt adds u to the "delete_at" field.
+func (ruo *ReviewUpdateOne) AddDeleteAt(u uint32) *ReviewUpdateOne {
+	ruo.mutation.AddDeleteAt(u)
+	return ruo
+}
+
 // Mutation returns the ReviewMutation object of the builder.
 func (ruo *ReviewUpdateOne) Mutation() *ReviewMutation {
 	return ruo.mutation
@@ -271,6 +432,7 @@ func (ruo *ReviewUpdateOne) Save(ctx context.Context) (*Review, error) {
 		err  error
 		node *Review
 	)
+	ruo.defaults()
 	if len(ruo.hooks) == 0 {
 		if err = ruo.check(); err != nil {
 			return nil, err
@@ -322,6 +484,14 @@ func (ruo *ReviewUpdateOne) Exec(ctx context.Context) error {
 func (ruo *ReviewUpdateOne) ExecX(ctx context.Context) {
 	if err := ruo.Exec(ctx); err != nil {
 		panic(err)
+	}
+}
+
+// defaults sets the default values of the builder before save.
+func (ruo *ReviewUpdateOne) defaults() {
+	if _, ok := ruo.mutation.UpdateAt(); !ok {
+		v := review.UpdateDefaultUpdateAt()
+		ruo.mutation.SetUpdateAt(v)
 	}
 }
 
@@ -410,6 +580,48 @@ func (ruo *ReviewUpdateOne) sqlSave(ctx context.Context) (_node *Review, err err
 			Type:   field.TypeString,
 			Value:  value,
 			Column: review.FieldMessage,
+		})
+	}
+	if value, ok := ruo.mutation.CreateAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: review.FieldCreateAt,
+		})
+	}
+	if value, ok := ruo.mutation.AddedCreateAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: review.FieldCreateAt,
+		})
+	}
+	if value, ok := ruo.mutation.UpdateAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: review.FieldUpdateAt,
+		})
+	}
+	if value, ok := ruo.mutation.AddedUpdateAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: review.FieldUpdateAt,
+		})
+	}
+	if value, ok := ruo.mutation.DeleteAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: review.FieldDeleteAt,
+		})
+	}
+	if value, ok := ruo.mutation.AddedDeleteAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: review.FieldDeleteAt,
 		})
 	}
 	_node = &Review{config: ruo.config}

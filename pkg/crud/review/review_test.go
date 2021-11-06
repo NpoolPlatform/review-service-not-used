@@ -52,4 +52,18 @@ func TestCRUD(t *testing.T) {
 		assert.Equal(t, resp.Info.ReviewerID, uuid.UUID{}.String())
 		assertReview(t, resp.Info, &review)
 	}
+
+	review.State = "approved"
+	review.ReviewerID = uuid.New().String()
+	review.Message = "Good good good"
+	review.ID = resp.Info.ID
+
+	resp1, err := Update(context.Background(), &npool.UpdateReviewRequest{
+		Info: &review,
+	})
+	if assert.Nil(t, err) {
+		assert.Equal(t, resp1.Info.ID, resp.Info.ID)
+		assert.Equal(t, resp1.Info.ReviewerID, review.ReviewerID)
+		assertReview(t, resp1.Info, &review)
+	}
 }

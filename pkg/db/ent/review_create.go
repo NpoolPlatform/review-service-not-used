@@ -59,6 +59,48 @@ func (rc *ReviewCreate) SetMessage(s string) *ReviewCreate {
 	return rc
 }
 
+// SetCreateAt sets the "create_at" field.
+func (rc *ReviewCreate) SetCreateAt(u uint32) *ReviewCreate {
+	rc.mutation.SetCreateAt(u)
+	return rc
+}
+
+// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
+func (rc *ReviewCreate) SetNillableCreateAt(u *uint32) *ReviewCreate {
+	if u != nil {
+		rc.SetCreateAt(*u)
+	}
+	return rc
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (rc *ReviewCreate) SetUpdateAt(u uint32) *ReviewCreate {
+	rc.mutation.SetUpdateAt(u)
+	return rc
+}
+
+// SetNillableUpdateAt sets the "update_at" field if the given value is not nil.
+func (rc *ReviewCreate) SetNillableUpdateAt(u *uint32) *ReviewCreate {
+	if u != nil {
+		rc.SetUpdateAt(*u)
+	}
+	return rc
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (rc *ReviewCreate) SetDeleteAt(u uint32) *ReviewCreate {
+	rc.mutation.SetDeleteAt(u)
+	return rc
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (rc *ReviewCreate) SetNillableDeleteAt(u *uint32) *ReviewCreate {
+	if u != nil {
+		rc.SetDeleteAt(*u)
+	}
+	return rc
+}
+
 // SetID sets the "id" field.
 func (rc *ReviewCreate) SetID(u uuid.UUID) *ReviewCreate {
 	rc.mutation.SetID(u)
@@ -136,6 +178,18 @@ func (rc *ReviewCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (rc *ReviewCreate) defaults() {
+	if _, ok := rc.mutation.CreateAt(); !ok {
+		v := review.DefaultCreateAt()
+		rc.mutation.SetCreateAt(v)
+	}
+	if _, ok := rc.mutation.UpdateAt(); !ok {
+		v := review.DefaultUpdateAt()
+		rc.mutation.SetUpdateAt(v)
+	}
+	if _, ok := rc.mutation.DeleteAt(); !ok {
+		v := review.DefaultDeleteAt()
+		rc.mutation.SetDeleteAt(v)
+	}
 	if _, ok := rc.mutation.ID(); !ok {
 		v := review.DefaultID()
 		rc.mutation.SetID(v)
@@ -166,6 +220,15 @@ func (rc *ReviewCreate) check() error {
 	}
 	if _, ok := rc.mutation.Message(); !ok {
 		return &ValidationError{Name: "message", err: errors.New(`ent: missing required field "message"`)}
+	}
+	if _, ok := rc.mutation.CreateAt(); !ok {
+		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "create_at"`)}
+	}
+	if _, ok := rc.mutation.UpdateAt(); !ok {
+		return &ValidationError{Name: "update_at", err: errors.New(`ent: missing required field "update_at"`)}
+	}
+	if _, ok := rc.mutation.DeleteAt(); !ok {
+		return &ValidationError{Name: "delete_at", err: errors.New(`ent: missing required field "delete_at"`)}
 	}
 	return nil
 }
@@ -247,6 +310,30 @@ func (rc *ReviewCreate) createSpec() (*Review, *sqlgraph.CreateSpec) {
 			Column: review.FieldMessage,
 		})
 		_node.Message = value
+	}
+	if value, ok := rc.mutation.CreateAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: review.FieldCreateAt,
+		})
+		_node.CreateAt = value
+	}
+	if value, ok := rc.mutation.UpdateAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: review.FieldUpdateAt,
+		})
+		_node.UpdateAt = value
+	}
+	if value, ok := rc.mutation.DeleteAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: review.FieldDeleteAt,
+		})
+		_node.DeleteAt = value
 	}
 	return _node, _spec
 }
@@ -371,6 +458,42 @@ func (u *ReviewUpsert) SetMessage(v string) *ReviewUpsert {
 // UpdateMessage sets the "message" field to the value that was provided on create.
 func (u *ReviewUpsert) UpdateMessage() *ReviewUpsert {
 	u.SetExcluded(review.FieldMessage)
+	return u
+}
+
+// SetCreateAt sets the "create_at" field.
+func (u *ReviewUpsert) SetCreateAt(v uint32) *ReviewUpsert {
+	u.Set(review.FieldCreateAt, v)
+	return u
+}
+
+// UpdateCreateAt sets the "create_at" field to the value that was provided on create.
+func (u *ReviewUpsert) UpdateCreateAt() *ReviewUpsert {
+	u.SetExcluded(review.FieldCreateAt)
+	return u
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (u *ReviewUpsert) SetUpdateAt(v uint32) *ReviewUpsert {
+	u.Set(review.FieldUpdateAt, v)
+	return u
+}
+
+// UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
+func (u *ReviewUpsert) UpdateUpdateAt() *ReviewUpsert {
+	u.SetExcluded(review.FieldUpdateAt)
+	return u
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (u *ReviewUpsert) SetDeleteAt(v uint32) *ReviewUpsert {
+	u.Set(review.FieldDeleteAt, v)
+	return u
+}
+
+// UpdateDeleteAt sets the "delete_at" field to the value that was provided on create.
+func (u *ReviewUpsert) UpdateDeleteAt() *ReviewUpsert {
+	u.SetExcluded(review.FieldDeleteAt)
 	return u
 }
 
@@ -505,6 +628,48 @@ func (u *ReviewUpsertOne) SetMessage(v string) *ReviewUpsertOne {
 func (u *ReviewUpsertOne) UpdateMessage() *ReviewUpsertOne {
 	return u.Update(func(s *ReviewUpsert) {
 		s.UpdateMessage()
+	})
+}
+
+// SetCreateAt sets the "create_at" field.
+func (u *ReviewUpsertOne) SetCreateAt(v uint32) *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetCreateAt(v)
+	})
+}
+
+// UpdateCreateAt sets the "create_at" field to the value that was provided on create.
+func (u *ReviewUpsertOne) UpdateCreateAt() *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateCreateAt()
+	})
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (u *ReviewUpsertOne) SetUpdateAt(v uint32) *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetUpdateAt(v)
+	})
+}
+
+// UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
+func (u *ReviewUpsertOne) UpdateUpdateAt() *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateUpdateAt()
+	})
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (u *ReviewUpsertOne) SetDeleteAt(v uint32) *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetDeleteAt(v)
+	})
+}
+
+// UpdateDeleteAt sets the "delete_at" field to the value that was provided on create.
+func (u *ReviewUpsertOne) UpdateDeleteAt() *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateDeleteAt()
 	})
 }
 
@@ -805,6 +970,48 @@ func (u *ReviewUpsertBulk) SetMessage(v string) *ReviewUpsertBulk {
 func (u *ReviewUpsertBulk) UpdateMessage() *ReviewUpsertBulk {
 	return u.Update(func(s *ReviewUpsert) {
 		s.UpdateMessage()
+	})
+}
+
+// SetCreateAt sets the "create_at" field.
+func (u *ReviewUpsertBulk) SetCreateAt(v uint32) *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetCreateAt(v)
+	})
+}
+
+// UpdateCreateAt sets the "create_at" field to the value that was provided on create.
+func (u *ReviewUpsertBulk) UpdateCreateAt() *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateCreateAt()
+	})
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (u *ReviewUpsertBulk) SetUpdateAt(v uint32) *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetUpdateAt(v)
+	})
+}
+
+// UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
+func (u *ReviewUpsertBulk) UpdateUpdateAt() *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateUpdateAt()
+	})
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (u *ReviewUpsertBulk) SetDeleteAt(v uint32) *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetDeleteAt(v)
+	})
+}
+
+// UpdateDeleteAt sets the "delete_at" field to the value that was provided on create.
+func (u *ReviewUpsertBulk) UpdateDeleteAt() *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateDeleteAt()
 	})
 }
 

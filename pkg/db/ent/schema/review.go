@@ -1,6 +1,8 @@
 package schema
 
 import (
+	"time"
+
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
 
@@ -24,6 +26,21 @@ func (Review) Fields() []ent.Field {
 		field.Enum("state").
 			Values("wait", "approved", "rejected"),
 		field.String("message"),
+		field.Uint32("create_at").
+			DefaultFunc(func() uint32 {
+				return uint32(time.Now().Unix())
+			}),
+		field.Uint32("update_at").
+			DefaultFunc(func() uint32 {
+				return uint32(time.Now().Unix())
+			}).
+			UpdateDefault(func() uint32 {
+				return uint32(time.Now().Unix())
+			}),
+		field.Uint32("delete_at").
+			DefaultFunc(func() uint32 {
+				return 0
+			}),
 	}
 }
 

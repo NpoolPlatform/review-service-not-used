@@ -28,6 +28,12 @@ type Review struct {
 	State review.State `json:"state,omitempty"`
 	// Message holds the value of the "message" field.
 	Message string `json:"message,omitempty"`
+	// CreateAt holds the value of the "create_at" field.
+	CreateAt uint32 `json:"create_at,omitempty"`
+	// UpdateAt holds the value of the "update_at" field.
+	UpdateAt uint32 `json:"update_at,omitempty"`
+	// DeleteAt holds the value of the "delete_at" field.
+	DeleteAt uint32 `json:"delete_at,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -35,6 +41,8 @@ func (*Review) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case review.FieldCreateAt, review.FieldUpdateAt, review.FieldDeleteAt:
+			values[i] = new(sql.NullInt64)
 		case review.FieldEntityType, review.FieldDomain, review.FieldState, review.FieldMessage:
 			values[i] = new(sql.NullString)
 		case review.FieldID, review.FieldObjectID, review.FieldReviewerID:
@@ -96,6 +104,24 @@ func (r *Review) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				r.Message = value.String
 			}
+		case review.FieldCreateAt:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field create_at", values[i])
+			} else if value.Valid {
+				r.CreateAt = uint32(value.Int64)
+			}
+		case review.FieldUpdateAt:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field update_at", values[i])
+			} else if value.Valid {
+				r.UpdateAt = uint32(value.Int64)
+			}
+		case review.FieldDeleteAt:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field delete_at", values[i])
+			} else if value.Valid {
+				r.DeleteAt = uint32(value.Int64)
+			}
 		}
 	}
 	return nil
@@ -136,6 +162,12 @@ func (r *Review) String() string {
 	builder.WriteString(fmt.Sprintf("%v", r.State))
 	builder.WriteString(", message=")
 	builder.WriteString(r.Message)
+	builder.WriteString(", create_at=")
+	builder.WriteString(fmt.Sprintf("%v", r.CreateAt))
+	builder.WriteString(", update_at=")
+	builder.WriteString(fmt.Sprintf("%v", r.UpdateAt))
+	builder.WriteString(", delete_at=")
+	builder.WriteString(fmt.Sprintf("%v", r.DeleteAt))
 	builder.WriteByte(')')
 	return builder.String()
 }
