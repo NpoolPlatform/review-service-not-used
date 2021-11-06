@@ -1,14 +1,14 @@
 syntax = "proto3";
 
-package service.sample.v1;
+package review.service.v1;
 
-option go_package = "github.com/NpoolPlatform/go-service-app-template/message/npool";
+option go_package = "github.com/NpoolPlatform/review-service/message/npool";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
 // Service Name
-service ServiceExample {
+service ReviewService {
     // Method Version
     rpc Version (google.protobuf.Empty) returns (VersionResponse){
         option (google.api.http) = {
