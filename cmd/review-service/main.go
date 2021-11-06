@@ -6,10 +6,13 @@ import (
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/app"
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
+
+	"github.com/NpoolPlatform/review-service/pkg/service-name" //nolint
+
 	cli "github.com/urfave/cli/v2"
 )
 
-const serviceName = "Review Service"
+const serviceName = servicename.ServiceName
 
 func main() {
 	commands := cli.Commands{

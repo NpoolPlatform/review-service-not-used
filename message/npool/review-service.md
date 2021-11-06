@@ -4,6 +4,13 @@
 ## Table of Contents
 
 - [npool/review-service.proto](#npool/review-service.proto)
+    - [CreateReviewRequest](#review.service.v1.CreateReviewRequest)
+    - [CreateReviewResponse](#review.service.v1.CreateReviewResponse)
+    - [GetReviewsByDomainRequest](#review.service.v1.GetReviewsByDomainRequest)
+    - [GetReviewsByDomainResponse](#review.service.v1.GetReviewsByDomainResponse)
+    - [Review](#review.service.v1.Review)
+    - [UpdateReviewRequest](#review.service.v1.UpdateReviewRequest)
+    - [UpdateReviewResponse](#review.service.v1.UpdateReviewResponse)
     - [VersionResponse](#review.service.v1.VersionResponse)
   
     - [ReviewService](#review.service.v1.ReviewService)
@@ -16,6 +23,117 @@
 <p align="right"><a href="#top">Top</a></p>
 
 ## npool/review-service.proto
+
+
+
+<a name="review.service.v1.CreateReviewRequest"></a>
+
+### CreateReviewRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [Review](#review.service.v1.Review) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.CreateReviewResponse"></a>
+
+### CreateReviewResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [Review](#review.service.v1.Review) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.GetReviewsByDomainRequest"></a>
+
+### GetReviewsByDomainRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Domain | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.GetReviewsByDomainResponse"></a>
+
+### GetReviewsByDomainResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Infos | [Review](#review.service.v1.Review) | repeated |  |
+
+
+
+
+
+
+<a name="review.service.v1.Review"></a>
+
+### Review
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| ID | [string](#string) |  |  |
+| EntityType | [string](#string) |  |  |
+| ReviewerID | [string](#string) |  |  |
+| State | [string](#string) |  |  |
+| Message | [string](#string) |  |  |
+| ObjectID | [string](#string) |  |  |
+| Domain | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.UpdateReviewRequest"></a>
+
+### UpdateReviewRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [Review](#review.service.v1.Review) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.UpdateReviewResponse"></a>
+
+### UpdateReviewResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [Review](#review.service.v1.Review) |  |  |
+
+
+
 
 
 
@@ -48,6 +166,9 @@ Service Name
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
 | Version | [.google.protobuf.Empty](#google.protobuf.Empty) | [VersionResponse](#review.service.v1.VersionResponse) | Method Version |
+| CreateReview | [CreateReviewRequest](#review.service.v1.CreateReviewRequest) | [CreateReviewResponse](#review.service.v1.CreateReviewResponse) |  |
+| UpdateReview | [UpdateReviewRequest](#review.service.v1.UpdateReviewRequest) | [UpdateReviewResponse](#review.service.v1.UpdateReviewResponse) |  |
+| GetReviewsByDomain | [GetReviewsByDomainRequest](#review.service.v1.GetReviewsByDomainRequest) | [GetReviewsByDomainResponse](#review.service.v1.GetReviewsByDomainResponse) |  |
 
  
 
