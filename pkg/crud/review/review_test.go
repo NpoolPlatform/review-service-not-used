@@ -41,7 +41,7 @@ func TestCRUD(t *testing.T) {
 		EntityType: "good",
 		State:      "wait",
 		ObjectID:   uuid.New().String(),
-		Domain:     "cloud-hashing-goods-npool-top",
+		Domain:     fmt.Sprintf("cloud-hashing-goods-npool-top-%v", uuid.New().String()),
 	}
 
 	resp, err := Create(context.Background(), &npool.CreateReviewRequest{
@@ -65,5 +65,12 @@ func TestCRUD(t *testing.T) {
 		assert.Equal(t, resp1.Info.ID, resp.Info.ID)
 		assert.Equal(t, resp1.Info.ReviewerID, review.ReviewerID)
 		assertReview(t, resp1.Info, &review)
+	}
+
+	resp2, err := GetByDomain(context.Background(), &npool.GetReviewsByDomainRequest{
+		Domain: review.Domain,
+	})
+	if assert.Nil(t, err) {
+		assert.Equal(t, len(resp2.Infos), 1)
 	}
 }

@@ -84,6 +84,29 @@ func Update(ctx context.Context, in *npool.UpdateReviewRequest) (*npool.UpdateRe
 	}, nil
 }
 
-func GetReviewsByDomain(ctx context.Context, in *npool.GetReviewsByDomainRequest) (*npool.GetReviewsByDomainResponse, error) {
-	return nil, nil
+func GetByDomain(ctx context.Context, in *npool.GetReviewsByDomainRequest) (*npool.GetReviewsByDomainResponse, error) {
+	infos, err := db.Client().
+		Review.
+		Query().
+		Where(
+			review.And(
+				review.Domain(in.GetDomain()),
+			),
+		).
+		All(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail query review: %v", err)
+	}
+	if len(infos) == 0 {
+		return nil, xerrors.Errorf("empty review")
+	}
+
+	reviews := []*npool.Review{}
+	for _, info := range infos {
+		reviews = append(reviews, dbRowToReview(info))
+	}
+
+	return &npool.GetReviewsByDomainResponse{
+		Infos: reviews,
+	}, nil
 }
