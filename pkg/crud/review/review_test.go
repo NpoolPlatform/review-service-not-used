@@ -24,6 +24,14 @@ func init() {
 	}
 }
 
+func assertReview(t *testing.T, actual, expected *npool.Review) {
+	assert.Equal(t, actual.EntityType, expected.EntityType)
+	assert.Equal(t, actual.State, expected.State)
+	assert.Equal(t, actual.Message, expected.Message)
+	assert.Equal(t, actual.ObjectID, expected.ObjectID)
+	assert.Equal(t, actual.Domain, expected.Domain)
+}
+
 func TestCRUD(t *testing.T) {
 	if runByGithubAction, err := strconv.ParseBool(os.Getenv("RUN_BY_GITHUB_ACTION")); err == nil && runByGithubAction {
 		return
@@ -31,15 +39,17 @@ func TestCRUD(t *testing.T) {
 
 	review := npool.Review{
 		EntityType: "good",
-		ReviewerID: uuid.New().String(),
 		State:      "wait",
-		Message:    "Invalid good",
 		ObjectID:   uuid.New().String(),
 		Domain:     "cloud-hashing-goods-npool-top",
 	}
 
-	_, err := Create(context.Background(), &npool.CreateReviewRequest{
+	resp, err := Create(context.Background(), &npool.CreateReviewRequest{
 		Info: &review,
 	})
-	assert.Nil(t, err)
+	if assert.Nil(t, err) {
+		assert.NotEqual(t, resp.Info.ID, uuid.UUID{})
+		assert.Equal(t, resp.Info.ReviewerID, uuid.UUID{}.String())
+		assertReview(t, resp.Info, &review)
+	}
 }
