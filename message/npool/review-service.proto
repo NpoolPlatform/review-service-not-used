@@ -56,7 +56,7 @@ service ReviewService {
     }
     rpc GetReviewRulesByDomain(GetReviewRulesByDomainRequest) returns (GetReviewRulesByDomainResponse) {
         option (google.api.http) = {
-            post: "/v1/get/review/rules"
+            post: "/v1/get/review/rules/by/domain"
             body: "*"
         };
     }
