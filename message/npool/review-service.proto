@@ -35,6 +35,31 @@ service ReviewService {
             body: "*"
         };
     }
+
+    rpc CreateReviewRule(CreateReviewRuleRequest) returns (CreateReviewRuleResponse) {
+        option (google.api.http) = {
+            post: "/v1/create/review/rule"
+            body: "*"
+        };
+    }
+    rpc UpdateReviewRule(UpdateReviewRuleRequest) returns (UpdateReviewRuleResponse) {
+        option (google.api.http) = {
+            post: "/v1/update/review/rule"
+            body: "*"
+        };
+    }
+    rpc GetReviewRule(GetReviewRuleRequest) returns (GetReviewRuleResponse) {
+        option (google.api.http) = {
+            post: "/v1/get/review/rule"
+            body: "*"
+        };
+    }
+    rpc GetReviewRulesByApp(GetReviewRulesByAppRequest) returns (GetReviewRulesByAppResponse) {
+        option (google.api.http) = {
+            post: "/v1/get/review/rules"
+            body: "*"
+        };
+    }
 }
 
 // request body and response
@@ -74,4 +99,43 @@ message GetReviewsByDomainRequest {
 
 message GetReviewsByDomainResponse {
     repeated Review Infos = 800;
+}
+
+message ReviewRule {
+    string ID = 900;
+    string EntityType = 901;
+    string Domain = 902;
+    string Rules = 903;
+}
+
+message CreateReviewRuleRequest {
+    ReviewRule Info = 1000;
+}
+
+message CreateReviewRuleResponse {
+    ReviewRule Info = 1100;
+}
+
+message UpdateReviewRuleRequest {
+    ReviewRule Info = 1200;
+}
+
+message UpdateReviewRuleResponse {
+    ReviewRule Info = 1300;
+}
+
+message GetReviewRuleRequest {
+    string ID = 1400;
+}
+
+message GetReviewRuleResponse {
+    ReviewRule Info = 1500;
+}
+
+message GetReviewRulesByAppRequest {
+    string AppID = 1600;
+}
+
+message GetReviewRulesByAppResponse {
+    repeated ReviewRule Infos = 1700;
 }

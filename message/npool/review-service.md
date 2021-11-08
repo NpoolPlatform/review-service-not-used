@@ -6,11 +6,20 @@
 - [npool/review-service.proto](#npool/review-service.proto)
     - [CreateReviewRequest](#review.service.v1.CreateReviewRequest)
     - [CreateReviewResponse](#review.service.v1.CreateReviewResponse)
+    - [CreateReviewRuleRequest](#review.service.v1.CreateReviewRuleRequest)
+    - [CreateReviewRuleResponse](#review.service.v1.CreateReviewRuleResponse)
+    - [GetReviewRuleRequest](#review.service.v1.GetReviewRuleRequest)
+    - [GetReviewRuleResponse](#review.service.v1.GetReviewRuleResponse)
+    - [GetReviewRulesByAppRequest](#review.service.v1.GetReviewRulesByAppRequest)
+    - [GetReviewRulesByAppResponse](#review.service.v1.GetReviewRulesByAppResponse)
     - [GetReviewsByDomainRequest](#review.service.v1.GetReviewsByDomainRequest)
     - [GetReviewsByDomainResponse](#review.service.v1.GetReviewsByDomainResponse)
     - [Review](#review.service.v1.Review)
+    - [ReviewRule](#review.service.v1.ReviewRule)
     - [UpdateReviewRequest](#review.service.v1.UpdateReviewRequest)
     - [UpdateReviewResponse](#review.service.v1.UpdateReviewResponse)
+    - [UpdateReviewRuleRequest](#review.service.v1.UpdateReviewRuleRequest)
+    - [UpdateReviewRuleResponse](#review.service.v1.UpdateReviewRuleResponse)
     - [VersionResponse](#review.service.v1.VersionResponse)
   
     - [ReviewService](#review.service.v1.ReviewService)
@@ -50,6 +59,96 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | Info | [Review](#review.service.v1.Review) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.CreateReviewRuleRequest"></a>
+
+### CreateReviewRuleRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [ReviewRule](#review.service.v1.ReviewRule) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.CreateReviewRuleResponse"></a>
+
+### CreateReviewRuleResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [ReviewRule](#review.service.v1.ReviewRule) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.GetReviewRuleRequest"></a>
+
+### GetReviewRuleRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| ID | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.GetReviewRuleResponse"></a>
+
+### GetReviewRuleResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [ReviewRule](#review.service.v1.ReviewRule) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.GetReviewRulesByAppRequest"></a>
+
+### GetReviewRulesByAppRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| AppID | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.GetReviewRulesByAppResponse"></a>
+
+### GetReviewRulesByAppResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Infos | [ReviewRule](#review.service.v1.ReviewRule) | repeated |  |
 
 
 
@@ -107,6 +206,24 @@
 
 
 
+<a name="review.service.v1.ReviewRule"></a>
+
+### ReviewRule
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| ID | [string](#string) |  |  |
+| EntityType | [string](#string) |  |  |
+| Domain | [string](#string) |  |  |
+| Rules | [string](#string) |  |  |
+
+
+
+
+
+
 <a name="review.service.v1.UpdateReviewRequest"></a>
 
 ### UpdateReviewRequest
@@ -131,6 +248,36 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | Info | [Review](#review.service.v1.Review) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.UpdateReviewRuleRequest"></a>
+
+### UpdateReviewRuleRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [ReviewRule](#review.service.v1.ReviewRule) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.UpdateReviewRuleResponse"></a>
+
+### UpdateReviewRuleResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [ReviewRule](#review.service.v1.ReviewRule) |  |  |
 
 
 
@@ -169,6 +316,10 @@ Service Name
 | CreateReview | [CreateReviewRequest](#review.service.v1.CreateReviewRequest) | [CreateReviewResponse](#review.service.v1.CreateReviewResponse) |  |
 | UpdateReview | [UpdateReviewRequest](#review.service.v1.UpdateReviewRequest) | [UpdateReviewResponse](#review.service.v1.UpdateReviewResponse) |  |
 | GetReviewsByDomain | [GetReviewsByDomainRequest](#review.service.v1.GetReviewsByDomainRequest) | [GetReviewsByDomainResponse](#review.service.v1.GetReviewsByDomainResponse) |  |
+| CreateReviewRule | [CreateReviewRuleRequest](#review.service.v1.CreateReviewRuleRequest) | [CreateReviewRuleResponse](#review.service.v1.CreateReviewRuleResponse) |  |
+| UpdateReviewRule | [UpdateReviewRuleRequest](#review.service.v1.UpdateReviewRuleRequest) | [UpdateReviewRuleResponse](#review.service.v1.UpdateReviewRuleResponse) |  |
+| GetReviewRule | [GetReviewRuleRequest](#review.service.v1.GetReviewRuleRequest) | [GetReviewRuleResponse](#review.service.v1.GetReviewRuleResponse) |  |
+| GetReviewRulesByApp | [GetReviewRulesByAppRequest](#review.service.v1.GetReviewRulesByAppRequest) | [GetReviewRulesByAppResponse](#review.service.v1.GetReviewRulesByAppResponse) |  |
 
  
 
