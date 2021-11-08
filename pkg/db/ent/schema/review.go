@@ -5,6 +5,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
+	"entgo.io/ent/schema/index"
 
 	"github.com/google/uuid"
 )
@@ -18,7 +19,8 @@ type Review struct {
 func (Review) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}).
-			Default(uuid.New),
+			Default(uuid.New).
+			Unique(),
 		field.String("entity_type"),
 		field.String("domain"),
 		field.UUID("object_id", uuid.UUID{}),
@@ -47,4 +49,12 @@ func (Review) Fields() []ent.Field {
 // Edges of the Review.
 func (Review) Edges() []ent.Edge {
 	return nil
+}
+
+// Indexs of the Review.
+func (Review) Indexs() []ent.Index {
+	return []ent.Index{
+		index.Fields("domain", "entity_type", "object_id").
+			Unique(),
+	}
 }

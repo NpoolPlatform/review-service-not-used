@@ -19,7 +19,8 @@ type ReviewRule struct {
 func (ReviewRule) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}).
-			Default(uuid.New),
+			Default(uuid.New).
+			Unique(),
 		field.String("entity_type"),
 		field.String("domain"),
 		field.String("rules").
