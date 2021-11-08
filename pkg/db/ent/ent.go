@@ -9,6 +9,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/NpoolPlatform/review-service/pkg/db/ent/review"
+	"github.com/NpoolPlatform/review-service/pkg/db/ent/reviewrule"
 )
 
 // ent aliases to avoid import conflicts in user's code.
@@ -29,7 +30,8 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
-		review.Table: review.ValidColumn,
+		review.Table:     review.ValidColumn,
+		reviewrule.Table: reviewrule.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {

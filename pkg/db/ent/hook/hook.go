@@ -22,6 +22,19 @@ func (f ReviewFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, erro
 	return f(ctx, mv)
 }
 
+// The ReviewRuleFunc type is an adapter to allow the use of ordinary
+// function as ReviewRule mutator.
+type ReviewRuleFunc func(context.Context, *ent.ReviewRuleMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ReviewRuleFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.ReviewRuleMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ReviewRuleMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // Condition is a hook condition function.
 type Condition func(context.Context, ent.Mutation) bool
 

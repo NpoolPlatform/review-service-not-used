@@ -4,6 +4,7 @@ package ent
 
 import (
 	"github.com/NpoolPlatform/review-service/pkg/db/ent/review"
+	"github.com/NpoolPlatform/review-service/pkg/db/ent/reviewrule"
 	"github.com/NpoolPlatform/review-service/pkg/db/ent/schema"
 	"github.com/google/uuid"
 )
@@ -32,4 +33,28 @@ func init() {
 	reviewDescID := reviewFields[0].Descriptor()
 	// review.DefaultID holds the default value on creation for the id field.
 	review.DefaultID = reviewDescID.Default.(func() uuid.UUID)
+	reviewruleFields := schema.ReviewRule{}.Fields()
+	_ = reviewruleFields
+	// reviewruleDescRules is the schema descriptor for rules field.
+	reviewruleDescRules := reviewruleFields[3].Descriptor()
+	// reviewrule.DefaultRules holds the default value on creation for the rules field.
+	reviewrule.DefaultRules = reviewruleDescRules.Default.(string)
+	// reviewruleDescCreateAt is the schema descriptor for create_at field.
+	reviewruleDescCreateAt := reviewruleFields[4].Descriptor()
+	// reviewrule.DefaultCreateAt holds the default value on creation for the create_at field.
+	reviewrule.DefaultCreateAt = reviewruleDescCreateAt.Default.(func() uint32)
+	// reviewruleDescUpdateAt is the schema descriptor for update_at field.
+	reviewruleDescUpdateAt := reviewruleFields[5].Descriptor()
+	// reviewrule.DefaultUpdateAt holds the default value on creation for the update_at field.
+	reviewrule.DefaultUpdateAt = reviewruleDescUpdateAt.Default.(func() uint32)
+	// reviewrule.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
+	reviewrule.UpdateDefaultUpdateAt = reviewruleDescUpdateAt.UpdateDefault.(func() uint32)
+	// reviewruleDescDeleteAt is the schema descriptor for delete_at field.
+	reviewruleDescDeleteAt := reviewruleFields[6].Descriptor()
+	// reviewrule.DefaultDeleteAt holds the default value on creation for the delete_at field.
+	reviewrule.DefaultDeleteAt = reviewruleDescDeleteAt.Default.(func() uint32)
+	// reviewruleDescID is the schema descriptor for id field.
+	reviewruleDescID := reviewruleFields[0].Descriptor()
+	// reviewrule.DefaultID holds the default value on creation for the id field.
+	reviewrule.DefaultID = reviewruleDescID.Default.(func() uuid.UUID)
 }

@@ -11,6 +11,7 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/NpoolPlatform/review-service/pkg/db/ent/review"
+	"github.com/NpoolPlatform/review-service/pkg/db/ent/reviewrule"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
@@ -23,6 +24,8 @@ type Client struct {
 	Schema *migrate.Schema
 	// Review is the client for interacting with the Review builders.
 	Review *ReviewClient
+	// ReviewRule is the client for interacting with the ReviewRule builders.
+	ReviewRule *ReviewRuleClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -37,6 +40,7 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.Review = NewReviewClient(c.config)
+	c.ReviewRule = NewReviewRuleClient(c.config)
 }
 
 // Open opens a database/sql.DB specified by the driver name and
@@ -68,9 +72,10 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:    ctx,
-		config: cfg,
-		Review: NewReviewClient(cfg),
+		ctx:        ctx,
+		config:     cfg,
+		Review:     NewReviewClient(cfg),
+		ReviewRule: NewReviewRuleClient(cfg),
 	}, nil
 }
 
@@ -88,8 +93,9 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		config: cfg,
-		Review: NewReviewClient(cfg),
+		config:     cfg,
+		Review:     NewReviewClient(cfg),
+		ReviewRule: NewReviewRuleClient(cfg),
 	}, nil
 }
 
@@ -120,6 +126,7 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	c.Review.Use(hooks...)
+	c.ReviewRule.Use(hooks...)
 }
 
 // ReviewClient is a client for the Review schema.
@@ -210,4 +217,94 @@ func (c *ReviewClient) GetX(ctx context.Context, id uuid.UUID) *Review {
 // Hooks returns the client hooks.
 func (c *ReviewClient) Hooks() []Hook {
 	return c.hooks.Review
+}
+
+// ReviewRuleClient is a client for the ReviewRule schema.
+type ReviewRuleClient struct {
+	config
+}
+
+// NewReviewRuleClient returns a client for the ReviewRule from the given config.
+func NewReviewRuleClient(c config) *ReviewRuleClient {
+	return &ReviewRuleClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `reviewrule.Hooks(f(g(h())))`.
+func (c *ReviewRuleClient) Use(hooks ...Hook) {
+	c.hooks.ReviewRule = append(c.hooks.ReviewRule, hooks...)
+}
+
+// Create returns a create builder for ReviewRule.
+func (c *ReviewRuleClient) Create() *ReviewRuleCreate {
+	mutation := newReviewRuleMutation(c.config, OpCreate)
+	return &ReviewRuleCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of ReviewRule entities.
+func (c *ReviewRuleClient) CreateBulk(builders ...*ReviewRuleCreate) *ReviewRuleCreateBulk {
+	return &ReviewRuleCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for ReviewRule.
+func (c *ReviewRuleClient) Update() *ReviewRuleUpdate {
+	mutation := newReviewRuleMutation(c.config, OpUpdate)
+	return &ReviewRuleUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ReviewRuleClient) UpdateOne(rr *ReviewRule) *ReviewRuleUpdateOne {
+	mutation := newReviewRuleMutation(c.config, OpUpdateOne, withReviewRule(rr))
+	return &ReviewRuleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ReviewRuleClient) UpdateOneID(id uuid.UUID) *ReviewRuleUpdateOne {
+	mutation := newReviewRuleMutation(c.config, OpUpdateOne, withReviewRuleID(id))
+	return &ReviewRuleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for ReviewRule.
+func (c *ReviewRuleClient) Delete() *ReviewRuleDelete {
+	mutation := newReviewRuleMutation(c.config, OpDelete)
+	return &ReviewRuleDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *ReviewRuleClient) DeleteOne(rr *ReviewRule) *ReviewRuleDeleteOne {
+	return c.DeleteOneID(rr.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *ReviewRuleClient) DeleteOneID(id uuid.UUID) *ReviewRuleDeleteOne {
+	builder := c.Delete().Where(reviewrule.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ReviewRuleDeleteOne{builder}
+}
+
+// Query returns a query builder for ReviewRule.
+func (c *ReviewRuleClient) Query() *ReviewRuleQuery {
+	return &ReviewRuleQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a ReviewRule entity by its id.
+func (c *ReviewRuleClient) Get(ctx context.Context, id uuid.UUID) (*ReviewRule, error) {
+	return c.Query().Where(reviewrule.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ReviewRuleClient) GetX(ctx context.Context, id uuid.UUID) *ReviewRule {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *ReviewRuleClient) Hooks() []Hook {
+	return c.hooks.ReviewRule
 }

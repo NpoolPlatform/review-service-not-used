@@ -27,9 +27,26 @@ var (
 		Columns:    ReviewsColumns,
 		PrimaryKey: []*schema.Column{ReviewsColumns[0]},
 	}
+	// ReviewRulesColumns holds the columns for the "review_rules" table.
+	ReviewRulesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "entity_type", Type: field.TypeString},
+		{Name: "domain", Type: field.TypeString},
+		{Name: "rules", Type: field.TypeString, Default: "{}"},
+		{Name: "create_at", Type: field.TypeUint32},
+		{Name: "update_at", Type: field.TypeUint32},
+		{Name: "delete_at", Type: field.TypeUint32},
+	}
+	// ReviewRulesTable holds the schema information for the "review_rules" table.
+	ReviewRulesTable = &schema.Table{
+		Name:       "review_rules",
+		Columns:    ReviewRulesColumns,
+		PrimaryKey: []*schema.Column{ReviewRulesColumns[0]},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		ReviewsTable,
+		ReviewRulesTable,
 	}
 )
 

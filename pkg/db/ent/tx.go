@@ -14,6 +14,8 @@ type Tx struct {
 	config
 	// Review is the client for interacting with the Review builders.
 	Review *ReviewClient
+	// ReviewRule is the client for interacting with the ReviewRule builders.
+	ReviewRule *ReviewRuleClient
 
 	// lazily loaded.
 	client     *Client
@@ -150,6 +152,7 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.Review = NewReviewClient(tx.config)
+	tx.ReviewRule = NewReviewRuleClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

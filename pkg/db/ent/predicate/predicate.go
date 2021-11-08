@@ -8,3 +8,6 @@ import (
 
 // Review is the predicate function for review builders.
 type Review func(*sql.Selector)
+
+// ReviewRule is the predicate function for reviewrule builders.
+type ReviewRule func(*sql.Selector)
