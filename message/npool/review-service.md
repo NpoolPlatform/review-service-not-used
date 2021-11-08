@@ -10,8 +10,8 @@
     - [CreateReviewRuleResponse](#review.service.v1.CreateReviewRuleResponse)
     - [GetReviewRuleRequest](#review.service.v1.GetReviewRuleRequest)
     - [GetReviewRuleResponse](#review.service.v1.GetReviewRuleResponse)
-    - [GetReviewRulesByAppRequest](#review.service.v1.GetReviewRulesByAppRequest)
-    - [GetReviewRulesByAppResponse](#review.service.v1.GetReviewRulesByAppResponse)
+    - [GetReviewRulesByDomainRequest](#review.service.v1.GetReviewRulesByDomainRequest)
+    - [GetReviewRulesByDomainResponse](#review.service.v1.GetReviewRulesByDomainResponse)
     - [GetReviewsByDomainRequest](#review.service.v1.GetReviewsByDomainRequest)
     - [GetReviewsByDomainResponse](#review.service.v1.GetReviewsByDomainResponse)
     - [Review](#review.service.v1.Review)
@@ -125,24 +125,24 @@
 
 
 
-<a name="review.service.v1.GetReviewRulesByAppRequest"></a>
+<a name="review.service.v1.GetReviewRulesByDomainRequest"></a>
 
-### GetReviewRulesByAppRequest
+### GetReviewRulesByDomainRequest
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| AppID | [string](#string) |  |  |
+| Domain | [string](#string) |  |  |
 
 
 
 
 
 
-<a name="review.service.v1.GetReviewRulesByAppResponse"></a>
+<a name="review.service.v1.GetReviewRulesByDomainResponse"></a>
 
-### GetReviewRulesByAppResponse
+### GetReviewRulesByDomainResponse
 
 
 
@@ -319,7 +319,7 @@ Service Name
 | CreateReviewRule | [CreateReviewRuleRequest](#review.service.v1.CreateReviewRuleRequest) | [CreateReviewRuleResponse](#review.service.v1.CreateReviewRuleResponse) |  |
 | UpdateReviewRule | [UpdateReviewRuleRequest](#review.service.v1.UpdateReviewRuleRequest) | [UpdateReviewRuleResponse](#review.service.v1.UpdateReviewRuleResponse) |  |
 | GetReviewRule | [GetReviewRuleRequest](#review.service.v1.GetReviewRuleRequest) | [GetReviewRuleResponse](#review.service.v1.GetReviewRuleResponse) |  |
-| GetReviewRulesByApp | [GetReviewRulesByAppRequest](#review.service.v1.GetReviewRulesByAppRequest) | [GetReviewRulesByAppResponse](#review.service.v1.GetReviewRulesByAppResponse) |  |
+| GetReviewRulesByDomain | [GetReviewRulesByDomainRequest](#review.service.v1.GetReviewRulesByDomainRequest) | [GetReviewRulesByDomainResponse](#review.service.v1.GetReviewRulesByDomainResponse) |  |
 
  
 

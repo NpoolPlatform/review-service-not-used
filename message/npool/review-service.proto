@@ -54,7 +54,7 @@ service ReviewService {
             body: "*"
         };
     }
-    rpc GetReviewRulesByApp(GetReviewRulesByAppRequest) returns (GetReviewRulesByAppResponse) {
+    rpc GetReviewRulesByDomain(GetReviewRulesByDomainRequest) returns (GetReviewRulesByDomainResponse) {
         option (google.api.http) = {
             post: "/v1/get/review/rules"
             body: "*"
@@ -132,10 +132,10 @@ message GetReviewRuleResponse {
     ReviewRule Info = 1500;
 }
 
-message GetReviewRulesByAppRequest {
-    string AppID = 1600;
+message GetReviewRulesByDomainRequest {
+    string Domain = 1600;
 }
 
-message GetReviewRulesByAppResponse {
+message GetReviewRulesByDomainResponse {
     repeated ReviewRule Infos = 1700;
 }

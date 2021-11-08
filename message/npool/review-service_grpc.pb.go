@@ -27,7 +27,7 @@ type ReviewServiceClient interface {
 	CreateReviewRule(ctx context.Context, in *CreateReviewRuleRequest, opts ...grpc.CallOption) (*CreateReviewRuleResponse, error)
 	UpdateReviewRule(ctx context.Context, in *UpdateReviewRuleRequest, opts ...grpc.CallOption) (*UpdateReviewRuleResponse, error)
 	GetReviewRule(ctx context.Context, in *GetReviewRuleRequest, opts ...grpc.CallOption) (*GetReviewRuleResponse, error)
-	GetReviewRulesByApp(ctx context.Context, in *GetReviewRulesByAppRequest, opts ...grpc.CallOption) (*GetReviewRulesByAppResponse, error)
+	GetReviewRulesByDomain(ctx context.Context, in *GetReviewRulesByDomainRequest, opts ...grpc.CallOption) (*GetReviewRulesByDomainResponse, error)
 }
 
 type reviewServiceClient struct {
@@ -101,9 +101,9 @@ func (c *reviewServiceClient) GetReviewRule(ctx context.Context, in *GetReviewRu
 	return out, nil
 }
 
-func (c *reviewServiceClient) GetReviewRulesByApp(ctx context.Context, in *GetReviewRulesByAppRequest, opts ...grpc.CallOption) (*GetReviewRulesByAppResponse, error) {
-	out := new(GetReviewRulesByAppResponse)
-	err := c.cc.Invoke(ctx, "/review.service.v1.ReviewService/GetReviewRulesByApp", in, out, opts...)
+func (c *reviewServiceClient) GetReviewRulesByDomain(ctx context.Context, in *GetReviewRulesByDomainRequest, opts ...grpc.CallOption) (*GetReviewRulesByDomainResponse, error) {
+	out := new(GetReviewRulesByDomainResponse)
+	err := c.cc.Invoke(ctx, "/review.service.v1.ReviewService/GetReviewRulesByDomain", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +122,7 @@ type ReviewServiceServer interface {
 	CreateReviewRule(context.Context, *CreateReviewRuleRequest) (*CreateReviewRuleResponse, error)
 	UpdateReviewRule(context.Context, *UpdateReviewRuleRequest) (*UpdateReviewRuleResponse, error)
 	GetReviewRule(context.Context, *GetReviewRuleRequest) (*GetReviewRuleResponse, error)
-	GetReviewRulesByApp(context.Context, *GetReviewRulesByAppRequest) (*GetReviewRulesByAppResponse, error)
+	GetReviewRulesByDomain(context.Context, *GetReviewRulesByDomainRequest) (*GetReviewRulesByDomainResponse, error)
 	mustEmbedUnimplementedReviewServiceServer()
 }
 
@@ -151,8 +151,8 @@ func (UnimplementedReviewServiceServer) UpdateReviewRule(context.Context, *Updat
 func (UnimplementedReviewServiceServer) GetReviewRule(context.Context, *GetReviewRuleRequest) (*GetReviewRuleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetReviewRule not implemented")
 }
-func (UnimplementedReviewServiceServer) GetReviewRulesByApp(context.Context, *GetReviewRulesByAppRequest) (*GetReviewRulesByAppResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetReviewRulesByApp not implemented")
+func (UnimplementedReviewServiceServer) GetReviewRulesByDomain(context.Context, *GetReviewRulesByDomainRequest) (*GetReviewRulesByDomainResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetReviewRulesByDomain not implemented")
 }
 func (UnimplementedReviewServiceServer) mustEmbedUnimplementedReviewServiceServer() {}
 
@@ -293,20 +293,20 @@ func _ReviewService_GetReviewRule_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ReviewService_GetReviewRulesByApp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetReviewRulesByAppRequest)
+func _ReviewService_GetReviewRulesByDomain_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetReviewRulesByDomainRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ReviewServiceServer).GetReviewRulesByApp(ctx, in)
+		return srv.(ReviewServiceServer).GetReviewRulesByDomain(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/review.service.v1.ReviewService/GetReviewRulesByApp",
+		FullMethod: "/review.service.v1.ReviewService/GetReviewRulesByDomain",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ReviewServiceServer).GetReviewRulesByApp(ctx, req.(*GetReviewRulesByAppRequest))
+		return srv.(ReviewServiceServer).GetReviewRulesByDomain(ctx, req.(*GetReviewRulesByDomainRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -347,8 +347,8 @@ var ReviewService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ReviewService_GetReviewRule_Handler,
 		},
 		{
-			MethodName: "GetReviewRulesByApp",
-			Handler:    _ReviewService_GetReviewRulesByApp_Handler,
+			MethodName: "GetReviewRulesByDomain",
+			Handler:    _ReviewService_GetReviewRulesByDomain_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
