@@ -1,9 +1,9 @@
 ---
 config:
   hostname: "review-service.npool.top"
-  http_port: 35759
-  grpc_port: 35789
-  healthz_port: 35799
+  http_port: 50050
+  grpc_port: 50051
+  healthz_port: 50052
   appid: "89089012783789789719823798127398"
   logdir: "./"
   apolloAccessKey: "0147fb70b815403790e8634b899fac07"

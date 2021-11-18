@@ -42,7 +42,7 @@ func TestCreateReview(t *testing.T) { //nolint
 		SetBody(npool.CreateReviewRequest{
 			Info: &review,
 		}).
-		Post("http://localhost:35759/v1/create/review")
+		Post("http://localhost:50050/v1/create/review")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp.StatusCode())
 		err := json.Unmarshal(resp.Body(), &firstCreateInfo)
@@ -62,7 +62,7 @@ func TestCreateReview(t *testing.T) { //nolint
 		SetBody(npool.UpdateReviewRequest{
 			Info: &review,
 		}).
-		Post("http://localhost:35759/v1/update/review")
+		Post("http://localhost:50050/v1/update/review")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp.StatusCode())
 		info := npool.UpdateReviewResponse{}
@@ -78,7 +78,7 @@ func TestCreateReview(t *testing.T) { //nolint
 		SetBody(npool.GetReviewsByDomainRequest{
 			Domain: review.Domain,
 		}).
-		Post("http://localhost:35759/v1/get/reviews/by/domain")
+		Post("http://localhost:50050/v1/get/reviews/by/domain")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp.StatusCode())
 		info := npool.GetReviewsByDomainResponse{}

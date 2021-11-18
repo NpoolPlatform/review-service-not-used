@@ -47,4 +47,7 @@ metadata:
 spec:
   ports:
   - name: api
-    port: 8080
+    port: 50050
+    targetPort: 50050
+  selector:
+    app: review-service

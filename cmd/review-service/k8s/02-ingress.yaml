@@ -1,39 +1,57 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: review-service-npool-top-ingress
   namespace: kube-system
   annotations:
-    k8s.kuboard.cn/displayName: review-service
-    k8s.kuboard.cn/workload: review-service
+    k8s.kuboard.cn/displayName: review-service-npool
+    k8s.kuboard.cn/workload: review-service-npool
     kubernetes.io/ingress.class: "traefik-internet"
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-review-service-prefix@kubernetescrd
+
 spec:
   rules:
-  - host: api.npool.top
-    http:
-      paths:
-      - path: /review-service
-        backend:
-          serviceName: review-service
-          servicePort: http
+    - host: api.npool.top
+      http:
+        paths:
+          - path: /review-service
+            backend:
+              serviceName: review-service
+              servicePort: 50050
 
 ---
 
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: review-service-xpool-top-ingress
   namespace: kube-system
   annotations:
-    k8s.kuboard.cn/displayName: review-service
-    k8s.kuboard.cn/workload: review-service
+    k8s.kuboard.cn/displayName: review-service-xpool
+    k8s.kuboard.cn/workload: review-service-xpool
     kubernetes.io/ingress.class: "traefik-internet"
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-review-service-prefix@kubernetescrd
+
 spec:
   rules:
-  - host: api.xpool.top
-    http:
-      paths:
-      - path: /review-service
-        backend:
-          serviceName: review-service
-          servicePort: http
+    - host: api.xpool.top
+      http:
+        paths:
+          - path: /review-service
+            backend:
+              serviceName: review-service
+              servicePort: 50050
+
+---
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: strip-review-service-prefix
+  namespace: kube-system
+spec:
+  stripPrefix:
+    prefixes:
+      - /review-service

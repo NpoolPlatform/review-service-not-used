@@ -38,7 +38,7 @@ func TestCreateReviewRule(t *testing.T) { //nolint
 		SetBody(npool.CreateReviewRuleRequest{
 			Info: &reviewrule,
 		}).
-		Post("http://localhost:35759/v1/create/review/rule")
+		Post("http://localhost:50050/v1/create/review/rule")
 
 	reviewrule.Rules = "{}"
 	if assert.Nil(t, err) {
@@ -58,7 +58,7 @@ func TestCreateReviewRule(t *testing.T) { //nolint
 		SetBody(npool.UpdateReviewRuleRequest{
 			Info: &reviewrule,
 		}).
-		Post("http://localhost:35759/v1/update/review/rule")
+		Post("http://localhost:50050/v1/update/review/rule")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp.StatusCode())
 		info := npool.UpdateReviewRuleResponse{}
@@ -74,7 +74,7 @@ func TestCreateReviewRule(t *testing.T) { //nolint
 		SetBody(npool.GetReviewRulesByDomainRequest{
 			Domain: reviewrule.Domain,
 		}).
-		Post("http://localhost:35759/v1/get/review/rules/by/domain")
+		Post("http://localhost:50050/v1/get/review/rules/by/domain")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp.StatusCode())
 		info := npool.GetReviewRulesByDomainResponse{}
@@ -89,7 +89,7 @@ func TestCreateReviewRule(t *testing.T) { //nolint
 		SetBody(npool.GetReviewRuleRequest{
 			ID: reviewrule.ID,
 		}).
-		Post("http://localhost:35759/v1/get/review/rule")
+		Post("http://localhost:50050/v1/get/review/rule")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp.StatusCode())
 		info := npool.GetReviewRuleResponse{}
