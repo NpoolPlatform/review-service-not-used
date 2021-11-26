@@ -15,7 +15,7 @@ spec:
     - host: api.npool.top
       http:
         paths:
-          - path: /review-service
+          - path: /api/review-service
             backend:
               serviceName: review-service
               servicePort: 50050
@@ -39,7 +39,7 @@ spec:
     - host: api.xpool.top
       http:
         paths:
-          - path: /review-service
+          - path: /api/review-service
             backend:
               serviceName: review-service
               servicePort: 50050
@@ -54,4 +54,4 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /review-service
+      - /api/review-service
