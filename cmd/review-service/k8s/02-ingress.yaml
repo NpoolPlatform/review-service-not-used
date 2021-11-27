@@ -1,11 +1,11 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: review-service-npool-top-ingress
+  name: review-service-ingress
   namespace: kube-system
   annotations:
-    k8s.kuboard.cn/displayName: review-service-npool
-    k8s.kuboard.cn/workload: review-service-npool
+    k8s.kuboard.cn/displayName: review-service
+    k8s.kuboard.cn/workload: review-service
     kubernetes.io/ingress.class: "traefik-internet"
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
     traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-review-service-prefix@kubernetescrd,kube-system-common-headers@kubernetescrd
