@@ -51,11 +51,38 @@ pipeline {
 
     stage('Switch to current cluster') {
       when {
-        expression { BUILD_TARGET == 'true' }
-        expression { DEPLOY_TARGET == 'true' }
+        anyOf {
+          expression { BUILD_TARGET == 'true' }
+          expression { DEPLOY_TARGET == 'true' }
+        }
       }
       steps {
         sh 'cd /etc/kubeasz; ./ezctl checkout $TARGET_ENV'
+      }
+    }
+
+    stage('Config target') {
+      when {
+        expression { DEPLOY_TARGET == 'true' }
+      }
+      steps {
+        sh 'rm .apollo-base-config -rf'
+        sh 'git clone https://github.com/NpoolPlatform/apollo-base-config.git .apollo-base-config'
+        sh (returnStdout: false, script: '''
+          PASSWORD=`kubectl get secret --namespace "kube-system" mysql-password-secret -o jsonpath="{.data.rootpassword}" | base64 --decode`
+          kubectl exec --namespace kube-system mysql-0 -- mysql -h 127.0.0.1 -uroot -p$PASSWORD -P3306 -e "create database if not exists reviews;"
+
+          username=`helm status rabbitmq --namespace kube-system | grep Username | awk -F ' : ' '{print $2}' | sed 's/"//g'`
+          for vhost in `cat cmd/*/*.viper.yaml | grep hostname | awk '{print $2}' | sed 's/"//g' | sed 's/\\./-/g'`; do
+            kubectl exec --namespace kube-system rabbitmq-0 -- rabbitmqctl add_vhost $vhost
+            kubectl exec --namespace kube-system rabbitmq-0 -- rabbitmqctl set_permissions -p $vhost $username ".*" ".*" ".*"
+
+            cd .apollo-base-config
+            ./apollo-base-config.sh $APP_ID $TARGET_ENV $vhost
+            ./apollo-item-config.sh $APP_ID $TARGET_ENV $vhost database_name reviews
+            cd -
+          done
+        '''.stripIndent())
       }
     }
 
@@ -64,29 +91,13 @@ pipeline {
         expression { BUILD_TARGET == 'true' }
       }
       steps {
-        sh 'rm .apollo-base-config -rf'
-        sh 'git clone https://github.com/NpoolPlatform/apollo-base-config.git .apollo-base-config'
         sh (returnStdout: false, script: '''
           devboxpod=`kubectl get pods -A | grep development-box | awk '{print $2}'`
           servicename="review-service"
 
-          PASSWORD=`kubectl get secret --namespace "kube-system" mysql-password-secret -o jsonpath="{.data.rootpassword}" | base64 --decode`
-          kubectl -n kube-system exec mysql-0 -- mysql -h 127.0.0.1 -uroot -p$PASSWORD -P3306 -e "create database if not exists reviews;"
-
           kubectl exec --namespace kube-system $devboxpod -- make -C /tmp/$servicename after-test || true
           kubectl exec --namespace kube-system $devboxpod -- rm -rf /tmp/$servicename || true
           kubectl cp ./ kube-system/$devboxpod:/tmp/$servicename
-
-          username=`helm status rabbitmq --namespace kube-system | grep Username | awk -F ' : ' '{print $2}' | sed 's/"//g'`
-          for vhost in `cat cmd/*/*.viper.yaml | grep hostname | awk '{print $2}' | sed 's/"//g' | sed 's/\\./-/g'`; do
-            kubectl exec -it --namespace kube-system rabbitmq-0 -- rabbitmqctl add_vhost $vhost
-            kubectl exec -it --namespace kube-system rabbitmq-0 -- rabbitmqctl set_permissions -p $vhost $username ".*" ".*" ".*"
-
-            cd .apollo-base-config
-            ./apollo-base-config.sh $APP_ID $TARGET_ENV $vhost
-            ./apollo-item-config.sh $APP_ID $TARGET_ENV $vhost database_name reviews
-            cd -
-          done
 
           kubectl exec --namespace kube-system $devboxpod -- make -C /tmp/$servicename deps before-test test after-test
           kubectl exec --namespace kube-system $devboxpod -- rm -rf /tmp/$servicename
@@ -135,6 +146,7 @@ pipeline {
                 ;;
               production)
                 patch=$(( $patch + 1 ))
+                git reset --hard
                 git checkout $tag
                 ;;
             esac
@@ -227,6 +239,7 @@ pipeline {
         sh(returnStdout: true, script: '''
           revlist=`git rev-list --tags --max-count=1`
           tag=`git describe --tags $revlist`
+          git reset --hard
           git checkout $tag
 
           images=`docker images | grep entropypool | grep review-service | grep $tag | awk '{ print $3 }'`
@@ -276,6 +289,7 @@ pipeline {
           revlist=`git rev-list --tags --max-count=1`
           tag=`git describe --tags $revlist`
 
+          git reset --hard
           git checkout $tag
           sed -i "s/review-service:latest/review-service:$tag/g" cmd/review-service/k8s/01-review-service.yaml
           TAG=$tag make deploy-to-k8s-cluster
@@ -299,32 +313,10 @@ pipeline {
           patch=$(( $patch - $patch % 2 ))
           tag=$major.$minor.$patch
 
+          git reset --hard
           git checkout $tag
           sed -i "s/review-service:latest/review-service:$tag/g" cmd/review-service/k8s/01-review-service.yaml
           TAG=$tag make deploy-to-k8s-cluster
-        '''.stripIndent())
-      }
-    }
-
-
-    stage('Config target') {
-      when {
-        expression { DEPLOY_TARGET == 'true' }
-      }
-      steps {
-        sh 'rm .apollo-base-config -rf'
-        sh 'git clone https://github.com/NpoolPlatform/apollo-base-config.git .apollo-base-config'
-        sh (returnStdout: false, script: '''
-          PASSWORD=`kubectl get secret --namespace "kube-system" mysql-password-secret -o jsonpath="{.data.rootpassword}" | base64 --decode`
-          kubectl -n kube-system exec mysql-0 -- mysql -h 127.0.0.1 -uroot -p$PASSWORD -P3306 -e "create database if not exists reviews;"
-          username=`helm status rabbitmq --namespace kube-system | grep Username | awk -F ' : ' '{print $2}' | sed 's/"//g'`
-          for vhost in `cat cmd/*/*.viper.yaml | grep hostname | awk '{print $2}' | sed 's/"//g' | sed 's/\\./-/g'`; do
-            kubectl exec -it --namespace kube-system rabbitmq-0 -- rabbitmqctl add_vhost $vhost
-            kubectl exec -it --namespace kube-system rabbitmq-0 -- rabbitmqctl set_permissions -p $vhost $username ".*" ".*" ".*"
-            cd .apollo-base-config
-            ./apollo-base-config.sh $APP_ID $TARGET_ENV $vhost
-            ./apollo-item-config.sh $APP_ID $TARGET_ENV $vhost database_name reviews
-          done
         '''.stripIndent())
       }
     }
