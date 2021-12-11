@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: review-service
-        image: entropypool/review-service:latest
+        image: uhub.service.ucloud.cn/entropypool/review-service:latest
         imagePullPolicy: Always
         env:
         - name: ENV_ENVIRONMENT_TARGET
