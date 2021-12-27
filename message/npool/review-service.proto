@@ -35,6 +35,12 @@ service ReviewService {
             body: "*"
         };
     }
+    rpc SubmitReview(SubmitReviewRequest) returns (SubmitReviewResponse) {
+        option (google.api.http) = {
+            post: "/v1/submit/review"
+            body: "*"
+        };
+    }
 
     rpc CreateReviewRule(CreateReviewRuleRequest) returns (CreateReviewRuleResponse) {
         option (google.api.http) = {
@@ -99,6 +105,14 @@ message GetReviewsByDomainRequest {
 
 message GetReviewsByDomainResponse {
     repeated Review Infos = 800;
+}
+
+message SubmitReviewRequest {
+    Review Info = 10;
+}
+
+message SubmitReviewResponse {
+    Review Info = 10;
 }
 
 message ReviewRule {

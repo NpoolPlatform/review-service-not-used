@@ -16,6 +16,8 @@
     - [GetReviewsByDomainResponse](#review.service.v1.GetReviewsByDomainResponse)
     - [Review](#review.service.v1.Review)
     - [ReviewRule](#review.service.v1.ReviewRule)
+    - [SubmitReviewRequest](#review.service.v1.SubmitReviewRequest)
+    - [SubmitReviewResponse](#review.service.v1.SubmitReviewResponse)
     - [UpdateReviewRequest](#review.service.v1.UpdateReviewRequest)
     - [UpdateReviewResponse](#review.service.v1.UpdateReviewResponse)
     - [UpdateReviewRuleRequest](#review.service.v1.UpdateReviewRuleRequest)
@@ -224,6 +226,36 @@
 
 
 
+<a name="review.service.v1.SubmitReviewRequest"></a>
+
+### SubmitReviewRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [Review](#review.service.v1.Review) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.SubmitReviewResponse"></a>
+
+### SubmitReviewResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [Review](#review.service.v1.Review) |  |  |
+
+
+
+
+
+
 <a name="review.service.v1.UpdateReviewRequest"></a>
 
 ### UpdateReviewRequest
@@ -316,6 +348,7 @@ Service Name
 | CreateReview | [CreateReviewRequest](#review.service.v1.CreateReviewRequest) | [CreateReviewResponse](#review.service.v1.CreateReviewResponse) |  |
 | UpdateReview | [UpdateReviewRequest](#review.service.v1.UpdateReviewRequest) | [UpdateReviewResponse](#review.service.v1.UpdateReviewResponse) |  |
 | GetReviewsByDomain | [GetReviewsByDomainRequest](#review.service.v1.GetReviewsByDomainRequest) | [GetReviewsByDomainResponse](#review.service.v1.GetReviewsByDomainResponse) |  |
+| SubmitReview | [SubmitReviewRequest](#review.service.v1.SubmitReviewRequest) | [SubmitReviewResponse](#review.service.v1.SubmitReviewResponse) |  |
 | CreateReviewRule | [CreateReviewRuleRequest](#review.service.v1.CreateReviewRuleRequest) | [CreateReviewRuleResponse](#review.service.v1.CreateReviewRuleResponse) |  |
 | UpdateReviewRule | [UpdateReviewRuleRequest](#review.service.v1.UpdateReviewRuleRequest) | [UpdateReviewRuleResponse](#review.service.v1.UpdateReviewRuleResponse) |  |
 | GetReviewRule | [GetReviewRuleRequest](#review.service.v1.GetReviewRuleRequest) | [GetReviewRuleResponse](#review.service.v1.GetReviewRuleResponse) |  |
