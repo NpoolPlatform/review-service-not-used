@@ -63,7 +63,10 @@ pipeline {
 
     stage('Config target') {
       when {
-        expression { DEPLOY_TARGET == 'true' }
+        anyOf {
+          expression { BUILD_TARGET == 'true' }
+          expression { DEPLOY_TARGET == 'true' }
+        }
       }
       steps {
         sh 'rm .apollo-base-config -rf'
@@ -130,11 +133,9 @@ pipeline {
           set -e
           if [ 0 -eq $rc ]; then
             tag=`git describe --tags $revlist`
-
             major=`echo $tag | awk -F '.' '{ print $1 }'`
             minor=`echo $tag | awk -F '.' '{ print $2 }'`
             patch=`echo $tag | awk -F '.' '{ print $3 }'`
-
             case $TAG_FOR in
               testing)
                 patch=$(( $patch + $patch % 2 + 1 ))
@@ -145,7 +146,6 @@ pipeline {
                 git checkout $tag
                 ;;
             esac
-
             tag=$major.$minor.$patch
           else
             tag=0.1.1
@@ -171,14 +171,11 @@ pipeline {
           set -e
           if [ 0 -eq $rc ]; then
             tag=`git describe --tags $revlist`
-
             major=`echo $tag | awk -F '.' '{ print $1 }'`
             minor=`echo $tag | awk -F '.' '{ print $2 }'`
             patch=`echo $tag | awk -F '.' '{ print $3 }'`
-
             minor=$(( $minor + 1 ))
             patch=1
-
             tag=$major.$minor.$patch
           else
             tag=0.1.1
@@ -204,15 +201,12 @@ pipeline {
           set -e
           if [ 0 -eq $rc ]; then
             tag=`git describe --tags $revlist`
-
             major=`echo $tag | awk -F '.' '{ print $1 }'`
             minor=`echo $tag | awk -F '.' '{ print $2 }'`
             patch=`echo $tag | awk -F '.' '{ print $3 }'`
-
             major=$(( $major + 1 ))
             minor=0
             patch=1
-
             tag=$major.$minor.$patch
           else
             tag=0.1.1
@@ -324,7 +318,6 @@ pipeline {
         sh(returnStdout: true, script: '''
           revlist=`git rev-list --tags --max-count=1`
           tag=`git describe --tags $revlist`
-
           git reset --hard
           git checkout $tag
           sed -i "s/review-service:latest/review-service:$tag/g" cmd/review-service/k8s/01-review-service.yaml
@@ -343,13 +336,11 @@ pipeline {
         sh(returnStdout: true, script: '''
           revlist=`git rev-list --tags --max-count=1`
           tag=`git describe --tags $revlist`
-
           major=`echo $tag | awk -F '.' '{ print $1 }'`
           minor=`echo $tag | awk -F '.' '{ print $2 }'`
           patch=`echo $tag | awk -F '.' '{ print $3 }'`
           patch=$(( $patch - $patch % 2 ))
           tag=$major.$minor.$patch
-
           git reset --hard
           git checkout $tag
           sed -i "s/review-service:latest/review-service:$tag/g" cmd/review-service/k8s/01-review-service.yaml
