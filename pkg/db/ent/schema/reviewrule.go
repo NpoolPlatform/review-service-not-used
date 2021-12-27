@@ -21,7 +21,7 @@ func (ReviewRule) Fields() []ent.Field {
 		field.UUID("id", uuid.UUID{}).
 			Default(uuid.New).
 			Unique(),
-		field.String("entity_type"),
+		field.String("object_type"),
 		field.String("domain"),
 		field.String("rules").
 			Default("{}"),
@@ -51,7 +51,7 @@ func (ReviewRule) Edges() []ent.Edge {
 // Indexs of the ReviewRule.
 func (ReviewRule) Indexs() []ent.Index {
 	return []ent.Index{
-		index.Fields("domain", "entity_type").
+		index.Fields("domain", "object_type").
 			Unique(),
 	}
 }

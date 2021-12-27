@@ -69,7 +69,7 @@ message VersionResponse {
 
 message Review {
     string ID = 200;
-    string EntityType = 201;
+    string ObjectType = 201;
     string ReviewerID = 202;
     string State = 203;
     string Message = 204;
@@ -103,7 +103,7 @@ message GetReviewsByDomainResponse {
 
 message ReviewRule {
     string ID = 900;
-    string EntityType = 901;
+    string ObjectType = 901;
     string Domain = 902;
     string Rules = 903;
 }

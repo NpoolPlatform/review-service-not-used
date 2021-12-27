@@ -34,7 +34,7 @@ type ReviewMutation struct {
 	op            Op
 	typ           string
 	id            *uuid.UUID
-	entity_type   *string
+	object_type   *string
 	domain        *string
 	object_id     *uuid.UUID
 	reviewer_id   *uuid.UUID
@@ -137,40 +137,40 @@ func (m *ReviewMutation) ID() (id uuid.UUID, exists bool) {
 	return *m.id, true
 }
 
-// SetEntityType sets the "entity_type" field.
-func (m *ReviewMutation) SetEntityType(s string) {
-	m.entity_type = &s
+// SetObjectType sets the "object_type" field.
+func (m *ReviewMutation) SetObjectType(s string) {
+	m.object_type = &s
 }
 
-// EntityType returns the value of the "entity_type" field in the mutation.
-func (m *ReviewMutation) EntityType() (r string, exists bool) {
-	v := m.entity_type
+// ObjectType returns the value of the "object_type" field in the mutation.
+func (m *ReviewMutation) ObjectType() (r string, exists bool) {
+	v := m.object_type
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldEntityType returns the old "entity_type" field's value of the Review entity.
+// OldObjectType returns the old "object_type" field's value of the Review entity.
 // If the Review object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ReviewMutation) OldEntityType(ctx context.Context) (v string, err error) {
+func (m *ReviewMutation) OldObjectType(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldEntityType is only allowed on UpdateOne operations")
+		return v, fmt.Errorf("OldObjectType is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldEntityType requires an ID field in the mutation")
+		return v, fmt.Errorf("OldObjectType requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldEntityType: %w", err)
+		return v, fmt.Errorf("querying old value for OldObjectType: %w", err)
 	}
-	return oldValue.EntityType, nil
+	return oldValue.ObjectType, nil
 }
 
-// ResetEntityType resets all changes to the "entity_type" field.
-func (m *ReviewMutation) ResetEntityType() {
-	m.entity_type = nil
+// ResetObjectType resets all changes to the "object_type" field.
+func (m *ReviewMutation) ResetObjectType() {
+	m.object_type = nil
 }
 
 // SetDomain sets the "domain" field.
@@ -541,8 +541,8 @@ func (m *ReviewMutation) Type() string {
 // AddedFields().
 func (m *ReviewMutation) Fields() []string {
 	fields := make([]string, 0, 9)
-	if m.entity_type != nil {
-		fields = append(fields, review.FieldEntityType)
+	if m.object_type != nil {
+		fields = append(fields, review.FieldObjectType)
 	}
 	if m.domain != nil {
 		fields = append(fields, review.FieldDomain)
@@ -576,8 +576,8 @@ func (m *ReviewMutation) Fields() []string {
 // schema.
 func (m *ReviewMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case review.FieldEntityType:
-		return m.EntityType()
+	case review.FieldObjectType:
+		return m.ObjectType()
 	case review.FieldDomain:
 		return m.Domain()
 	case review.FieldObjectID:
@@ -603,8 +603,8 @@ func (m *ReviewMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *ReviewMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case review.FieldEntityType:
-		return m.OldEntityType(ctx)
+	case review.FieldObjectType:
+		return m.OldObjectType(ctx)
 	case review.FieldDomain:
 		return m.OldDomain(ctx)
 	case review.FieldObjectID:
@@ -630,12 +630,12 @@ func (m *ReviewMutation) OldField(ctx context.Context, name string) (ent.Value, 
 // type.
 func (m *ReviewMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case review.FieldEntityType:
+	case review.FieldObjectType:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetEntityType(v)
+		m.SetObjectType(v)
 		return nil
 	case review.FieldDomain:
 		v, ok := value.(string)
@@ -781,8 +781,8 @@ func (m *ReviewMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *ReviewMutation) ResetField(name string) error {
 	switch name {
-	case review.FieldEntityType:
-		m.ResetEntityType()
+	case review.FieldObjectType:
+		m.ResetObjectType()
 		return nil
 	case review.FieldDomain:
 		m.ResetDomain()
@@ -866,7 +866,7 @@ type ReviewRuleMutation struct {
 	op            Op
 	typ           string
 	id            *uuid.UUID
-	entity_type   *string
+	object_type   *string
 	domain        *string
 	rules         *string
 	create_at     *uint32
@@ -966,40 +966,40 @@ func (m *ReviewRuleMutation) ID() (id uuid.UUID, exists bool) {
 	return *m.id, true
 }
 
-// SetEntityType sets the "entity_type" field.
-func (m *ReviewRuleMutation) SetEntityType(s string) {
-	m.entity_type = &s
+// SetObjectType sets the "object_type" field.
+func (m *ReviewRuleMutation) SetObjectType(s string) {
+	m.object_type = &s
 }
 
-// EntityType returns the value of the "entity_type" field in the mutation.
-func (m *ReviewRuleMutation) EntityType() (r string, exists bool) {
-	v := m.entity_type
+// ObjectType returns the value of the "object_type" field in the mutation.
+func (m *ReviewRuleMutation) ObjectType() (r string, exists bool) {
+	v := m.object_type
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldEntityType returns the old "entity_type" field's value of the ReviewRule entity.
+// OldObjectType returns the old "object_type" field's value of the ReviewRule entity.
 // If the ReviewRule object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ReviewRuleMutation) OldEntityType(ctx context.Context) (v string, err error) {
+func (m *ReviewRuleMutation) OldObjectType(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldEntityType is only allowed on UpdateOne operations")
+		return v, fmt.Errorf("OldObjectType is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldEntityType requires an ID field in the mutation")
+		return v, fmt.Errorf("OldObjectType requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldEntityType: %w", err)
+		return v, fmt.Errorf("querying old value for OldObjectType: %w", err)
 	}
-	return oldValue.EntityType, nil
+	return oldValue.ObjectType, nil
 }
 
-// ResetEntityType resets all changes to the "entity_type" field.
-func (m *ReviewRuleMutation) ResetEntityType() {
-	m.entity_type = nil
+// ResetObjectType resets all changes to the "object_type" field.
+func (m *ReviewRuleMutation) ResetObjectType() {
+	m.object_type = nil
 }
 
 // SetDomain sets the "domain" field.
@@ -1262,8 +1262,8 @@ func (m *ReviewRuleMutation) Type() string {
 // AddedFields().
 func (m *ReviewRuleMutation) Fields() []string {
 	fields := make([]string, 0, 6)
-	if m.entity_type != nil {
-		fields = append(fields, reviewrule.FieldEntityType)
+	if m.object_type != nil {
+		fields = append(fields, reviewrule.FieldObjectType)
 	}
 	if m.domain != nil {
 		fields = append(fields, reviewrule.FieldDomain)
@@ -1288,8 +1288,8 @@ func (m *ReviewRuleMutation) Fields() []string {
 // schema.
 func (m *ReviewRuleMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case reviewrule.FieldEntityType:
-		return m.EntityType()
+	case reviewrule.FieldObjectType:
+		return m.ObjectType()
 	case reviewrule.FieldDomain:
 		return m.Domain()
 	case reviewrule.FieldRules:
@@ -1309,8 +1309,8 @@ func (m *ReviewRuleMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *ReviewRuleMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case reviewrule.FieldEntityType:
-		return m.OldEntityType(ctx)
+	case reviewrule.FieldObjectType:
+		return m.OldObjectType(ctx)
 	case reviewrule.FieldDomain:
 		return m.OldDomain(ctx)
 	case reviewrule.FieldRules:
@@ -1330,12 +1330,12 @@ func (m *ReviewRuleMutation) OldField(ctx context.Context, name string) (ent.Val
 // type.
 func (m *ReviewRuleMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case reviewrule.FieldEntityType:
+	case reviewrule.FieldObjectType:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetEntityType(v)
+		m.SetObjectType(v)
 		return nil
 	case reviewrule.FieldDomain:
 		v, ok := value.(string)
@@ -1460,8 +1460,8 @@ func (m *ReviewRuleMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *ReviewRuleMutation) ResetField(name string) error {
 	switch name {
-	case reviewrule.FieldEntityType:
-		m.ResetEntityType()
+	case reviewrule.FieldObjectType:
+		m.ResetObjectType()
 		return nil
 	case reviewrule.FieldDomain:
 		m.ResetDomain()

@@ -23,9 +23,9 @@ type ReviewCreate struct {
 	conflict []sql.ConflictOption
 }
 
-// SetEntityType sets the "entity_type" field.
-func (rc *ReviewCreate) SetEntityType(s string) *ReviewCreate {
-	rc.mutation.SetEntityType(s)
+// SetObjectType sets the "object_type" field.
+func (rc *ReviewCreate) SetObjectType(s string) *ReviewCreate {
+	rc.mutation.SetObjectType(s)
 	return rc
 }
 
@@ -198,8 +198,8 @@ func (rc *ReviewCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (rc *ReviewCreate) check() error {
-	if _, ok := rc.mutation.EntityType(); !ok {
-		return &ValidationError{Name: "entity_type", err: errors.New(`ent: missing required field "entity_type"`)}
+	if _, ok := rc.mutation.ObjectType(); !ok {
+		return &ValidationError{Name: "object_type", err: errors.New(`ent: missing required field "object_type"`)}
 	}
 	if _, ok := rc.mutation.Domain(); !ok {
 		return &ValidationError{Name: "domain", err: errors.New(`ent: missing required field "domain"`)}
@@ -263,13 +263,13 @@ func (rc *ReviewCreate) createSpec() (*Review, *sqlgraph.CreateSpec) {
 		_node.ID = id
 		_spec.ID.Value = id
 	}
-	if value, ok := rc.mutation.EntityType(); ok {
+	if value, ok := rc.mutation.ObjectType(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: review.FieldEntityType,
+			Column: review.FieldObjectType,
 		})
-		_node.EntityType = value
+		_node.ObjectType = value
 	}
 	if value, ok := rc.mutation.Domain(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -342,7 +342,7 @@ func (rc *ReviewCreate) createSpec() (*Review, *sqlgraph.CreateSpec) {
 // of the `INSERT` statement. For example:
 //
 //	client.Review.Create().
-//		SetEntityType(v).
+//		SetObjectType(v).
 //		OnConflict(
 //			// Update the row with the new values
 //			// the was proposed for insertion.
@@ -351,7 +351,7 @@ func (rc *ReviewCreate) createSpec() (*Review, *sqlgraph.CreateSpec) {
 //		// Override some of the fields with custom
 //		// update values.
 //		Update(func(u *ent.ReviewUpsert) {
-//			SetEntityType(v+v).
+//			SetObjectType(v+v).
 //		}).
 //		Exec(ctx)
 //
@@ -389,15 +389,15 @@ type (
 	}
 )
 
-// SetEntityType sets the "entity_type" field.
-func (u *ReviewUpsert) SetEntityType(v string) *ReviewUpsert {
-	u.Set(review.FieldEntityType, v)
+// SetObjectType sets the "object_type" field.
+func (u *ReviewUpsert) SetObjectType(v string) *ReviewUpsert {
+	u.Set(review.FieldObjectType, v)
 	return u
 }
 
-// UpdateEntityType sets the "entity_type" field to the value that was provided on create.
-func (u *ReviewUpsert) UpdateEntityType() *ReviewUpsert {
-	u.SetExcluded(review.FieldEntityType)
+// UpdateObjectType sets the "object_type" field to the value that was provided on create.
+func (u *ReviewUpsert) UpdateObjectType() *ReviewUpsert {
+	u.SetExcluded(review.FieldObjectType)
 	return u
 }
 
@@ -547,17 +547,17 @@ func (u *ReviewUpsertOne) Update(set func(*ReviewUpsert)) *ReviewUpsertOne {
 	return u
 }
 
-// SetEntityType sets the "entity_type" field.
-func (u *ReviewUpsertOne) SetEntityType(v string) *ReviewUpsertOne {
+// SetObjectType sets the "object_type" field.
+func (u *ReviewUpsertOne) SetObjectType(v string) *ReviewUpsertOne {
 	return u.Update(func(s *ReviewUpsert) {
-		s.SetEntityType(v)
+		s.SetObjectType(v)
 	})
 }
 
-// UpdateEntityType sets the "entity_type" field to the value that was provided on create.
-func (u *ReviewUpsertOne) UpdateEntityType() *ReviewUpsertOne {
+// UpdateObjectType sets the "object_type" field to the value that was provided on create.
+func (u *ReviewUpsertOne) UpdateObjectType() *ReviewUpsertOne {
 	return u.Update(func(s *ReviewUpsert) {
-		s.UpdateEntityType()
+		s.UpdateObjectType()
 	})
 }
 
@@ -805,7 +805,7 @@ func (rcb *ReviewCreateBulk) ExecX(ctx context.Context) {
 //		// Override some of the fields with custom
 //		// update values.
 //		Update(func(u *ent.ReviewUpsert) {
-//			SetEntityType(v+v).
+//			SetObjectType(v+v).
 //		}).
 //		Exec(ctx)
 //
@@ -889,17 +889,17 @@ func (u *ReviewUpsertBulk) Update(set func(*ReviewUpsert)) *ReviewUpsertBulk {
 	return u
 }
 
-// SetEntityType sets the "entity_type" field.
-func (u *ReviewUpsertBulk) SetEntityType(v string) *ReviewUpsertBulk {
+// SetObjectType sets the "object_type" field.
+func (u *ReviewUpsertBulk) SetObjectType(v string) *ReviewUpsertBulk {
 	return u.Update(func(s *ReviewUpsert) {
-		s.SetEntityType(v)
+		s.SetObjectType(v)
 	})
 }
 
-// UpdateEntityType sets the "entity_type" field to the value that was provided on create.
-func (u *ReviewUpsertBulk) UpdateEntityType() *ReviewUpsertBulk {
+// UpdateObjectType sets the "object_type" field to the value that was provided on create.
+func (u *ReviewUpsertBulk) UpdateObjectType() *ReviewUpsertBulk {
 	return u.Update(func(s *ReviewUpsert) {
-		s.UpdateEntityType()
+		s.UpdateObjectType()
 	})
 }
 

@@ -16,8 +16,8 @@ type Review struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID uuid.UUID `json:"id,omitempty"`
-	// EntityType holds the value of the "entity_type" field.
-	EntityType string `json:"entity_type,omitempty"`
+	// ObjectType holds the value of the "object_type" field.
+	ObjectType string `json:"object_type,omitempty"`
 	// Domain holds the value of the "domain" field.
 	Domain string `json:"domain,omitempty"`
 	// ObjectID holds the value of the "object_id" field.
@@ -43,7 +43,7 @@ func (*Review) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case review.FieldCreateAt, review.FieldUpdateAt, review.FieldDeleteAt:
 			values[i] = new(sql.NullInt64)
-		case review.FieldEntityType, review.FieldDomain, review.FieldState, review.FieldMessage:
+		case review.FieldObjectType, review.FieldDomain, review.FieldState, review.FieldMessage:
 			values[i] = new(sql.NullString)
 		case review.FieldID, review.FieldObjectID, review.FieldReviewerID:
 			values[i] = new(uuid.UUID)
@@ -68,11 +68,11 @@ func (r *Review) assignValues(columns []string, values []interface{}) error {
 			} else if value != nil {
 				r.ID = *value
 			}
-		case review.FieldEntityType:
+		case review.FieldObjectType:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field entity_type", values[i])
+				return fmt.Errorf("unexpected type %T for field object_type", values[i])
 			} else if value.Valid {
-				r.EntityType = value.String
+				r.ObjectType = value.String
 			}
 		case review.FieldDomain:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -150,8 +150,8 @@ func (r *Review) String() string {
 	var builder strings.Builder
 	builder.WriteString("Review(")
 	builder.WriteString(fmt.Sprintf("id=%v", r.ID))
-	builder.WriteString(", entity_type=")
-	builder.WriteString(r.EntityType)
+	builder.WriteString(", object_type=")
+	builder.WriteString(r.ObjectType)
 	builder.WriteString(", domain=")
 	builder.WriteString(r.Domain)
 	builder.WriteString(", object_id=")

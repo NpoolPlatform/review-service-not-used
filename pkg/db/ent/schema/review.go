@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// Review holds the schema definition for the Review entity.
+// Review holds the schema definition for the Review object.
 type Review struct {
 	ent.Schema
 }
@@ -21,7 +21,7 @@ func (Review) Fields() []ent.Field {
 		field.UUID("id", uuid.UUID{}).
 			Default(uuid.New).
 			Unique(),
-		field.String("entity_type"),
+		field.String("object_type"),
 		field.String("domain"),
 		field.UUID("object_id", uuid.UUID{}),
 		field.UUID("reviewer_id", uuid.UUID{}),
@@ -54,7 +54,7 @@ func (Review) Edges() []ent.Edge {
 // Indexs of the Review.
 func (Review) Indexs() []ent.Index {
 	return []ent.Index{
-		index.Fields("domain", "entity_type", "object_id").
+		index.Fields("domain", "object_type", "object_id").
 			Unique(),
 	}
 }

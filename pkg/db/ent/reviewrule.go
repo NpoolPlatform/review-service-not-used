@@ -16,8 +16,8 @@ type ReviewRule struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID uuid.UUID `json:"id,omitempty"`
-	// EntityType holds the value of the "entity_type" field.
-	EntityType string `json:"entity_type,omitempty"`
+	// ObjectType holds the value of the "object_type" field.
+	ObjectType string `json:"object_type,omitempty"`
 	// Domain holds the value of the "domain" field.
 	Domain string `json:"domain,omitempty"`
 	// Rules holds the value of the "rules" field.
@@ -37,7 +37,7 @@ func (*ReviewRule) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case reviewrule.FieldCreateAt, reviewrule.FieldUpdateAt, reviewrule.FieldDeleteAt:
 			values[i] = new(sql.NullInt64)
-		case reviewrule.FieldEntityType, reviewrule.FieldDomain, reviewrule.FieldRules:
+		case reviewrule.FieldObjectType, reviewrule.FieldDomain, reviewrule.FieldRules:
 			values[i] = new(sql.NullString)
 		case reviewrule.FieldID:
 			values[i] = new(uuid.UUID)
@@ -62,11 +62,11 @@ func (rr *ReviewRule) assignValues(columns []string, values []interface{}) error
 			} else if value != nil {
 				rr.ID = *value
 			}
-		case reviewrule.FieldEntityType:
+		case reviewrule.FieldObjectType:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field entity_type", values[i])
+				return fmt.Errorf("unexpected type %T for field object_type", values[i])
 			} else if value.Valid {
-				rr.EntityType = value.String
+				rr.ObjectType = value.String
 			}
 		case reviewrule.FieldDomain:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -126,8 +126,8 @@ func (rr *ReviewRule) String() string {
 	var builder strings.Builder
 	builder.WriteString("ReviewRule(")
 	builder.WriteString(fmt.Sprintf("id=%v", rr.ID))
-	builder.WriteString(", entity_type=")
-	builder.WriteString(rr.EntityType)
+	builder.WriteString(", object_type=")
+	builder.WriteString(rr.ObjectType)
 	builder.WriteString(", domain=")
 	builder.WriteString(rr.Domain)
 	builder.WriteString(", rules=")

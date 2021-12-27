@@ -194,7 +194,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | ID | [string](#string) |  |  |
-| EntityType | [string](#string) |  |  |
+| ObjectType | [string](#string) |  |  |
 | ReviewerID | [string](#string) |  |  |
 | State | [string](#string) |  |  |
 | Message | [string](#string) |  |  |
@@ -215,7 +215,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | ID | [string](#string) |  |  |
-| EntityType | [string](#string) |  |  |
+| ObjectType | [string](#string) |  |  |
 | Domain | [string](#string) |  |  |
 | Rules | [string](#string) |  |  |
 

@@ -13,8 +13,8 @@ const (
 	Label = "review"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldEntityType holds the string denoting the entity_type field in the database.
-	FieldEntityType = "entity_type"
+	// FieldObjectType holds the string denoting the object_type field in the database.
+	FieldObjectType = "object_type"
 	// FieldDomain holds the string denoting the domain field in the database.
 	FieldDomain = "domain"
 	// FieldObjectID holds the string denoting the object_id field in the database.
@@ -38,7 +38,7 @@ const (
 // Columns holds all SQL columns for review fields.
 var Columns = []string{
 	FieldID,
-	FieldEntityType,
+	FieldObjectType,
 	FieldDomain,
 	FieldObjectID,
 	FieldReviewerID,

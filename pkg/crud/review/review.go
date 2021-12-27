@@ -2,6 +2,7 @@ package review
 
 import (
 	"context"
+	"time"
 
 	"github.com/NpoolPlatform/review-service/message/npool"
 
@@ -14,6 +15,10 @@ import (
 	"golang.org/x/xerrors"
 )
 
+const (
+	dbTimeout = 5 * time.Second
+)
+
 func validateReview(info *npool.Review) error {
 	if _, err := uuid.Parse(info.GetObjectID()); err != nil {
 		return xerrors.Errorf("invalid object id: %v", err)
@@ -24,7 +29,7 @@ func validateReview(info *npool.Review) error {
 func dbRowToReview(row *ent.Review) *npool.Review {
 	return &npool.Review{
 		ID:         row.ID.String(),
-		EntityType: row.EntityType,
+		ObjectType: row.ObjectType,
 		ReviewerID: row.ReviewerID.String(),
 		State:      string(row.State),
 		Message:    row.Message,
@@ -38,10 +43,18 @@ func Create(ctx context.Context, in *npool.CreateReviewRequest) (*npool.CreateRe
 		return nil, xerrors.Errorf("invalid patameter: %v", err)
 	}
 
-	info, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	info, err := cli.
 		Review.
 		Create().
-		SetEntityType(in.GetInfo().GetEntityType()).
+		SetObjectType(in.GetInfo().GetObjectType()).
 		SetState("wait").
 		SetMessage("").
 		SetReviewerID(uuid.UUID{}).
@@ -68,7 +81,15 @@ func Update(ctx context.Context, in *npool.UpdateReviewRequest) (*npool.UpdateRe
 		return nil, xerrors.Errorf("invalid reviewer id: %v", err)
 	}
 
-	info, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	info, err := cli.
 		Review.
 		UpdateOneID(id).
 		SetState(review.State(in.GetInfo().GetState())).
@@ -85,7 +106,15 @@ func Update(ctx context.Context, in *npool.UpdateReviewRequest) (*npool.UpdateRe
 }
 
 func GetByDomain(ctx context.Context, in *npool.GetReviewsByDomainRequest) (*npool.GetReviewsByDomainResponse, error) {
-	infos, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	infos, err := cli.
 		Review.
 		Query().
 		Where(

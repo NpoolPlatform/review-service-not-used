@@ -254,12 +254,12 @@ func (rq *ReviewQuery) Clone() *ReviewQuery {
 // Example:
 //
 //	var v []struct {
-//		EntityType string `json:"entity_type,omitempty"`
+//		ObjectType string `json:"object_type,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Review.Query().
-//		GroupBy(review.FieldEntityType).
+//		GroupBy(review.FieldObjectType).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -281,11 +281,11 @@ func (rq *ReviewQuery) GroupBy(field string, fields ...string) *ReviewGroupBy {
 // Example:
 //
 //	var v []struct {
-//		EntityType string `json:"entity_type,omitempty"`
+//		ObjectType string `json:"object_type,omitempty"`
 //	}
 //
 //	client.Review.Query().
-//		Select(review.FieldEntityType).
+//		Select(review.FieldObjectType).
 //		Scan(ctx, &v)
 //
 func (rq *ReviewQuery) Select(fields ...string) *ReviewSelect {

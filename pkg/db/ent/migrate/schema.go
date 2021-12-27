@@ -11,7 +11,7 @@ var (
 	// ReviewsColumns holds the columns for the "reviews" table.
 	ReviewsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID, Unique: true},
-		{Name: "entity_type", Type: field.TypeString},
+		{Name: "object_type", Type: field.TypeString},
 		{Name: "domain", Type: field.TypeString},
 		{Name: "object_id", Type: field.TypeUUID},
 		{Name: "reviewer_id", Type: field.TypeUUID},
@@ -30,7 +30,7 @@ var (
 	// ReviewRulesColumns holds the columns for the "review_rules" table.
 	ReviewRulesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID, Unique: true},
-		{Name: "entity_type", Type: field.TypeString},
+		{Name: "object_type", Type: field.TypeString},
 		{Name: "domain", Type: field.TypeString},
 		{Name: "rules", Type: field.TypeString, Default: "{}"},
 		{Name: "create_at", Type: field.TypeUint32},

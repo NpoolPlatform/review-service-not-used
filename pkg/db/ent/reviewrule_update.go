@@ -26,9 +26,9 @@ func (rru *ReviewRuleUpdate) Where(ps ...predicate.ReviewRule) *ReviewRuleUpdate
 	return rru
 }
 
-// SetEntityType sets the "entity_type" field.
-func (rru *ReviewRuleUpdate) SetEntityType(s string) *ReviewRuleUpdate {
-	rru.mutation.SetEntityType(s)
+// SetObjectType sets the "object_type" field.
+func (rru *ReviewRuleUpdate) SetObjectType(s string) *ReviewRuleUpdate {
+	rru.mutation.SetObjectType(s)
 	return rru
 }
 
@@ -193,11 +193,11 @@ func (rru *ReviewRuleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := rru.mutation.EntityType(); ok {
+	if value, ok := rru.mutation.ObjectType(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: reviewrule.FieldEntityType,
+			Column: reviewrule.FieldObjectType,
 		})
 	}
 	if value, ok := rru.mutation.Domain(); ok {
@@ -275,9 +275,9 @@ type ReviewRuleUpdateOne struct {
 	mutation *ReviewRuleMutation
 }
 
-// SetEntityType sets the "entity_type" field.
-func (rruo *ReviewRuleUpdateOne) SetEntityType(s string) *ReviewRuleUpdateOne {
-	rruo.mutation.SetEntityType(s)
+// SetObjectType sets the "object_type" field.
+func (rruo *ReviewRuleUpdateOne) SetObjectType(s string) *ReviewRuleUpdateOne {
+	rruo.mutation.SetObjectType(s)
 	return rruo
 }
 
@@ -466,11 +466,11 @@ func (rruo *ReviewRuleUpdateOne) sqlSave(ctx context.Context) (_node *ReviewRule
 			}
 		}
 	}
-	if value, ok := rruo.mutation.EntityType(); ok {
+	if value, ok := rruo.mutation.ObjectType(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: reviewrule.FieldEntityType,
+			Column: reviewrule.FieldObjectType,
 		})
 	}
 	if value, ok := rruo.mutation.Domain(); ok {

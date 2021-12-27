@@ -23,9 +23,9 @@ type ReviewRuleCreate struct {
 	conflict []sql.ConflictOption
 }
 
-// SetEntityType sets the "entity_type" field.
-func (rrc *ReviewRuleCreate) SetEntityType(s string) *ReviewRuleCreate {
-	rrc.mutation.SetEntityType(s)
+// SetObjectType sets the "object_type" field.
+func (rrc *ReviewRuleCreate) SetObjectType(s string) *ReviewRuleCreate {
+	rrc.mutation.SetObjectType(s)
 	return rrc
 }
 
@@ -192,8 +192,8 @@ func (rrc *ReviewRuleCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (rrc *ReviewRuleCreate) check() error {
-	if _, ok := rrc.mutation.EntityType(); !ok {
-		return &ValidationError{Name: "entity_type", err: errors.New(`ent: missing required field "entity_type"`)}
+	if _, ok := rrc.mutation.ObjectType(); !ok {
+		return &ValidationError{Name: "object_type", err: errors.New(`ent: missing required field "object_type"`)}
 	}
 	if _, ok := rrc.mutation.Domain(); !ok {
 		return &ValidationError{Name: "domain", err: errors.New(`ent: missing required field "domain"`)}
@@ -243,13 +243,13 @@ func (rrc *ReviewRuleCreate) createSpec() (*ReviewRule, *sqlgraph.CreateSpec) {
 		_node.ID = id
 		_spec.ID.Value = id
 	}
-	if value, ok := rrc.mutation.EntityType(); ok {
+	if value, ok := rrc.mutation.ObjectType(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: reviewrule.FieldEntityType,
+			Column: reviewrule.FieldObjectType,
 		})
-		_node.EntityType = value
+		_node.ObjectType = value
 	}
 	if value, ok := rrc.mutation.Domain(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -298,7 +298,7 @@ func (rrc *ReviewRuleCreate) createSpec() (*ReviewRule, *sqlgraph.CreateSpec) {
 // of the `INSERT` statement. For example:
 //
 //	client.ReviewRule.Create().
-//		SetEntityType(v).
+//		SetObjectType(v).
 //		OnConflict(
 //			// Update the row with the new values
 //			// the was proposed for insertion.
@@ -307,7 +307,7 @@ func (rrc *ReviewRuleCreate) createSpec() (*ReviewRule, *sqlgraph.CreateSpec) {
 //		// Override some of the fields with custom
 //		// update values.
 //		Update(func(u *ent.ReviewRuleUpsert) {
-//			SetEntityType(v+v).
+//			SetObjectType(v+v).
 //		}).
 //		Exec(ctx)
 //
@@ -345,15 +345,15 @@ type (
 	}
 )
 
-// SetEntityType sets the "entity_type" field.
-func (u *ReviewRuleUpsert) SetEntityType(v string) *ReviewRuleUpsert {
-	u.Set(reviewrule.FieldEntityType, v)
+// SetObjectType sets the "object_type" field.
+func (u *ReviewRuleUpsert) SetObjectType(v string) *ReviewRuleUpsert {
+	u.Set(reviewrule.FieldObjectType, v)
 	return u
 }
 
-// UpdateEntityType sets the "entity_type" field to the value that was provided on create.
-func (u *ReviewRuleUpsert) UpdateEntityType() *ReviewRuleUpsert {
-	u.SetExcluded(reviewrule.FieldEntityType)
+// UpdateObjectType sets the "object_type" field to the value that was provided on create.
+func (u *ReviewRuleUpsert) UpdateObjectType() *ReviewRuleUpsert {
+	u.SetExcluded(reviewrule.FieldObjectType)
 	return u
 }
 
@@ -467,17 +467,17 @@ func (u *ReviewRuleUpsertOne) Update(set func(*ReviewRuleUpsert)) *ReviewRuleUps
 	return u
 }
 
-// SetEntityType sets the "entity_type" field.
-func (u *ReviewRuleUpsertOne) SetEntityType(v string) *ReviewRuleUpsertOne {
+// SetObjectType sets the "object_type" field.
+func (u *ReviewRuleUpsertOne) SetObjectType(v string) *ReviewRuleUpsertOne {
 	return u.Update(func(s *ReviewRuleUpsert) {
-		s.SetEntityType(v)
+		s.SetObjectType(v)
 	})
 }
 
-// UpdateEntityType sets the "entity_type" field to the value that was provided on create.
-func (u *ReviewRuleUpsertOne) UpdateEntityType() *ReviewRuleUpsertOne {
+// UpdateObjectType sets the "object_type" field to the value that was provided on create.
+func (u *ReviewRuleUpsertOne) UpdateObjectType() *ReviewRuleUpsertOne {
 	return u.Update(func(s *ReviewRuleUpsert) {
-		s.UpdateEntityType()
+		s.UpdateObjectType()
 	})
 }
 
@@ -683,7 +683,7 @@ func (rrcb *ReviewRuleCreateBulk) ExecX(ctx context.Context) {
 //		// Override some of the fields with custom
 //		// update values.
 //		Update(func(u *ent.ReviewRuleUpsert) {
-//			SetEntityType(v+v).
+//			SetObjectType(v+v).
 //		}).
 //		Exec(ctx)
 //
@@ -767,17 +767,17 @@ func (u *ReviewRuleUpsertBulk) Update(set func(*ReviewRuleUpsert)) *ReviewRuleUp
 	return u
 }
 
-// SetEntityType sets the "entity_type" field.
-func (u *ReviewRuleUpsertBulk) SetEntityType(v string) *ReviewRuleUpsertBulk {
+// SetObjectType sets the "object_type" field.
+func (u *ReviewRuleUpsertBulk) SetObjectType(v string) *ReviewRuleUpsertBulk {
 	return u.Update(func(s *ReviewRuleUpsert) {
-		s.SetEntityType(v)
+		s.SetObjectType(v)
 	})
 }
 
-// UpdateEntityType sets the "entity_type" field to the value that was provided on create.
-func (u *ReviewRuleUpsertBulk) UpdateEntityType() *ReviewRuleUpsertBulk {
+// UpdateObjectType sets the "object_type" field to the value that was provided on create.
+func (u *ReviewRuleUpsertBulk) UpdateObjectType() *ReviewRuleUpsertBulk {
 	return u.Update(func(s *ReviewRuleUpsert) {
-		s.UpdateEntityType()
+		s.UpdateObjectType()
 	})
 }
 

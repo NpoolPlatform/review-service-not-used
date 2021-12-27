@@ -91,10 +91,10 @@ func IDLTE(id uuid.UUID) predicate.Review {
 	})
 }
 
-// EntityType applies equality check predicate on the "entity_type" field. It's identical to EntityTypeEQ.
-func EntityType(v string) predicate.Review {
+// ObjectType applies equality check predicate on the "object_type" field. It's identical to ObjectTypeEQ.
+func ObjectType(v string) predicate.Review {
 	return predicate.Review(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldEntityType), v))
+		s.Where(sql.EQ(s.C(FieldObjectType), v))
 	})
 }
 
@@ -147,22 +147,22 @@ func DeleteAt(v uint32) predicate.Review {
 	})
 }
 
-// EntityTypeEQ applies the EQ predicate on the "entity_type" field.
-func EntityTypeEQ(v string) predicate.Review {
+// ObjectTypeEQ applies the EQ predicate on the "object_type" field.
+func ObjectTypeEQ(v string) predicate.Review {
 	return predicate.Review(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldEntityType), v))
+		s.Where(sql.EQ(s.C(FieldObjectType), v))
 	})
 }
 
-// EntityTypeNEQ applies the NEQ predicate on the "entity_type" field.
-func EntityTypeNEQ(v string) predicate.Review {
+// ObjectTypeNEQ applies the NEQ predicate on the "object_type" field.
+func ObjectTypeNEQ(v string) predicate.Review {
 	return predicate.Review(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldEntityType), v))
+		s.Where(sql.NEQ(s.C(FieldObjectType), v))
 	})
 }
 
-// EntityTypeIn applies the In predicate on the "entity_type" field.
-func EntityTypeIn(vs ...string) predicate.Review {
+// ObjectTypeIn applies the In predicate on the "object_type" field.
+func ObjectTypeIn(vs ...string) predicate.Review {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -174,12 +174,12 @@ func EntityTypeIn(vs ...string) predicate.Review {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldEntityType), v...))
+		s.Where(sql.In(s.C(FieldObjectType), v...))
 	})
 }
 
-// EntityTypeNotIn applies the NotIn predicate on the "entity_type" field.
-func EntityTypeNotIn(vs ...string) predicate.Review {
+// ObjectTypeNotIn applies the NotIn predicate on the "object_type" field.
+func ObjectTypeNotIn(vs ...string) predicate.Review {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -191,70 +191,70 @@ func EntityTypeNotIn(vs ...string) predicate.Review {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldEntityType), v...))
+		s.Where(sql.NotIn(s.C(FieldObjectType), v...))
 	})
 }
 
-// EntityTypeGT applies the GT predicate on the "entity_type" field.
-func EntityTypeGT(v string) predicate.Review {
+// ObjectTypeGT applies the GT predicate on the "object_type" field.
+func ObjectTypeGT(v string) predicate.Review {
 	return predicate.Review(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldEntityType), v))
+		s.Where(sql.GT(s.C(FieldObjectType), v))
 	})
 }
 
-// EntityTypeGTE applies the GTE predicate on the "entity_type" field.
-func EntityTypeGTE(v string) predicate.Review {
+// ObjectTypeGTE applies the GTE predicate on the "object_type" field.
+func ObjectTypeGTE(v string) predicate.Review {
 	return predicate.Review(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldEntityType), v))
+		s.Where(sql.GTE(s.C(FieldObjectType), v))
 	})
 }
 
-// EntityTypeLT applies the LT predicate on the "entity_type" field.
-func EntityTypeLT(v string) predicate.Review {
+// ObjectTypeLT applies the LT predicate on the "object_type" field.
+func ObjectTypeLT(v string) predicate.Review {
 	return predicate.Review(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldEntityType), v))
+		s.Where(sql.LT(s.C(FieldObjectType), v))
 	})
 }
 
-// EntityTypeLTE applies the LTE predicate on the "entity_type" field.
-func EntityTypeLTE(v string) predicate.Review {
+// ObjectTypeLTE applies the LTE predicate on the "object_type" field.
+func ObjectTypeLTE(v string) predicate.Review {
 	return predicate.Review(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldEntityType), v))
+		s.Where(sql.LTE(s.C(FieldObjectType), v))
 	})
 }
 
-// EntityTypeContains applies the Contains predicate on the "entity_type" field.
-func EntityTypeContains(v string) predicate.Review {
+// ObjectTypeContains applies the Contains predicate on the "object_type" field.
+func ObjectTypeContains(v string) predicate.Review {
 	return predicate.Review(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldEntityType), v))
+		s.Where(sql.Contains(s.C(FieldObjectType), v))
 	})
 }
 
-// EntityTypeHasPrefix applies the HasPrefix predicate on the "entity_type" field.
-func EntityTypeHasPrefix(v string) predicate.Review {
+// ObjectTypeHasPrefix applies the HasPrefix predicate on the "object_type" field.
+func ObjectTypeHasPrefix(v string) predicate.Review {
 	return predicate.Review(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldEntityType), v))
+		s.Where(sql.HasPrefix(s.C(FieldObjectType), v))
 	})
 }
 
-// EntityTypeHasSuffix applies the HasSuffix predicate on the "entity_type" field.
-func EntityTypeHasSuffix(v string) predicate.Review {
+// ObjectTypeHasSuffix applies the HasSuffix predicate on the "object_type" field.
+func ObjectTypeHasSuffix(v string) predicate.Review {
 	return predicate.Review(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldEntityType), v))
+		s.Where(sql.HasSuffix(s.C(FieldObjectType), v))
 	})
 }
 
-// EntityTypeEqualFold applies the EqualFold predicate on the "entity_type" field.
-func EntityTypeEqualFold(v string) predicate.Review {
+// ObjectTypeEqualFold applies the EqualFold predicate on the "object_type" field.
+func ObjectTypeEqualFold(v string) predicate.Review {
 	return predicate.Review(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldEntityType), v))
+		s.Where(sql.EqualFold(s.C(FieldObjectType), v))
 	})
 }
 
-// EntityTypeContainsFold applies the ContainsFold predicate on the "entity_type" field.
-func EntityTypeContainsFold(v string) predicate.Review {
+// ObjectTypeContainsFold applies the ContainsFold predicate on the "object_type" field.
+func ObjectTypeContainsFold(v string) predicate.Review {
 	return predicate.Review(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldEntityType), v))
+		s.Where(sql.ContainsFold(s.C(FieldObjectType), v))
 	})
 }
 

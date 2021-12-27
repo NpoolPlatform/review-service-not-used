@@ -2,6 +2,7 @@ package reviewrule
 
 import (
 	"context"
+	"time"
 
 	"github.com/NpoolPlatform/review-service/message/npool"
 
@@ -14,20 +15,32 @@ import (
 	"golang.org/x/xerrors"
 )
 
+const (
+	dbTimeout = 5 * time.Second
+)
+
 func dbRowToReviewRule(row *ent.ReviewRule) *npool.ReviewRule {
 	return &npool.ReviewRule{
 		ID:         row.ID.String(),
-		EntityType: row.EntityType,
+		ObjectType: row.ObjectType,
 		Domain:     row.Domain,
 		Rules:      row.Rules,
 	}
 }
 
 func Create(ctx context.Context, in *npool.CreateReviewRuleRequest) (*npool.CreateReviewRuleResponse, error) {
-	info, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	info, err := cli.
 		ReviewRule.
 		Create().
-		SetEntityType(in.GetInfo().GetEntityType()).
+		SetObjectType(in.GetInfo().GetObjectType()).
 		SetDomain(in.GetInfo().GetDomain()).
 		Save(ctx)
 	if err != nil {
@@ -45,7 +58,15 @@ func Update(ctx context.Context, in *npool.UpdateReviewRuleRequest) (*npool.Upda
 		return nil, xerrors.Errorf("invalid id: %v", err)
 	}
 
-	info, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	info, err := cli.
 		ReviewRule.
 		UpdateOneID(id).
 		SetRules(in.GetInfo().GetRules()).
@@ -65,7 +86,15 @@ func Get(ctx context.Context, in *npool.GetReviewRuleRequest) (*npool.GetReviewR
 		return nil, xerrors.Errorf("invalid id: %v", err)
 	}
 
-	infos, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	infos, err := cli.
 		ReviewRule.
 		Query().
 		Where(
@@ -87,7 +116,15 @@ func Get(ctx context.Context, in *npool.GetReviewRuleRequest) (*npool.GetReviewR
 }
 
 func GetByDomain(ctx context.Context, in *npool.GetReviewRulesByDomainRequest) (*npool.GetReviewRulesByDomainResponse, error) {
-	infos, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	infos, err := cli.
 		ReviewRule.
 		Query().
 		Where(
