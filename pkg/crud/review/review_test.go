@@ -25,7 +25,7 @@ func init() {
 }
 
 func assertReview(t *testing.T, actual, expected *npool.Review) {
-	assert.Equal(t, actual.EntityType, expected.EntityType)
+	assert.Equal(t, actual.ObjectType, expected.ObjectType)
 	assert.Equal(t, actual.State, expected.State)
 	assert.Equal(t, actual.Message, expected.Message)
 	assert.Equal(t, actual.ObjectID, expected.ObjectID)
@@ -38,7 +38,7 @@ func TestCRUD(t *testing.T) {
 	}
 
 	review := npool.Review{
-		EntityType: "good",
+		ObjectType: "good",
 		State:      "wait",
 		ObjectID:   uuid.New().String(),
 		Domain:     fmt.Sprintf("cloud-hashing-goods-npool-top-%v", uuid.New().String()),
