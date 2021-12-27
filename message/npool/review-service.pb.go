@@ -988,6 +988,108 @@ func (x *GetReviewRulesByDomainResponse) GetInfos() []*ReviewRule {
 	return nil
 }
 
+type GetReviewRuleByDomainObjectTypeRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Domain     string `protobuf:"bytes,10,opt,name=Domain,proto3" json:"Domain,omitempty"`
+	ObjectType string `protobuf:"bytes,20,opt,name=ObjectType,proto3" json:"ObjectType,omitempty"`
+}
+
+func (x *GetReviewRuleByDomainObjectTypeRequest) Reset() {
+	*x = GetReviewRuleByDomainObjectTypeRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_npool_review_service_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetReviewRuleByDomainObjectTypeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetReviewRuleByDomainObjectTypeRequest) ProtoMessage() {}
+
+func (x *GetReviewRuleByDomainObjectTypeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_npool_review_service_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetReviewRuleByDomainObjectTypeRequest.ProtoReflect.Descriptor instead.
+func (*GetReviewRuleByDomainObjectTypeRequest) Descriptor() ([]byte, []int) {
+	return file_npool_review_service_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *GetReviewRuleByDomainObjectTypeRequest) GetDomain() string {
+	if x != nil {
+		return x.Domain
+	}
+	return ""
+}
+
+func (x *GetReviewRuleByDomainObjectTypeRequest) GetObjectType() string {
+	if x != nil {
+		return x.ObjectType
+	}
+	return ""
+}
+
+type GetReviewRuleByDomainObjectTypeResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Info *ReviewRule `protobuf:"bytes,10,opt,name=Info,proto3" json:"Info,omitempty"`
+}
+
+func (x *GetReviewRuleByDomainObjectTypeResponse) Reset() {
+	*x = GetReviewRuleByDomainObjectTypeResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_npool_review_service_proto_msgTypes[20]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetReviewRuleByDomainObjectTypeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetReviewRuleByDomainObjectTypeResponse) ProtoMessage() {}
+
+func (x *GetReviewRuleByDomainObjectTypeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_npool_review_service_proto_msgTypes[20]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetReviewRuleByDomainObjectTypeResponse.ProtoReflect.Descriptor instead.
+func (*GetReviewRuleByDomainObjectTypeResponse) Descriptor() ([]byte, []int) {
+	return file_npool_review_service_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *GetReviewRuleByDomainObjectTypeResponse) GetInfo() *ReviewRule {
+	if x != nil {
+		return x.Info
+	}
+	return nil
+}
+
 var File_npool_review_service_proto protoreflect.FileDescriptor
 
 var file_npool_review_service_proto_rawDesc = []byte{
@@ -1090,8 +1192,20 @@ var file_npool_review_service_proto_rawDesc = []byte{
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x34, 0x0a, 0x05, 0x49, 0x6e, 0x66, 0x6f,
 	0x73, 0x18, 0xa4, 0x0d, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x72, 0x65, 0x76, 0x69, 0x65,
 	0x77, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x52, 0x65, 0x76,
-	0x69, 0x65, 0x77, 0x52, 0x75, 0x6c, 0x65, 0x52, 0x05, 0x49, 0x6e, 0x66, 0x6f, 0x73, 0x32, 0xd4,
-	0x09, 0x0a, 0x0d, 0x52, 0x65, 0x76, 0x69, 0x65, 0x77, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x69, 0x65, 0x77, 0x52, 0x75, 0x6c, 0x65, 0x52, 0x05, 0x49, 0x6e, 0x66, 0x6f, 0x73, 0x22, 0x60,
+	0x0a, 0x26, 0x47, 0x65, 0x74, 0x52, 0x65, 0x76, 0x69, 0x65, 0x77, 0x52, 0x75, 0x6c, 0x65, 0x42,
+	0x79, 0x44, 0x6f, 0x6d, 0x61, 0x69, 0x6e, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x54, 0x79, 0x70,
+	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x44, 0x6f, 0x6d, 0x61,
+	0x69, 0x6e, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x44, 0x6f, 0x6d, 0x61, 0x69, 0x6e,
+	0x12, 0x1e, 0x0a, 0x0a, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x54, 0x79, 0x70, 0x65, 0x18, 0x14,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x54, 0x79, 0x70, 0x65,
+	0x22, 0x5c, 0x0a, 0x27, 0x47, 0x65, 0x74, 0x52, 0x65, 0x76, 0x69, 0x65, 0x77, 0x52, 0x75, 0x6c,
+	0x65, 0x42, 0x79, 0x44, 0x6f, 0x6d, 0x61, 0x69, 0x6e, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x54,
+	0x79, 0x70, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x31, 0x0a, 0x04, 0x49,
+	0x6e, 0x66, 0x6f, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x72, 0x65, 0x76, 0x69,
+	0x65, 0x77, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x52, 0x65,
+	0x76, 0x69, 0x65, 0x77, 0x52, 0x75, 0x6c, 0x65, 0x52, 0x04, 0x49, 0x6e, 0x66, 0x6f, 0x32, 0xa5,
+	0x0b, 0x0a, 0x0d, 0x52, 0x65, 0x76, 0x69, 0x65, 0x77, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
 	0x12, 0x5a, 0x0a, 0x07, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x16, 0x2e, 0x67, 0x6f,
 	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d,
 	0x70, 0x74, 0x79, 0x1a, 0x22, 0x2e, 0x72, 0x65, 0x76, 0x69, 0x65, 0x77, 0x2e, 0x73, 0x65, 0x72,
@@ -1168,11 +1282,24 @@ var file_npool_review_service_proto_rawDesc = []byte{
 	0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x29, 0x82, 0xd3, 0xe4, 0x93,
 	0x02, 0x23, 0x22, 0x1e, 0x2f, 0x76, 0x31, 0x2f, 0x67, 0x65, 0x74, 0x2f, 0x72, 0x65, 0x76, 0x69,
 	0x65, 0x77, 0x2f, 0x72, 0x75, 0x6c, 0x65, 0x73, 0x2f, 0x62, 0x79, 0x2f, 0x64, 0x6f, 0x6d, 0x61,
-	0x69, 0x6e, 0x3a, 0x01, 0x2a, 0x42, 0x37, 0x5a, 0x35, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
-	0x63, 0x6f, 0x6d, 0x2f, 0x4e, 0x70, 0x6f, 0x6f, 0x6c, 0x50, 0x6c, 0x61, 0x74, 0x66, 0x6f, 0x72,
-	0x6d, 0x2f, 0x72, 0x65, 0x76, 0x69, 0x65, 0x77, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
-	0x2f, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2f, 0x6e, 0x70, 0x6f, 0x6f, 0x6c, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x69, 0x6e, 0x3a, 0x01, 0x2a, 0x12, 0xce, 0x01, 0x0a, 0x1f, 0x47, 0x65, 0x74, 0x52, 0x65, 0x76,
+	0x69, 0x65, 0x77, 0x52, 0x75, 0x6c, 0x65, 0x42, 0x79, 0x44, 0x6f, 0x6d, 0x61, 0x69, 0x6e, 0x4f,
+	0x62, 0x6a, 0x65, 0x63, 0x74, 0x54, 0x79, 0x70, 0x65, 0x12, 0x39, 0x2e, 0x72, 0x65, 0x76, 0x69,
+	0x65, 0x77, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65,
+	0x74, 0x52, 0x65, 0x76, 0x69, 0x65, 0x77, 0x52, 0x75, 0x6c, 0x65, 0x42, 0x79, 0x44, 0x6f, 0x6d,
+	0x61, 0x69, 0x6e, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x3a, 0x2e, 0x72, 0x65, 0x76, 0x69, 0x65, 0x77, 0x2e, 0x73, 0x65,
+	0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x52, 0x65, 0x76, 0x69,
+	0x65, 0x77, 0x52, 0x75, 0x6c, 0x65, 0x42, 0x79, 0x44, 0x6f, 0x6d, 0x61, 0x69, 0x6e, 0x4f, 0x62,
+	0x6a, 0x65, 0x63, 0x74, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x34, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x2e, 0x22, 0x29, 0x2f, 0x76, 0x31, 0x2f, 0x67, 0x65,
+	0x74, 0x2f, 0x72, 0x65, 0x76, 0x69, 0x65, 0x77, 0x2f, 0x72, 0x75, 0x6c, 0x65, 0x2f, 0x62, 0x79,
+	0x2f, 0x64, 0x6f, 0x6d, 0x61, 0x69, 0x6e, 0x2f, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x74,
+	0x79, 0x70, 0x65, 0x3a, 0x01, 0x2a, 0x42, 0x37, 0x5a, 0x35, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
+	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x4e, 0x70, 0x6f, 0x6f, 0x6c, 0x50, 0x6c, 0x61, 0x74, 0x66, 0x6f,
+	0x72, 0x6d, 0x2f, 0x72, 0x65, 0x76, 0x69, 0x65, 0x77, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x65, 0x2f, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2f, 0x6e, 0x70, 0x6f, 0x6f, 0x6c, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1187,28 +1314,30 @@ func file_npool_review_service_proto_rawDescGZIP() []byte {
 	return file_npool_review_service_proto_rawDescData
 }
 
-var file_npool_review_service_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
+var file_npool_review_service_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_npool_review_service_proto_goTypes = []interface{}{
-	(*VersionResponse)(nil),                // 0: review.service.v1.VersionResponse
-	(*Review)(nil),                         // 1: review.service.v1.Review
-	(*CreateReviewRequest)(nil),            // 2: review.service.v1.CreateReviewRequest
-	(*CreateReviewResponse)(nil),           // 3: review.service.v1.CreateReviewResponse
-	(*UpdateReviewRequest)(nil),            // 4: review.service.v1.UpdateReviewRequest
-	(*UpdateReviewResponse)(nil),           // 5: review.service.v1.UpdateReviewResponse
-	(*GetReviewsByDomainRequest)(nil),      // 6: review.service.v1.GetReviewsByDomainRequest
-	(*GetReviewsByDomainResponse)(nil),     // 7: review.service.v1.GetReviewsByDomainResponse
-	(*SubmitReviewRequest)(nil),            // 8: review.service.v1.SubmitReviewRequest
-	(*SubmitReviewResponse)(nil),           // 9: review.service.v1.SubmitReviewResponse
-	(*ReviewRule)(nil),                     // 10: review.service.v1.ReviewRule
-	(*CreateReviewRuleRequest)(nil),        // 11: review.service.v1.CreateReviewRuleRequest
-	(*CreateReviewRuleResponse)(nil),       // 12: review.service.v1.CreateReviewRuleResponse
-	(*UpdateReviewRuleRequest)(nil),        // 13: review.service.v1.UpdateReviewRuleRequest
-	(*UpdateReviewRuleResponse)(nil),       // 14: review.service.v1.UpdateReviewRuleResponse
-	(*GetReviewRuleRequest)(nil),           // 15: review.service.v1.GetReviewRuleRequest
-	(*GetReviewRuleResponse)(nil),          // 16: review.service.v1.GetReviewRuleResponse
-	(*GetReviewRulesByDomainRequest)(nil),  // 17: review.service.v1.GetReviewRulesByDomainRequest
-	(*GetReviewRulesByDomainResponse)(nil), // 18: review.service.v1.GetReviewRulesByDomainResponse
-	(*emptypb.Empty)(nil),                  // 19: google.protobuf.Empty
+	(*VersionResponse)(nil),                         // 0: review.service.v1.VersionResponse
+	(*Review)(nil),                                  // 1: review.service.v1.Review
+	(*CreateReviewRequest)(nil),                     // 2: review.service.v1.CreateReviewRequest
+	(*CreateReviewResponse)(nil),                    // 3: review.service.v1.CreateReviewResponse
+	(*UpdateReviewRequest)(nil),                     // 4: review.service.v1.UpdateReviewRequest
+	(*UpdateReviewResponse)(nil),                    // 5: review.service.v1.UpdateReviewResponse
+	(*GetReviewsByDomainRequest)(nil),               // 6: review.service.v1.GetReviewsByDomainRequest
+	(*GetReviewsByDomainResponse)(nil),              // 7: review.service.v1.GetReviewsByDomainResponse
+	(*SubmitReviewRequest)(nil),                     // 8: review.service.v1.SubmitReviewRequest
+	(*SubmitReviewResponse)(nil),                    // 9: review.service.v1.SubmitReviewResponse
+	(*ReviewRule)(nil),                              // 10: review.service.v1.ReviewRule
+	(*CreateReviewRuleRequest)(nil),                 // 11: review.service.v1.CreateReviewRuleRequest
+	(*CreateReviewRuleResponse)(nil),                // 12: review.service.v1.CreateReviewRuleResponse
+	(*UpdateReviewRuleRequest)(nil),                 // 13: review.service.v1.UpdateReviewRuleRequest
+	(*UpdateReviewRuleResponse)(nil),                // 14: review.service.v1.UpdateReviewRuleResponse
+	(*GetReviewRuleRequest)(nil),                    // 15: review.service.v1.GetReviewRuleRequest
+	(*GetReviewRuleResponse)(nil),                   // 16: review.service.v1.GetReviewRuleResponse
+	(*GetReviewRulesByDomainRequest)(nil),           // 17: review.service.v1.GetReviewRulesByDomainRequest
+	(*GetReviewRulesByDomainResponse)(nil),          // 18: review.service.v1.GetReviewRulesByDomainResponse
+	(*GetReviewRuleByDomainObjectTypeRequest)(nil),  // 19: review.service.v1.GetReviewRuleByDomainObjectTypeRequest
+	(*GetReviewRuleByDomainObjectTypeResponse)(nil), // 20: review.service.v1.GetReviewRuleByDomainObjectTypeResponse
+	(*emptypb.Empty)(nil),                           // 21: google.protobuf.Empty
 }
 var file_npool_review_service_proto_depIdxs = []int32{
 	1,  // 0: review.service.v1.CreateReviewRequest.Info:type_name -> review.service.v1.Review
@@ -1224,29 +1353,32 @@ var file_npool_review_service_proto_depIdxs = []int32{
 	10, // 10: review.service.v1.UpdateReviewRuleResponse.Info:type_name -> review.service.v1.ReviewRule
 	10, // 11: review.service.v1.GetReviewRuleResponse.Info:type_name -> review.service.v1.ReviewRule
 	10, // 12: review.service.v1.GetReviewRulesByDomainResponse.Infos:type_name -> review.service.v1.ReviewRule
-	19, // 13: review.service.v1.ReviewService.Version:input_type -> google.protobuf.Empty
-	2,  // 14: review.service.v1.ReviewService.CreateReview:input_type -> review.service.v1.CreateReviewRequest
-	4,  // 15: review.service.v1.ReviewService.UpdateReview:input_type -> review.service.v1.UpdateReviewRequest
-	6,  // 16: review.service.v1.ReviewService.GetReviewsByDomain:input_type -> review.service.v1.GetReviewsByDomainRequest
-	8,  // 17: review.service.v1.ReviewService.SubmitReview:input_type -> review.service.v1.SubmitReviewRequest
-	11, // 18: review.service.v1.ReviewService.CreateReviewRule:input_type -> review.service.v1.CreateReviewRuleRequest
-	13, // 19: review.service.v1.ReviewService.UpdateReviewRule:input_type -> review.service.v1.UpdateReviewRuleRequest
-	15, // 20: review.service.v1.ReviewService.GetReviewRule:input_type -> review.service.v1.GetReviewRuleRequest
-	17, // 21: review.service.v1.ReviewService.GetReviewRulesByDomain:input_type -> review.service.v1.GetReviewRulesByDomainRequest
-	0,  // 22: review.service.v1.ReviewService.Version:output_type -> review.service.v1.VersionResponse
-	3,  // 23: review.service.v1.ReviewService.CreateReview:output_type -> review.service.v1.CreateReviewResponse
-	5,  // 24: review.service.v1.ReviewService.UpdateReview:output_type -> review.service.v1.UpdateReviewResponse
-	7,  // 25: review.service.v1.ReviewService.GetReviewsByDomain:output_type -> review.service.v1.GetReviewsByDomainResponse
-	9,  // 26: review.service.v1.ReviewService.SubmitReview:output_type -> review.service.v1.SubmitReviewResponse
-	12, // 27: review.service.v1.ReviewService.CreateReviewRule:output_type -> review.service.v1.CreateReviewRuleResponse
-	14, // 28: review.service.v1.ReviewService.UpdateReviewRule:output_type -> review.service.v1.UpdateReviewRuleResponse
-	16, // 29: review.service.v1.ReviewService.GetReviewRule:output_type -> review.service.v1.GetReviewRuleResponse
-	18, // 30: review.service.v1.ReviewService.GetReviewRulesByDomain:output_type -> review.service.v1.GetReviewRulesByDomainResponse
-	22, // [22:31] is the sub-list for method output_type
-	13, // [13:22] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	10, // 13: review.service.v1.GetReviewRuleByDomainObjectTypeResponse.Info:type_name -> review.service.v1.ReviewRule
+	21, // 14: review.service.v1.ReviewService.Version:input_type -> google.protobuf.Empty
+	2,  // 15: review.service.v1.ReviewService.CreateReview:input_type -> review.service.v1.CreateReviewRequest
+	4,  // 16: review.service.v1.ReviewService.UpdateReview:input_type -> review.service.v1.UpdateReviewRequest
+	6,  // 17: review.service.v1.ReviewService.GetReviewsByDomain:input_type -> review.service.v1.GetReviewsByDomainRequest
+	8,  // 18: review.service.v1.ReviewService.SubmitReview:input_type -> review.service.v1.SubmitReviewRequest
+	11, // 19: review.service.v1.ReviewService.CreateReviewRule:input_type -> review.service.v1.CreateReviewRuleRequest
+	13, // 20: review.service.v1.ReviewService.UpdateReviewRule:input_type -> review.service.v1.UpdateReviewRuleRequest
+	15, // 21: review.service.v1.ReviewService.GetReviewRule:input_type -> review.service.v1.GetReviewRuleRequest
+	17, // 22: review.service.v1.ReviewService.GetReviewRulesByDomain:input_type -> review.service.v1.GetReviewRulesByDomainRequest
+	19, // 23: review.service.v1.ReviewService.GetReviewRuleByDomainObjectType:input_type -> review.service.v1.GetReviewRuleByDomainObjectTypeRequest
+	0,  // 24: review.service.v1.ReviewService.Version:output_type -> review.service.v1.VersionResponse
+	3,  // 25: review.service.v1.ReviewService.CreateReview:output_type -> review.service.v1.CreateReviewResponse
+	5,  // 26: review.service.v1.ReviewService.UpdateReview:output_type -> review.service.v1.UpdateReviewResponse
+	7,  // 27: review.service.v1.ReviewService.GetReviewsByDomain:output_type -> review.service.v1.GetReviewsByDomainResponse
+	9,  // 28: review.service.v1.ReviewService.SubmitReview:output_type -> review.service.v1.SubmitReviewResponse
+	12, // 29: review.service.v1.ReviewService.CreateReviewRule:output_type -> review.service.v1.CreateReviewRuleResponse
+	14, // 30: review.service.v1.ReviewService.UpdateReviewRule:output_type -> review.service.v1.UpdateReviewRuleResponse
+	16, // 31: review.service.v1.ReviewService.GetReviewRule:output_type -> review.service.v1.GetReviewRuleResponse
+	18, // 32: review.service.v1.ReviewService.GetReviewRulesByDomain:output_type -> review.service.v1.GetReviewRulesByDomainResponse
+	20, // 33: review.service.v1.ReviewService.GetReviewRuleByDomainObjectType:output_type -> review.service.v1.GetReviewRuleByDomainObjectTypeResponse
+	24, // [24:34] is the sub-list for method output_type
+	14, // [14:24] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_npool_review_service_proto_init() }
@@ -1483,6 +1615,30 @@ func file_npool_review_service_proto_init() {
 				return nil
 			}
 		}
+		file_npool_review_service_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetReviewRuleByDomainObjectTypeRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_npool_review_service_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetReviewRuleByDomainObjectTypeResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1490,7 +1646,7 @@ func file_npool_review_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_npool_review_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   19,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

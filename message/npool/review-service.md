@@ -8,6 +8,8 @@
     - [CreateReviewResponse](#review.service.v1.CreateReviewResponse)
     - [CreateReviewRuleRequest](#review.service.v1.CreateReviewRuleRequest)
     - [CreateReviewRuleResponse](#review.service.v1.CreateReviewRuleResponse)
+    - [GetReviewRuleByDomainObjectTypeRequest](#review.service.v1.GetReviewRuleByDomainObjectTypeRequest)
+    - [GetReviewRuleByDomainObjectTypeResponse](#review.service.v1.GetReviewRuleByDomainObjectTypeResponse)
     - [GetReviewRuleRequest](#review.service.v1.GetReviewRuleRequest)
     - [GetReviewRuleResponse](#review.service.v1.GetReviewRuleResponse)
     - [GetReviewRulesByDomainRequest](#review.service.v1.GetReviewRulesByDomainRequest)
@@ -85,6 +87,37 @@
 <a name="review.service.v1.CreateReviewRuleResponse"></a>
 
 ### CreateReviewRuleResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [ReviewRule](#review.service.v1.ReviewRule) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.GetReviewRuleByDomainObjectTypeRequest"></a>
+
+### GetReviewRuleByDomainObjectTypeRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Domain | [string](#string) |  |  |
+| ObjectType | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.GetReviewRuleByDomainObjectTypeResponse"></a>
+
+### GetReviewRuleByDomainObjectTypeResponse
 
 
 
@@ -353,6 +386,7 @@ Service Name
 | UpdateReviewRule | [UpdateReviewRuleRequest](#review.service.v1.UpdateReviewRuleRequest) | [UpdateReviewRuleResponse](#review.service.v1.UpdateReviewRuleResponse) |  |
 | GetReviewRule | [GetReviewRuleRequest](#review.service.v1.GetReviewRuleRequest) | [GetReviewRuleResponse](#review.service.v1.GetReviewRuleResponse) |  |
 | GetReviewRulesByDomain | [GetReviewRulesByDomainRequest](#review.service.v1.GetReviewRulesByDomainRequest) | [GetReviewRulesByDomainResponse](#review.service.v1.GetReviewRulesByDomainResponse) |  |
+| GetReviewRuleByDomainObjectType | [GetReviewRuleByDomainObjectTypeRequest](#review.service.v1.GetReviewRuleByDomainObjectTypeRequest) | [GetReviewRuleByDomainObjectTypeResponse](#review.service.v1.GetReviewRuleByDomainObjectTypeResponse) |  |
 
  
 

@@ -66,6 +66,12 @@ service ReviewService {
             body: "*"
         };
     }
+    rpc GetReviewRuleByDomainObjectType(GetReviewRuleByDomainObjectTypeRequest) returns (GetReviewRuleByDomainObjectTypeResponse) {
+        option (google.api.http) = {
+            post: "/v1/get/review/rule/by/domain/object/type"
+            body: "*"
+        };
+    }
 }
 
 // request body and response
@@ -152,4 +158,13 @@ message GetReviewRulesByDomainRequest {
 
 message GetReviewRulesByDomainResponse {
     repeated ReviewRule Infos = 1700;
+}
+
+message GetReviewRuleByDomainObjectTypeRequest {
+    string Domain = 10;
+    string ObjectType = 20;
+}
+
+message GetReviewRuleByDomainObjectTypeResponse {
+    ReviewRule Info = 10;
 }
