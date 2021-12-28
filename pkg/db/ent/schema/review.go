@@ -7,6 +7,8 @@ import (
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 
+	constant "github.com/NpoolPlatform/review-service/pkg/const" //nolint
+
 	"github.com/google/uuid"
 )
 
@@ -26,7 +28,9 @@ func (Review) Fields() []ent.Field {
 		field.UUID("object_id", uuid.UUID{}),
 		field.UUID("reviewer_id", uuid.UUID{}),
 		field.Enum("state").
-			Values("wait", "approved", "rejected"),
+			Values(constant.StateWait,
+				constant.StateApproved,
+				constant.StateRejected),
 		field.String("message"),
 		field.Uint32("create_at").
 			DefaultFunc(func() uint32 {
