@@ -20,6 +20,8 @@
     - [ReviewRule](#review.service.v1.ReviewRule)
     - [SubmitReviewRequest](#review.service.v1.SubmitReviewRequest)
     - [SubmitReviewResponse](#review.service.v1.SubmitReviewResponse)
+    - [SubmitReviewResultRequest](#review.service.v1.SubmitReviewResultRequest)
+    - [SubmitReviewResultResponse](#review.service.v1.SubmitReviewResultResponse)
     - [UpdateReviewRequest](#review.service.v1.UpdateReviewRequest)
     - [UpdateReviewResponse](#review.service.v1.UpdateReviewResponse)
     - [UpdateReviewRuleRequest](#review.service.v1.UpdateReviewRuleRequest)
@@ -277,6 +279,36 @@
 <a name="review.service.v1.SubmitReviewResponse"></a>
 
 ### SubmitReviewResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [Review](#review.service.v1.Review) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.SubmitReviewResultRequest"></a>
+
+### SubmitReviewResultRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [Review](#review.service.v1.Review) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.SubmitReviewResultResponse"></a>
+
+### SubmitReviewResultResponse
 
 
 

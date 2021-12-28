@@ -168,3 +168,11 @@ message GetReviewRuleByDomainObjectTypeRequest {
 message GetReviewRuleByDomainObjectTypeResponse {
     ReviewRule Info = 10;
 }
+
+message SubmitReviewResultRequest {
+    Review Info = 10;
+}
+
+message SubmitReviewResultResponse {
+    Review Info = 10;
+}
