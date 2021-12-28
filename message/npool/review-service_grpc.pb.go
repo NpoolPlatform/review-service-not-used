@@ -25,6 +25,7 @@ type ReviewServiceClient interface {
 	UpdateReview(ctx context.Context, in *UpdateReviewRequest, opts ...grpc.CallOption) (*UpdateReviewResponse, error)
 	GetReviewsByDomain(ctx context.Context, in *GetReviewsByDomainRequest, opts ...grpc.CallOption) (*GetReviewsByDomainResponse, error)
 	SubmitReview(ctx context.Context, in *SubmitReviewRequest, opts ...grpc.CallOption) (*SubmitReviewResponse, error)
+	SubmitReviewResult(ctx context.Context, in *SubmitReviewResultRequest, opts ...grpc.CallOption) (*SubmitReviewResultResponse, error)
 	CreateReviewRule(ctx context.Context, in *CreateReviewRuleRequest, opts ...grpc.CallOption) (*CreateReviewRuleResponse, error)
 	UpdateReviewRule(ctx context.Context, in *UpdateReviewRuleRequest, opts ...grpc.CallOption) (*UpdateReviewRuleResponse, error)
 	GetReviewRule(ctx context.Context, in *GetReviewRuleRequest, opts ...grpc.CallOption) (*GetReviewRuleResponse, error)
@@ -79,6 +80,15 @@ func (c *reviewServiceClient) GetReviewsByDomain(ctx context.Context, in *GetRev
 func (c *reviewServiceClient) SubmitReview(ctx context.Context, in *SubmitReviewRequest, opts ...grpc.CallOption) (*SubmitReviewResponse, error) {
 	out := new(SubmitReviewResponse)
 	err := c.cc.Invoke(ctx, "/review.service.v1.ReviewService/SubmitReview", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *reviewServiceClient) SubmitReviewResult(ctx context.Context, in *SubmitReviewResultRequest, opts ...grpc.CallOption) (*SubmitReviewResultResponse, error) {
+	out := new(SubmitReviewResultResponse)
+	err := c.cc.Invoke(ctx, "/review.service.v1.ReviewService/SubmitReviewResult", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -140,6 +150,7 @@ type ReviewServiceServer interface {
 	UpdateReview(context.Context, *UpdateReviewRequest) (*UpdateReviewResponse, error)
 	GetReviewsByDomain(context.Context, *GetReviewsByDomainRequest) (*GetReviewsByDomainResponse, error)
 	SubmitReview(context.Context, *SubmitReviewRequest) (*SubmitReviewResponse, error)
+	SubmitReviewResult(context.Context, *SubmitReviewResultRequest) (*SubmitReviewResultResponse, error)
 	CreateReviewRule(context.Context, *CreateReviewRuleRequest) (*CreateReviewRuleResponse, error)
 	UpdateReviewRule(context.Context, *UpdateReviewRuleRequest) (*UpdateReviewRuleResponse, error)
 	GetReviewRule(context.Context, *GetReviewRuleRequest) (*GetReviewRuleResponse, error)
@@ -166,6 +177,9 @@ func (UnimplementedReviewServiceServer) GetReviewsByDomain(context.Context, *Get
 }
 func (UnimplementedReviewServiceServer) SubmitReview(context.Context, *SubmitReviewRequest) (*SubmitReviewResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitReview not implemented")
+}
+func (UnimplementedReviewServiceServer) SubmitReviewResult(context.Context, *SubmitReviewResultRequest) (*SubmitReviewResultResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitReviewResult not implemented")
 }
 func (UnimplementedReviewServiceServer) CreateReviewRule(context.Context, *CreateReviewRuleRequest) (*CreateReviewRuleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateReviewRule not implemented")
@@ -281,6 +295,24 @@ func _ReviewService_SubmitReview_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ReviewServiceServer).SubmitReview(ctx, req.(*SubmitReviewRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReviewService_SubmitReviewResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubmitReviewResultRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReviewServiceServer).SubmitReviewResult(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/review.service.v1.ReviewService/SubmitReviewResult",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReviewServiceServer).SubmitReviewResult(ctx, req.(*SubmitReviewResultRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -401,6 +433,10 @@ var ReviewService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SubmitReview",
 			Handler:    _ReviewService_SubmitReview_Handler,
+		},
+		{
+			MethodName: "SubmitReviewResult",
+			Handler:    _ReviewService_SubmitReviewResult_Handler,
 		},
 		{
 			MethodName: "CreateReviewRule",

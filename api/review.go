@@ -51,3 +51,12 @@ func (s *Server) SubmitReview(ctx context.Context, in *npool.SubmitReviewRequest
 	}
 	return resp, nil
 }
+
+func (s *Server) SubmitReviewResult(ctx context.Context, in *npool.SubmitReviewResultRequest) (*npool.SubmitReviewResultResponse, error) {
+	resp, err := mw.SubmitReviewResult(ctx, in)
+	if err != nil {
+		logger.Sugar().Errorw("submit review result: %v", err)
+		return &npool.SubmitReviewResultResponse{}, status.Error(codes.Internal, "internal server error")
+	}
+	return resp, nil
+}

@@ -41,6 +41,12 @@ service ReviewService {
             body: "*"
         };
     }
+    rpc SubmitReviewResult(SubmitReviewResultRequest) returns (SubmitReviewResultResponse) {
+        option (google.api.http) = {
+            post: "/v1/submit/review/result"
+            body: "*"
+        };
+    }
 
     rpc CreateReviewRule(CreateReviewRuleRequest) returns (CreateReviewRuleResponse) {
         option (google.api.http) = {

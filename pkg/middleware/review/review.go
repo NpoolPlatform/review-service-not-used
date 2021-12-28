@@ -83,3 +83,54 @@ func Submit(ctx context.Context, in *npool.SubmitReviewRequest) (*npool.SubmitRe
 		Info: info,
 	}, nil
 }
+
+func submitGoodReviewResult(conn *grpc.ClientConn, info *npool.Review, obj interface{}) error {
+	// TODO: submit good review result
+	return nil
+}
+
+func submitInspireReviewResult(conn *grpc.ClientConn, info *npool.Review, obj interface{}) error {
+	// TODO: submit inspire review result
+	return nil
+}
+
+// For new review object, add submit result to object service here
+func submitReviewResult(conn *grpc.ClientConn, info *npool.Review, obj interface{}) error {
+	switch info.Domain {
+	case goodsconst.ServiceName:
+		return submitGoodReviewResult(conn, info, obj)
+	case inspireconst.ServiceName:
+		return submitInspireReviewResult(conn, info, obj)
+	}
+	return xerrors.Errorf("unknown review object")
+}
+
+func SubmitReviewResult(ctx context.Context, in *npool.SubmitReviewResultRequest) (*npool.SubmitReviewResultResponse, error) {
+	info := in.GetInfo()
+
+	conn, err := grpc2.GetGRPCConn(info.Domain, grpc2.GRPCTAG)
+	if err != nil {
+		return nil, xerrors.Errorf("fail get connection: %v", err)
+	}
+	defer conn.Close()
+
+	obj, err := getObject(conn, info)
+	if err != nil {
+		return nil, xerrors.Errorf("fail get object: %v", err)
+	}
+
+	resp, err := crud.Update(ctx, &npool.UpdateReviewRequest{
+		Info: info,
+	})
+	if err != nil {
+		return nil, xerrors.Errorf("fail update review state: %v", err)
+	}
+
+	if err := submitReviewResult(conn, info, obj); err != nil {
+		return nil, xerrors.Errorf("fail submit review result: %v", err)
+	}
+
+	return &npool.SubmitReviewResultResponse{
+		Info: resp.Info,
+	}, nil
+}
