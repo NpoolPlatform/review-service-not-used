@@ -23,6 +23,12 @@ func validateReview(info *npool.Review) error {
 	if _, err := uuid.Parse(info.GetObjectID()); err != nil {
 		return xerrors.Errorf("invalid object id: %v", err)
 	}
+	if _, err := uuid.Parse(info.GetAppID()); err != nil {
+		return xerrors.Errorf("invalid app id: %v", err)
+	}
+	if info.GetDomain() == "" {
+		return xerrors.Errorf("invalid domain")
+	}
 	return nil
 }
 
@@ -30,6 +36,7 @@ func dbRowToReview(row *ent.Review) *npool.Review {
 	return &npool.Review{
 		ID:         row.ID.String(),
 		ObjectType: row.ObjectType,
+		AppID:      row.AppID.String(),
 		ReviewerID: row.ReviewerID.String(),
 		State:      string(row.State),
 		Message:    row.Message,
@@ -59,6 +66,7 @@ func Create(ctx context.Context, in *npool.CreateReviewRequest) (*npool.CreateRe
 		SetMessage("").
 		SetReviewerID(uuid.UUID{}).
 		SetObjectID(uuid.MustParse(in.GetInfo().GetObjectID())).
+		SetAppID(uuid.MustParse(in.GetInfo().GetAppID())).
 		SetDomain(in.GetInfo().GetDomain()).
 		Save(ctx)
 	if err != nil {

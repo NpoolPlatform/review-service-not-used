@@ -20,6 +20,8 @@ type Review struct {
 	ObjectType string `json:"object_type,omitempty"`
 	// Domain holds the value of the "domain" field.
 	Domain string `json:"domain,omitempty"`
+	// AppID holds the value of the "app_id" field.
+	AppID uuid.UUID `json:"app_id,omitempty"`
 	// ObjectID holds the value of the "object_id" field.
 	ObjectID uuid.UUID `json:"object_id,omitempty"`
 	// ReviewerID holds the value of the "reviewer_id" field.
@@ -45,7 +47,7 @@ func (*Review) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case review.FieldObjectType, review.FieldDomain, review.FieldState, review.FieldMessage:
 			values[i] = new(sql.NullString)
-		case review.FieldID, review.FieldObjectID, review.FieldReviewerID:
+		case review.FieldID, review.FieldAppID, review.FieldObjectID, review.FieldReviewerID:
 			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Review", columns[i])
@@ -79,6 +81,12 @@ func (r *Review) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field domain", values[i])
 			} else if value.Valid {
 				r.Domain = value.String
+			}
+		case review.FieldAppID:
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field app_id", values[i])
+			} else if value != nil {
+				r.AppID = *value
 			}
 		case review.FieldObjectID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
@@ -154,6 +162,8 @@ func (r *Review) String() string {
 	builder.WriteString(r.ObjectType)
 	builder.WriteString(", domain=")
 	builder.WriteString(r.Domain)
+	builder.WriteString(", app_id=")
+	builder.WriteString(fmt.Sprintf("%v", r.AppID))
 	builder.WriteString(", object_id=")
 	builder.WriteString(fmt.Sprintf("%v", r.ObjectID))
 	builder.WriteString(", reviewer_id=")

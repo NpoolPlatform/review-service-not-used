@@ -13,6 +13,7 @@ var (
 		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "object_type", Type: field.TypeString},
 		{Name: "domain", Type: field.TypeString},
+		{Name: "app_id", Type: field.TypeUUID},
 		{Name: "object_id", Type: field.TypeUUID},
 		{Name: "reviewer_id", Type: field.TypeUUID},
 		{Name: "state", Type: field.TypeEnum, Enums: []string{"wait", "approved", "rejected"}},

@@ -17,6 +17,8 @@ const (
 	FieldObjectType = "object_type"
 	// FieldDomain holds the string denoting the domain field in the database.
 	FieldDomain = "domain"
+	// FieldAppID holds the string denoting the app_id field in the database.
+	FieldAppID = "app_id"
 	// FieldObjectID holds the string denoting the object_id field in the database.
 	FieldObjectID = "object_id"
 	// FieldReviewerID holds the string denoting the reviewer_id field in the database.
@@ -40,6 +42,7 @@ var Columns = []string{
 	FieldID,
 	FieldObjectType,
 	FieldDomain,
+	FieldAppID,
 	FieldObjectID,
 	FieldReviewerID,
 	FieldState,

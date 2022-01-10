@@ -36,6 +36,7 @@ type ReviewMutation struct {
 	id            *uuid.UUID
 	object_type   *string
 	domain        *string
+	app_id        *uuid.UUID
 	object_id     *uuid.UUID
 	reviewer_id   *uuid.UUID
 	state         *review.State
@@ -207,6 +208,42 @@ func (m *ReviewMutation) OldDomain(ctx context.Context) (v string, err error) {
 // ResetDomain resets all changes to the "domain" field.
 func (m *ReviewMutation) ResetDomain() {
 	m.domain = nil
+}
+
+// SetAppID sets the "app_id" field.
+func (m *ReviewMutation) SetAppID(u uuid.UUID) {
+	m.app_id = &u
+}
+
+// AppID returns the value of the "app_id" field in the mutation.
+func (m *ReviewMutation) AppID() (r uuid.UUID, exists bool) {
+	v := m.app_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAppID returns the old "app_id" field's value of the Review entity.
+// If the Review object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ReviewMutation) OldAppID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldAppID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldAppID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAppID: %w", err)
+	}
+	return oldValue.AppID, nil
+}
+
+// ResetAppID resets all changes to the "app_id" field.
+func (m *ReviewMutation) ResetAppID() {
+	m.app_id = nil
 }
 
 // SetObjectID sets the "object_id" field.
@@ -540,12 +577,15 @@ func (m *ReviewMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ReviewMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 10)
 	if m.object_type != nil {
 		fields = append(fields, review.FieldObjectType)
 	}
 	if m.domain != nil {
 		fields = append(fields, review.FieldDomain)
+	}
+	if m.app_id != nil {
+		fields = append(fields, review.FieldAppID)
 	}
 	if m.object_id != nil {
 		fields = append(fields, review.FieldObjectID)
@@ -580,6 +620,8 @@ func (m *ReviewMutation) Field(name string) (ent.Value, bool) {
 		return m.ObjectType()
 	case review.FieldDomain:
 		return m.Domain()
+	case review.FieldAppID:
+		return m.AppID()
 	case review.FieldObjectID:
 		return m.ObjectID()
 	case review.FieldReviewerID:
@@ -607,6 +649,8 @@ func (m *ReviewMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldObjectType(ctx)
 	case review.FieldDomain:
 		return m.OldDomain(ctx)
+	case review.FieldAppID:
+		return m.OldAppID(ctx)
 	case review.FieldObjectID:
 		return m.OldObjectID(ctx)
 	case review.FieldReviewerID:
@@ -643,6 +687,13 @@ func (m *ReviewMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDomain(v)
+		return nil
+	case review.FieldAppID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAppID(v)
 		return nil
 	case review.FieldObjectID:
 		v, ok := value.(uuid.UUID)
@@ -786,6 +837,9 @@ func (m *ReviewMutation) ResetField(name string) error {
 		return nil
 	case review.FieldDomain:
 		m.ResetDomain()
+		return nil
+	case review.FieldAppID:
+		m.ResetAppID()
 		return nil
 	case review.FieldObjectID:
 		m.ResetObjectID()

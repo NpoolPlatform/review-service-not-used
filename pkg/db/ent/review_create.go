@@ -35,6 +35,12 @@ func (rc *ReviewCreate) SetDomain(s string) *ReviewCreate {
 	return rc
 }
 
+// SetAppID sets the "app_id" field.
+func (rc *ReviewCreate) SetAppID(u uuid.UUID) *ReviewCreate {
+	rc.mutation.SetAppID(u)
+	return rc
+}
+
 // SetObjectID sets the "object_id" field.
 func (rc *ReviewCreate) SetObjectID(u uuid.UUID) *ReviewCreate {
 	rc.mutation.SetObjectID(u)
@@ -204,6 +210,9 @@ func (rc *ReviewCreate) check() error {
 	if _, ok := rc.mutation.Domain(); !ok {
 		return &ValidationError{Name: "domain", err: errors.New(`ent: missing required field "domain"`)}
 	}
+	if _, ok := rc.mutation.AppID(); !ok {
+		return &ValidationError{Name: "app_id", err: errors.New(`ent: missing required field "app_id"`)}
+	}
 	if _, ok := rc.mutation.ObjectID(); !ok {
 		return &ValidationError{Name: "object_id", err: errors.New(`ent: missing required field "object_id"`)}
 	}
@@ -278,6 +287,14 @@ func (rc *ReviewCreate) createSpec() (*Review, *sqlgraph.CreateSpec) {
 			Column: review.FieldDomain,
 		})
 		_node.Domain = value
+	}
+	if value, ok := rc.mutation.AppID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: review.FieldAppID,
+		})
+		_node.AppID = value
 	}
 	if value, ok := rc.mutation.ObjectID(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -410,6 +427,18 @@ func (u *ReviewUpsert) SetDomain(v string) *ReviewUpsert {
 // UpdateDomain sets the "domain" field to the value that was provided on create.
 func (u *ReviewUpsert) UpdateDomain() *ReviewUpsert {
 	u.SetExcluded(review.FieldDomain)
+	return u
+}
+
+// SetAppID sets the "app_id" field.
+func (u *ReviewUpsert) SetAppID(v uuid.UUID) *ReviewUpsert {
+	u.Set(review.FieldAppID, v)
+	return u
+}
+
+// UpdateAppID sets the "app_id" field to the value that was provided on create.
+func (u *ReviewUpsert) UpdateAppID() *ReviewUpsert {
+	u.SetExcluded(review.FieldAppID)
 	return u
 }
 
@@ -572,6 +601,20 @@ func (u *ReviewUpsertOne) SetDomain(v string) *ReviewUpsertOne {
 func (u *ReviewUpsertOne) UpdateDomain() *ReviewUpsertOne {
 	return u.Update(func(s *ReviewUpsert) {
 		s.UpdateDomain()
+	})
+}
+
+// SetAppID sets the "app_id" field.
+func (u *ReviewUpsertOne) SetAppID(v uuid.UUID) *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetAppID(v)
+	})
+}
+
+// UpdateAppID sets the "app_id" field to the value that was provided on create.
+func (u *ReviewUpsertOne) UpdateAppID() *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateAppID()
 	})
 }
 
@@ -914,6 +957,20 @@ func (u *ReviewUpsertBulk) SetDomain(v string) *ReviewUpsertBulk {
 func (u *ReviewUpsertBulk) UpdateDomain() *ReviewUpsertBulk {
 	return u.Update(func(s *ReviewUpsert) {
 		s.UpdateDomain()
+	})
+}
+
+// SetAppID sets the "app_id" field.
+func (u *ReviewUpsertBulk) SetAppID(v uuid.UUID) *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetAppID(v)
+	})
+}
+
+// UpdateAppID sets the "app_id" field to the value that was provided on create.
+func (u *ReviewUpsertBulk) UpdateAppID() *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateAppID()
 	})
 }
 

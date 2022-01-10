@@ -232,6 +232,7 @@
 | ----- | ---- | ----- | ----------- |
 | ID | [string](#string) |  |  |
 | ObjectType | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 | ReviewerID | [string](#string) |  |  |
 | State | [string](#string) |  |  |
 | Message | [string](#string) |  |  |

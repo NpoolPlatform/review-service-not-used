@@ -25,6 +25,7 @@ func (Review) Fields() []ent.Field {
 			Unique(),
 		field.String("object_type"),
 		field.String("domain"),
+		field.UUID("app_id", uuid.UUID{}),
 		field.UUID("object_id", uuid.UUID{}),
 		field.UUID("reviewer_id", uuid.UUID{}),
 		field.Enum("state").

@@ -39,6 +39,12 @@ func (ru *ReviewUpdate) SetDomain(s string) *ReviewUpdate {
 	return ru
 }
 
+// SetAppID sets the "app_id" field.
+func (ru *ReviewUpdate) SetAppID(u uuid.UUID) *ReviewUpdate {
+	ru.mutation.SetAppID(u)
+	return ru
+}
+
 // SetObjectID sets the "object_id" field.
 func (ru *ReviewUpdate) SetObjectID(u uuid.UUID) *ReviewUpdate {
 	ru.mutation.SetObjectID(u)
@@ -234,6 +240,13 @@ func (ru *ReviewUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: review.FieldDomain,
 		})
 	}
+	if value, ok := ru.mutation.AppID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: review.FieldAppID,
+		})
+	}
 	if value, ok := ru.mutation.ObjectID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
@@ -332,6 +345,12 @@ func (ruo *ReviewUpdateOne) SetObjectType(s string) *ReviewUpdateOne {
 // SetDomain sets the "domain" field.
 func (ruo *ReviewUpdateOne) SetDomain(s string) *ReviewUpdateOne {
 	ruo.mutation.SetDomain(s)
+	return ruo
+}
+
+// SetAppID sets the "app_id" field.
+func (ruo *ReviewUpdateOne) SetAppID(u uuid.UUID) *ReviewUpdateOne {
+	ruo.mutation.SetAppID(u)
 	return ruo
 }
 
@@ -552,6 +571,13 @@ func (ruo *ReviewUpdateOne) sqlSave(ctx context.Context) (_node *Review, err err
 			Type:   field.TypeString,
 			Value:  value,
 			Column: review.FieldDomain,
+		})
+	}
+	if value, ok := ruo.mutation.AppID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: review.FieldAppID,
 		})
 	}
 	if value, ok := ruo.mutation.ObjectID(); ok {

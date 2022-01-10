@@ -86,13 +86,14 @@ message VersionResponse {
 }
 
 message Review {
-    string ID = 200;
-    string ObjectType = 201;
-    string ReviewerID = 202;
-    string State = 203;
-    string Message = 204;
-    string ObjectID = 205;
-    string Domain = 206;
+    string ID = 10;
+    string ObjectType = 20;
+    string AppID = 30;
+    string ReviewerID = 40;
+    string State = 50;
+    string Message = 60;
+    string ObjectID = 70;
+    string Domain = 80;
 }
 
 message CreateReviewRequest {
