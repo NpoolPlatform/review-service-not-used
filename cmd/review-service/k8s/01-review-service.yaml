@@ -46,8 +46,14 @@ metadata:
   namespace: kube-system
 spec:
   ports:
-  - name: api
+  - name: http
     port: 50050
     targetPort: 50050
+  - name: grpc
+    port: 50051
+    targetPort: 50051
+  - name: prometheus
+    port: 50052
+    targetPort: 50052
   selector:
     app: review-service
