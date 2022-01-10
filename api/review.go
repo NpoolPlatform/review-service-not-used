@@ -34,11 +34,11 @@ func (s *Server) UpdateReview(ctx context.Context, in *npool.UpdateReviewRequest
 	return resp, nil
 }
 
-func (s *Server) GetReviewsByDomain(ctx context.Context, in *npool.GetReviewsByDomainRequest) (*npool.GetReviewsByDomainResponse, error) {
-	resp, err := review.GetByDomain(ctx, in)
+func (s *Server) GetReviewsByAppDomain(ctx context.Context, in *npool.GetReviewsByAppDomainRequest) (*npool.GetReviewsByAppDomainResponse, error) {
+	resp, err := review.GetByAppDomain(ctx, in)
 	if err != nil {
-		logger.Sugar().Errorw("get reviews by domain error: %v", err)
-		return &npool.GetReviewsByDomainResponse{}, status.Error(codes.Internal, "internal server error")
+		logger.Sugar().Errorw("get reviews by app domain error: %v", err)
+		return &npool.GetReviewsByAppDomainResponse{}, status.Error(codes.Internal, "internal server error")
 	}
 	return resp, nil
 }

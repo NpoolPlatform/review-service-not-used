@@ -76,13 +76,14 @@ func TestCreateReview(t *testing.T) { //nolint
 
 	resp, err = cli.R().
 		SetHeader("Content-Type", "application/json").
-		SetBody(npool.GetReviewsByDomainRequest{
+		SetBody(npool.GetReviewsByAppDomainRequest{
+			AppID:  review.AppID,
 			Domain: review.Domain,
 		}).
-		Post("http://localhost:50050/v1/get/reviews/by/domain")
+		Post("http://localhost:50050/v1/get/reviews/by/app/domain")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp.StatusCode())
-		info := npool.GetReviewsByDomainResponse{}
+		info := npool.GetReviewsByAppDomainResponse{}
 		err := json.Unmarshal(resp.Body(), &info)
 		if assert.Nil(t, err) {
 			assert.Equal(t, len(info.Infos), 1)

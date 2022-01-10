@@ -134,8 +134,8 @@ func local_request_ReviewService_UpdateReview_0(ctx context.Context, marshaler r
 
 }
 
-func request_ReviewService_GetReviewsByDomain_0(ctx context.Context, marshaler runtime.Marshaler, client ReviewServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetReviewsByDomainRequest
+func request_ReviewService_GetReviewsByAppDomain_0(ctx context.Context, marshaler runtime.Marshaler, client ReviewServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetReviewsByAppDomainRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -146,13 +146,13 @@ func request_ReviewService_GetReviewsByDomain_0(ctx context.Context, marshaler r
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.GetReviewsByDomain(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.GetReviewsByAppDomain(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_ReviewService_GetReviewsByDomain_0(ctx context.Context, marshaler runtime.Marshaler, server ReviewServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetReviewsByDomainRequest
+func local_request_ReviewService_GetReviewsByAppDomain_0(ctx context.Context, marshaler runtime.Marshaler, server ReviewServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetReviewsByAppDomainRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -163,7 +163,7 @@ func local_request_ReviewService_GetReviewsByDomain_0(ctx context.Context, marsh
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.GetReviewsByDomain(ctx, &protoReq)
+	msg, err := server.GetReviewsByAppDomain(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -481,18 +481,18 @@ func RegisterReviewServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 
 	})
 
-	mux.Handle("POST", pattern_ReviewService_GetReviewsByDomain_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_ReviewService_GetReviewsByAppDomain_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/review.service.v1.ReviewService/GetReviewsByDomain", runtime.WithHTTPPathPattern("/v1/get/reviews/by/domain"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/review.service.v1.ReviewService/GetReviewsByAppDomain", runtime.WithHTTPPathPattern("/v1/get/reviews/by/app/domain"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_ReviewService_GetReviewsByDomain_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_ReviewService_GetReviewsByAppDomain_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -500,7 +500,7 @@ func RegisterReviewServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 			return
 		}
 
-		forward_ReviewService_GetReviewsByDomain_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ReviewService_GetReviewsByAppDomain_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -766,23 +766,23 @@ func RegisterReviewServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 
 	})
 
-	mux.Handle("POST", pattern_ReviewService_GetReviewsByDomain_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_ReviewService_GetReviewsByAppDomain_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/review.service.v1.ReviewService/GetReviewsByDomain", runtime.WithHTTPPathPattern("/v1/get/reviews/by/domain"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/review.service.v1.ReviewService/GetReviewsByAppDomain", runtime.WithHTTPPathPattern("/v1/get/reviews/by/app/domain"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_ReviewService_GetReviewsByDomain_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_ReviewService_GetReviewsByAppDomain_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_ReviewService_GetReviewsByDomain_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ReviewService_GetReviewsByAppDomain_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -936,7 +936,7 @@ var (
 
 	pattern_ReviewService_UpdateReview_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "update", "review"}, ""))
 
-	pattern_ReviewService_GetReviewsByDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4}, []string{"v1", "get", "reviews", "by", "domain"}, ""))
+	pattern_ReviewService_GetReviewsByAppDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 2, 5}, []string{"v1", "get", "reviews", "by", "app", "domain"}, ""))
 
 	pattern_ReviewService_SubmitReview_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "submit", "review"}, ""))
 
@@ -960,7 +960,7 @@ var (
 
 	forward_ReviewService_UpdateReview_0 = runtime.ForwardResponseMessage
 
-	forward_ReviewService_GetReviewsByDomain_0 = runtime.ForwardResponseMessage
+	forward_ReviewService_GetReviewsByAppDomain_0 = runtime.ForwardResponseMessage
 
 	forward_ReviewService_SubmitReview_0 = runtime.ForwardResponseMessage
 

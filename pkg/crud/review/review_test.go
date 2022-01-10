@@ -68,7 +68,8 @@ func TestCRUD(t *testing.T) {
 		assertReview(t, resp1.Info, &review)
 	}
 
-	resp2, err := GetByDomain(context.Background(), &npool.GetReviewsByDomainRequest{
+	resp2, err := GetByAppDomain(context.Background(), &npool.GetReviewsByAppDomainRequest{
+		AppID:  review.AppID,
 		Domain: review.Domain,
 	})
 	if assert.Nil(t, err) {
