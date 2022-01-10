@@ -29,6 +29,12 @@ service ReviewService {
             body: "*"
         };
     }
+    rpc GetReviewsByDomain(GetReviewsByDomainRequest) returns (GetReviewsByDomainResponse) {
+        option (google.api.http) = {
+            post: "/v1/get/reviews/by/domain"
+            body: "*"
+        };
+    }
     rpc GetReviewsByAppDomain(GetReviewsByAppDomainRequest) returns (GetReviewsByAppDomainResponse) {
         option (google.api.http) = {
             post: "/v1/get/reviews/by/app/domain"
@@ -110,6 +116,14 @@ message UpdateReviewRequest {
 
 message UpdateReviewResponse {
     Review Info = 600;
+}
+
+message GetReviewsByDomainRequest {
+    string Domain = 10;
+}
+
+message GetReviewsByDomainResponse {
+    repeated Review Infos = 800;
 }
 
 message GetReviewsByAppDomainRequest {

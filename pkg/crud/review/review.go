@@ -23,9 +23,6 @@ func validateReview(info *npool.Review) error {
 	if _, err := uuid.Parse(info.GetObjectID()); err != nil {
 		return xerrors.Errorf("invalid object id: %v", err)
 	}
-	if _, err := uuid.Parse(info.GetAppID()); err != nil {
-		return xerrors.Errorf("invalid app id: %v", err)
-	}
 	if info.GetDomain() == "" {
 		return xerrors.Errorf("invalid domain")
 	}
@@ -50,6 +47,11 @@ func Create(ctx context.Context, in *npool.CreateReviewRequest) (*npool.CreateRe
 		return nil, xerrors.Errorf("invalid patameter: %v", err)
 	}
 
+	appID, err := uuid.Parse(in.GetInfo().GetAppID())
+	if err != nil {
+		appID = uuid.UUID{}
+	}
+
 	cli, err := db.Client()
 	if err != nil {
 		return nil, xerrors.Errorf("fail get db client: %v", err)
@@ -66,7 +68,7 @@ func Create(ctx context.Context, in *npool.CreateReviewRequest) (*npool.CreateRe
 		SetMessage("").
 		SetReviewerID(uuid.UUID{}).
 		SetObjectID(uuid.MustParse(in.GetInfo().GetObjectID())).
-		SetAppID(uuid.MustParse(in.GetInfo().GetAppID())).
+		SetAppID(appID).
 		SetDomain(in.GetInfo().GetDomain()).
 		Save(ctx)
 	if err != nil {
@@ -119,6 +121,44 @@ func GetByAppDomain(ctx context.Context, in *npool.GetReviewsByAppDomainRequest)
 		return nil, xerrors.Errorf("fail get db client: %v", err)
 	}
 
+	appID, err := uuid.Parse(in.GetAppID())
+	if err != nil {
+		return nil, xerrors.Errorf("invalid app id: %v", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	infos, err := cli.
+		Review.
+		Query().
+		Where(
+			review.And(
+				review.AppID(appID),
+				review.Domain(in.GetDomain()),
+			),
+		).
+		All(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail query review: %v", err)
+	}
+
+	reviews := []*npool.Review{}
+	for _, info := range infos {
+		reviews = append(reviews, dbRowToReview(info))
+	}
+
+	return &npool.GetReviewsByAppDomainResponse{
+		Infos: reviews,
+	}, nil
+}
+
+func GetByDomain(ctx context.Context, in *npool.GetReviewsByDomainRequest) (*npool.GetReviewsByDomainResponse, error) {
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
 	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
 	defer cancel()
 
@@ -140,7 +180,7 @@ func GetByAppDomain(ctx context.Context, in *npool.GetReviewsByAppDomainRequest)
 		reviews = append(reviews, dbRowToReview(info))
 	}
 
-	return &npool.GetReviewsByAppDomainResponse{
+	return &npool.GetReviewsByDomainResponse{
 		Infos: reviews,
 	}, nil
 }

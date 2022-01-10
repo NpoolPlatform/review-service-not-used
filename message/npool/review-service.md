@@ -16,6 +16,8 @@
     - [GetReviewRulesByDomainResponse](#review.service.v1.GetReviewRulesByDomainResponse)
     - [GetReviewsByAppDomainRequest](#review.service.v1.GetReviewsByAppDomainRequest)
     - [GetReviewsByAppDomainResponse](#review.service.v1.GetReviewsByAppDomainResponse)
+    - [GetReviewsByDomainRequest](#review.service.v1.GetReviewsByDomainRequest)
+    - [GetReviewsByDomainResponse](#review.service.v1.GetReviewsByDomainResponse)
     - [Review](#review.service.v1.Review)
     - [ReviewRule](#review.service.v1.ReviewRule)
     - [SubmitReviewRequest](#review.service.v1.SubmitReviewRequest)
@@ -223,6 +225,36 @@
 
 
 
+<a name="review.service.v1.GetReviewsByDomainRequest"></a>
+
+### GetReviewsByDomainRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Domain | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="review.service.v1.GetReviewsByDomainResponse"></a>
+
+### GetReviewsByDomainResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Infos | [Review](#review.service.v1.Review) | repeated |  |
+
+
+
+
+
+
 <a name="review.service.v1.Review"></a>
 
 ### Review
@@ -414,6 +446,7 @@ Service Name
 | Version | [.google.protobuf.Empty](#google.protobuf.Empty) | [VersionResponse](#review.service.v1.VersionResponse) | Method Version |
 | CreateReview | [CreateReviewRequest](#review.service.v1.CreateReviewRequest) | [CreateReviewResponse](#review.service.v1.CreateReviewResponse) |  |
 | UpdateReview | [UpdateReviewRequest](#review.service.v1.UpdateReviewRequest) | [UpdateReviewResponse](#review.service.v1.UpdateReviewResponse) |  |
+| GetReviewsByDomain | [GetReviewsByDomainRequest](#review.service.v1.GetReviewsByDomainRequest) | [GetReviewsByDomainResponse](#review.service.v1.GetReviewsByDomainResponse) |  |
 | GetReviewsByAppDomain | [GetReviewsByAppDomainRequest](#review.service.v1.GetReviewsByAppDomainRequest) | [GetReviewsByAppDomainResponse](#review.service.v1.GetReviewsByAppDomainResponse) |  |
 | SubmitReview | [SubmitReviewRequest](#review.service.v1.SubmitReviewRequest) | [SubmitReviewResponse](#review.service.v1.SubmitReviewResponse) |  |
 | SubmitReviewResult | [SubmitReviewResultRequest](#review.service.v1.SubmitReviewResultRequest) | [SubmitReviewResultResponse](#review.service.v1.SubmitReviewResultResponse) |  |
