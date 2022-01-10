@@ -41,6 +41,7 @@ func TestCRUD(t *testing.T) {
 		ObjectType: "good",
 		State:      "wait",
 		ObjectID:   uuid.New().String(),
+		AppID:      uuid.New().String(),
 		Domain:     fmt.Sprintf("cloud-hashing-goods-npool-top-%v", uuid.New().String()),
 	}
 
