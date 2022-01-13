@@ -74,7 +74,7 @@ func (s *Server) SubmitReviewResult(ctx context.Context, in *npool.SubmitReviewR
 }
 
 func (s *Server) GetReviewsByObjectIDs(ctx context.Context, in *npool.GetReviewsByObjectIDsRequest) (*npool.GetReviewsByObjectIDsResponse, error) {
-	if in.GetObjectIDs() == nil {
+	if in.GetObjectIDs() == nil || len(in.GetObjectIDs()) == 0 {
 		logger.Sugar().Error("GetReviewsByObjectIDs error: object ids can not be empty")
 		return nil, status.Error(codes.InvalidArgument, "object ids can not be empty")
 	}
