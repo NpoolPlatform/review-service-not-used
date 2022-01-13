@@ -32,6 +32,7 @@ type ReviewServiceClient interface {
 	GetReviewRule(ctx context.Context, in *GetReviewRuleRequest, opts ...grpc.CallOption) (*GetReviewRuleResponse, error)
 	GetReviewRulesByDomain(ctx context.Context, in *GetReviewRulesByDomainRequest, opts ...grpc.CallOption) (*GetReviewRulesByDomainResponse, error)
 	GetReviewRuleByDomainObjectType(ctx context.Context, in *GetReviewRuleByDomainObjectTypeRequest, opts ...grpc.CallOption) (*GetReviewRuleByDomainObjectTypeResponse, error)
+	GetReviewsByObjectIDs(ctx context.Context, in *GetReviewsByObjectIDsRequest, opts ...grpc.CallOption) (*GetReviewsByObjectIDsResponse, error)
 }
 
 type reviewServiceClient struct {
@@ -150,6 +151,15 @@ func (c *reviewServiceClient) GetReviewRuleByDomainObjectType(ctx context.Contex
 	return out, nil
 }
 
+func (c *reviewServiceClient) GetReviewsByObjectIDs(ctx context.Context, in *GetReviewsByObjectIDsRequest, opts ...grpc.CallOption) (*GetReviewsByObjectIDsResponse, error) {
+	out := new(GetReviewsByObjectIDsResponse)
+	err := c.cc.Invoke(ctx, "/review.service.v1.ReviewService/GetReviewsByObjectIDs", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ReviewServiceServer is the server API for ReviewService service.
 // All implementations must embed UnimplementedReviewServiceServer
 // for forward compatibility
@@ -167,6 +177,7 @@ type ReviewServiceServer interface {
 	GetReviewRule(context.Context, *GetReviewRuleRequest) (*GetReviewRuleResponse, error)
 	GetReviewRulesByDomain(context.Context, *GetReviewRulesByDomainRequest) (*GetReviewRulesByDomainResponse, error)
 	GetReviewRuleByDomainObjectType(context.Context, *GetReviewRuleByDomainObjectTypeRequest) (*GetReviewRuleByDomainObjectTypeResponse, error)
+	GetReviewsByObjectIDs(context.Context, *GetReviewsByObjectIDsRequest) (*GetReviewsByObjectIDsResponse, error)
 	mustEmbedUnimplementedReviewServiceServer()
 }
 
@@ -209,6 +220,9 @@ func (UnimplementedReviewServiceServer) GetReviewRulesByDomain(context.Context, 
 }
 func (UnimplementedReviewServiceServer) GetReviewRuleByDomainObjectType(context.Context, *GetReviewRuleByDomainObjectTypeRequest) (*GetReviewRuleByDomainObjectTypeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetReviewRuleByDomainObjectType not implemented")
+}
+func (UnimplementedReviewServiceServer) GetReviewsByObjectIDs(context.Context, *GetReviewsByObjectIDsRequest) (*GetReviewsByObjectIDsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetReviewsByObjectIDs not implemented")
 }
 func (UnimplementedReviewServiceServer) mustEmbedUnimplementedReviewServiceServer() {}
 
@@ -439,6 +453,24 @@ func _ReviewService_GetReviewRuleByDomainObjectType_Handler(srv interface{}, ctx
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ReviewService_GetReviewsByObjectIDs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetReviewsByObjectIDsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReviewServiceServer).GetReviewsByObjectIDs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/review.service.v1.ReviewService/GetReviewsByObjectIDs",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReviewServiceServer).GetReviewsByObjectIDs(ctx, req.(*GetReviewsByObjectIDsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ReviewService_ServiceDesc is the grpc.ServiceDesc for ReviewService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -493,6 +525,10 @@ var ReviewService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetReviewRuleByDomainObjectType",
 			Handler:    _ReviewService_GetReviewRuleByDomainObjectType_Handler,
+		},
+		{
+			MethodName: "GetReviewsByObjectIDs",
+			Handler:    _ReviewService_GetReviewsByObjectIDs_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

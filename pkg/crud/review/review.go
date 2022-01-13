@@ -184,3 +184,24 @@ func GetByDomain(ctx context.Context, in *npool.GetReviewsByDomainRequest) (*npo
 		Infos: reviews,
 	}, nil
 }
+
+func GetByObjectIDs(ctx context.Context, objectIDs []uuid.UUID) ([]*npool.Review, error) {
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	infos, err := cli.Review.Query().Where(
+		review.ObjectIDIn(objectIDs...),
+	).All(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	response := []*npool.Review{}
+	for _, info := range infos {
+		response = append(response, dbRowToReview(info))
+	}
+
+	return response, nil
+}

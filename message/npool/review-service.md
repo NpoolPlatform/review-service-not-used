@@ -18,6 +18,8 @@
     - [GetReviewsByAppDomainResponse](#review.service.v1.GetReviewsByAppDomainResponse)
     - [GetReviewsByDomainRequest](#review.service.v1.GetReviewsByDomainRequest)
     - [GetReviewsByDomainResponse](#review.service.v1.GetReviewsByDomainResponse)
+    - [GetReviewsByObjectIDsRequest](#review.service.v1.GetReviewsByObjectIDsRequest)
+    - [GetReviewsByObjectIDsResponse](#review.service.v1.GetReviewsByObjectIDsResponse)
     - [Review](#review.service.v1.Review)
     - [ReviewRule](#review.service.v1.ReviewRule)
     - [SubmitReviewRequest](#review.service.v1.SubmitReviewRequest)
@@ -255,6 +257,36 @@
 
 
 
+<a name="review.service.v1.GetReviewsByObjectIDsRequest"></a>
+
+### GetReviewsByObjectIDsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| ObjectIDs | [string](#string) | repeated |  |
+
+
+
+
+
+
+<a name="review.service.v1.GetReviewsByObjectIDsResponse"></a>
+
+### GetReviewsByObjectIDsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Infos | [Review](#review.service.v1.Review) | repeated |  |
+
+
+
+
+
+
 <a name="review.service.v1.Review"></a>
 
 ### Review
@@ -455,6 +487,7 @@ Service Name
 | GetReviewRule | [GetReviewRuleRequest](#review.service.v1.GetReviewRuleRequest) | [GetReviewRuleResponse](#review.service.v1.GetReviewRuleResponse) |  |
 | GetReviewRulesByDomain | [GetReviewRulesByDomainRequest](#review.service.v1.GetReviewRulesByDomainRequest) | [GetReviewRulesByDomainResponse](#review.service.v1.GetReviewRulesByDomainResponse) |  |
 | GetReviewRuleByDomainObjectType | [GetReviewRuleByDomainObjectTypeRequest](#review.service.v1.GetReviewRuleByDomainObjectTypeRequest) | [GetReviewRuleByDomainObjectTypeResponse](#review.service.v1.GetReviewRuleByDomainObjectTypeResponse) |  |
+| GetReviewsByObjectIDs | [GetReviewsByObjectIDsRequest](#review.service.v1.GetReviewsByObjectIDsRequest) | [GetReviewsByObjectIDsResponse](#review.service.v1.GetReviewsByObjectIDsResponse) |  |
 
  
 

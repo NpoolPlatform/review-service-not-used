@@ -84,6 +84,12 @@ service ReviewService {
             body: "*"
         };
     }
+    rpc GetReviewsByObjectIDs (GetReviewsByObjectIDsRequest) returns (GetReviewsByObjectIDsResponse) {
+        option (google.api.http) = {
+            post: "/v1/get/reviews/by/object/ids"
+            body: "*"
+        };
+    }
 }
 
 // request body and response
@@ -197,4 +203,12 @@ message SubmitReviewResultRequest {
 
 message SubmitReviewResultResponse {
     Review Info = 10;
+}
+
+message GetReviewsByObjectIDsRequest {
+    repeated string ObjectIDs = 1;
+}
+
+message GetReviewsByObjectIDsResponse {
+    repeated Review Infos = 1;
 }
