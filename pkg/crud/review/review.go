@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/NpoolPlatform/review-service/message/npool"
+	npool "github.com/NpoolPlatform/message/npool/review-service"
 
 	"github.com/NpoolPlatform/review-service/pkg/db"
 	"github.com/NpoolPlatform/review-service/pkg/db/ent"

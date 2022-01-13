@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package review.service.v1;
 
-option go_package = "github.com/NpoolPlatform/review-service/message/npool";
+option go_package = npool "github.com/NpoolPlatform/message/npool/review-service";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";

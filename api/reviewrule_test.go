@@ -11,7 +11,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/NpoolPlatform/review-service/message/npool"
+	npool "github.com/NpoolPlatform/message/npool/review-service"
 )
 
 func assertReviewRule(t *testing.T, actual, expected *npool.ReviewRule) {

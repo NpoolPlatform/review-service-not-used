@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/NpoolPlatform/review-service/message/npool"
+	npool "github.com/NpoolPlatform/message/npool/review-service"
 	constant "github.com/NpoolPlatform/review-service/pkg/const" //nolint
 	crud "github.com/NpoolPlatform/review-service/pkg/crud/review"
 
