@@ -5,7 +5,6 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
-	"entgo.io/ent/schema/index"
 
 	constant "github.com/NpoolPlatform/review-service/pkg/const" //nolint
 
@@ -58,8 +57,5 @@ func (Review) Edges() []ent.Edge {
 
 // Indexs of the Review.
 func (Review) Indexs() []ent.Index {
-	return []ent.Index{
-		index.Fields("domain", "object_type", "object_id").
-			Unique(),
-	}
+	return nil
 }
