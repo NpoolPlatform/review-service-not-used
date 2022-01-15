@@ -184,3 +184,48 @@ func GetByDomain(ctx context.Context, in *npool.GetReviewsByDomainRequest) (*npo
 		Infos: reviews,
 	}, nil
 }
+
+func GetByAppDomainObjectTypeID(ctx context.Context, in *npool.GetReviewsByAppDomainObjectTypeIDRequest) (*npool.GetReviewsByAppDomainObjectTypeIDResponse, error) {
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	appID, err := uuid.Parse(in.GetAppID())
+	if err != nil {
+		return nil, xerrors.Errorf("invalid app id: %v", err)
+	}
+
+	objectID, err := uuid.Parse(in.GetObjectID())
+	if err != nil {
+		return nil, xerrors.Errorf("invalid object id: %v", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	infos, err := cli.
+		Review.
+		Query().
+		Where(
+			review.And(
+				review.AppID(appID),
+				review.Domain(in.GetDomain()),
+				review.ObjectID(objectID),
+				review.ObjectType(in.GetObjectType()),
+			),
+		).
+		All(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail query review: %v", err)
+	}
+
+	reviews := []*npool.Review{}
+	for _, info := range infos {
+		reviews = append(reviews, dbRowToReview(info))
+	}
+
+	return &npool.GetReviewsByAppDomainObjectTypeIDResponse{
+		Infos: reviews,
+	}, nil
+}

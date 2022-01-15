@@ -52,6 +52,15 @@ func (s *Server) GetReviewsByAppDomain(ctx context.Context, in *npool.GetReviews
 	return resp, nil
 }
 
+func (s *Server) GetReviewsByAppDomainObjectTypeID(ctx context.Context, in *npool.GetReviewsByAppDomainObjectTypeIDRequest) (*npool.GetReviewsByAppDomainObjectTypeIDResponse, error) {
+	resp, err := review.GetByAppDomainObjectTypeID(ctx, in)
+	if err != nil {
+		logger.Sugar().Errorw("get reviews by app domain object type id error: %v", err)
+		return &npool.GetReviewsByAppDomainObjectTypeIDResponse{}, status.Error(codes.Internal, "internal server error")
+	}
+	return resp, nil
+}
+
 func (s *Server) SubmitReview(ctx context.Context, in *npool.SubmitReviewRequest) (*npool.SubmitReviewResponse, error) {
 	resp, err := mw.Submit(ctx, in)
 	if err != nil {
