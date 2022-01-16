@@ -20,7 +20,7 @@ func (s *Server) CreateReview(ctx context.Context, in *npool.CreateReviewRequest
 	resp, err := review.Create(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorw("create review error: %v", err)
-		return &npool.CreateReviewResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.CreateReviewResponse{}, status.Error(codes.Internal, err.Error())
 	}
 	return resp, nil
 }
@@ -29,7 +29,7 @@ func (s *Server) UpdateReview(ctx context.Context, in *npool.UpdateReviewRequest
 	resp, err := review.Update(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorw("update review error: %v", err)
-		return &npool.UpdateReviewResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.UpdateReviewResponse{}, status.Error(codes.Internal, err.Error())
 	}
 	return resp, nil
 }
@@ -38,7 +38,7 @@ func (s *Server) GetReviewsByDomain(ctx context.Context, in *npool.GetReviewsByD
 	resp, err := review.GetByDomain(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorw("get reviews by domain error: %v", err)
-		return &npool.GetReviewsByDomainResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.GetReviewsByDomainResponse{}, status.Error(codes.Internal, err.Error())
 	}
 	return resp, nil
 }
@@ -47,7 +47,7 @@ func (s *Server) GetReviewsByAppDomain(ctx context.Context, in *npool.GetReviews
 	resp, err := review.GetByAppDomain(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorw("get reviews by app domain error: %v", err)
-		return &npool.GetReviewsByAppDomainResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.GetReviewsByAppDomainResponse{}, status.Error(codes.Internal, err.Error())
 	}
 	return resp, nil
 }
@@ -56,7 +56,7 @@ func (s *Server) GetReviewsByAppDomainObjectTypeID(ctx context.Context, in *npoo
 	resp, err := review.GetByAppDomainObjectTypeID(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorw("get reviews by app domain object type id error: %v", err)
-		return &npool.GetReviewsByAppDomainObjectTypeIDResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.GetReviewsByAppDomainObjectTypeIDResponse{}, status.Error(codes.Internal, err.Error())
 	}
 	return resp, nil
 }
@@ -65,7 +65,7 @@ func (s *Server) SubmitReview(ctx context.Context, in *npool.SubmitReviewRequest
 	resp, err := mw.Submit(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorw("submit review: %v", err)
-		return &npool.SubmitReviewResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.SubmitReviewResponse{}, status.Error(codes.Internal, err.Error())
 	}
 	return resp, nil
 }
@@ -74,7 +74,7 @@ func (s *Server) SubmitReviewResult(ctx context.Context, in *npool.SubmitReviewR
 	resp, err := mw.SubmitReviewResult(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorw("submit review result: %v", err)
-		return &npool.SubmitReviewResultResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.SubmitReviewResultResponse{}, status.Error(codes.Internal, err.Error())
 	}
 	return resp, nil
 }
