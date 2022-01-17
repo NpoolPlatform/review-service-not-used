@@ -39,6 +39,7 @@ func dbRowToReview(row *ent.Review) *npool.Review {
 		Message:    row.Message,
 		ObjectID:   row.ObjectID.String(),
 		Domain:     row.Domain,
+		CreateAt:   row.CreateAt,
 	}
 }
 

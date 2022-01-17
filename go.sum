@@ -63,8 +63,8 @@ github.com/NpoolPlatform/cloud-hashing-inspire v0.0.0-20211224023242-bd6da311165
 github.com/NpoolPlatform/cloud-hashing-inspire v0.0.0-20211224023242-bd6da3111653/go.mod h1:VBiNGga8uFzy0Pt3Epzx4Dg7RxzM0Y4lzsr+9a7icU8=
 github.com/NpoolPlatform/go-service-framework v0.0.0-20211222114515-4928e6cf3f1f h1:lRODA53ytJrn34SFmwbDRglulni2AJketigyyrNZVpc=
 github.com/NpoolPlatform/go-service-framework v0.0.0-20211222114515-4928e6cf3f1f/go.mod h1:kR7v9OYmi38GLucJoVUOxLYiA3xtLp5TY/fWqrR6WRw=
-github.com/NpoolPlatform/message v0.0.0-20220115121506-39a2f2fb7042 h1:Mz3TFOGuJ4KCX4NIlhAE0IZHUBjFL+2tUTPvZsrtRaE=
-github.com/NpoolPlatform/message v0.0.0-20220115121506-39a2f2fb7042/go.mod h1:zv/FSNmmW0Og/XKErnXrRuLzLeTDMxymEImhjNp/V/w=
+github.com/NpoolPlatform/message v0.0.0-20220117130154-c4cec20181e6 h1:dwWD3GJRN4U8AtyJG3sfDF4ROO4FNq1mUuPQWwisyII=
+github.com/NpoolPlatform/message v0.0.0-20220117130154-c4cec20181e6/go.mod h1:zv/FSNmmW0Og/XKErnXrRuLzLeTDMxymEImhjNp/V/w=
 github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/Shonminh/apollo-client v0.4.0 h1:AXGp4wOahrEKjheMXehgsG9B8dEfLQHttRLHeEefvus=
