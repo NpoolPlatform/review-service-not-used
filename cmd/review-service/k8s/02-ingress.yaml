@@ -15,7 +15,39 @@ spec:
     - host: api.npool.top
       http: &http_rules
         paths:
-          - path: /api/review-service
+          - path: /api/review-service/version
+            backend:
+              serviceName: review-service
+              servicePort: 50050
+    - host: api.xpool.top
+      http: *http_rules
+    - host: www.npool.top
+      http: *http_rules
+    - host: www.xpool.top
+      http: *http_rules
+    - host: dashboard.xpool.top
+      http: *http_rules
+
+---
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: review-service-appid-userid-ingress
+  namespace: kube-system
+  annotations:
+    k8s.kuboard.cn/displayName: review-service-appid-userid
+    k8s.kuboard.cn/workload: review-service-appid-userid
+    kubernetes.io/ingress.class: "traefik-internet"
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-review-service-prefix@kubernetescrd,kube-system-common-headers@kubernetescrd,kube-system-cookies-appid-to-body@kubernetescrd,kube-system-cookies-userid-to-body@kubernetescrd
+
+spec:
+  rules:
+    - host: api.npool.top
+      http: &http_rules
+        paths:
+          - path: /api/review-service/v1/update/review
             backend:
               serviceName: review-service
               servicePort: 50050
