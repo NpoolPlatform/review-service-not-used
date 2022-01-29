@@ -1,6 +1,8 @@
 commonLabels:
-  # app: service-example
+  # app: review-service
 
 resources:
 - 01-review-service.yaml
-- 02-ingress.yaml
+- 02-strip-prefix.yaml
+- 03-traefik-ingress.yaml
+- 04-traefik-vpn-ingress.yaml

@@ -1,16 +1,19 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: review-service-ingress
+  name: review-service-traefik-app-ingress
   namespace: kube-system
   annotations:
-    k8s.kuboard.cn/displayName: review-service
-    k8s.kuboard.cn/workload: review-service
+    k8s.kuboard.cn/displayName: review-service-traefik-app
+    k8s.kuboard.cn/workload: review-service-traefik-app
     kubernetes.io/ingress.class: "traefik-internet"
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
     traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-review-service-prefix@kubernetescrd,
+                                                      kube-system-common-headers@kubernetescrd,
                                                       kube-system-headers-appid-to-body@kubernetescrd,
-                                                      kube-system-common-headers@kubernetescrd
+                                                      kube-system-headers-userid-to-body@kubernetescrd,
+                                                      kube-system-headers-app-login-token-to-body@kubernetescrd,
+                                                      kube-system-app-rbac-auth@kubernetescrd
 
 spec:
   rules:
@@ -21,13 +24,9 @@ spec:
             backend:
               serviceName: review-service
               servicePort: 50050
+    - host: api.procyon.vip
+      http: *http_rules
     - host: api.xpool.top
-      http: *http_rules
-    - host: www.npool.top
-      http: *http_rules
-    - host: www.xpool.top
-      http: *http_rules
-    - host: dashboard.xpool.top
       http: *http_rules
 
 ---
@@ -35,17 +34,19 @@ spec:
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: review-service-appid-userid-ingress
+  name: review-service-traefik-app-user-ingress
   namespace: kube-system
   annotations:
-    k8s.kuboard.cn/displayName: review-service-appid-userid
-    k8s.kuboard.cn/workload: review-service-appid-userid
+    k8s.kuboard.cn/displayName: review-service-traefik-app-user
+    k8s.kuboard.cn/workload: review-service-traefik-app-user
     kubernetes.io/ingress.class: "traefik-internet"
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
     traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-review-service-prefix@kubernetescrd,
                                                       kube-system-common-headers@kubernetescrd,
                                                       kube-system-headers-appid-to-body@kubernetescrd,
-                                                      kube-system-headers-userid-to-body@kubernetescrd
+                                                      kube-system-headers-userid-to-body@kubernetescrd,
+                                                      kube-system-headers-app-login-token-to-body@kubernetescrd,
+                                                      kube-system-app-user-role-rbac-auth@kubernetescrd
 
 spec:
   rules:
@@ -56,23 +57,8 @@ spec:
             backend:
               serviceName: review-service
               servicePort: 50050
+    - host: api.procyon.vip
+      http: *http_rules
     - host: api.xpool.top
       http: *http_rules
-    - host: www.npool.top
-      http: *http_rules
-    - host: www.xpool.top
-      http: *http_rules
-    - host: dashboard.xpool.top
-      http: *http_rules
 
----
-
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: strip-review-service-prefix
-  namespace: kube-system
-spec:
-  stripPrefix:
-    prefixes:
-      - /api/review-service
