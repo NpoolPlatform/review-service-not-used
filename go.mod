@@ -8,7 +8,7 @@ require (
 	github.com/NpoolPlatform/cloud-hashing-goods v0.0.0-20211224023221-a715aef93510
 	github.com/NpoolPlatform/cloud-hashing-inspire v0.0.0-20211224023242-bd6da3111653
 	github.com/NpoolPlatform/go-service-framework v0.0.0-20220120091626-4e8035637592
-	github.com/NpoolPlatform/message v0.0.0-20220214125029-5f2b8c43afb9
+	github.com/NpoolPlatform/message v0.0.0-20220214135004-4df980907997
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/google/uuid v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.2

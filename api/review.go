@@ -25,6 +25,15 @@ func (s *Server) CreateReview(ctx context.Context, in *npool.CreateReviewRequest
 	return resp, nil
 }
 
+func (s *Server) GetReview(ctx context.Context, in *npool.GetReviewRequest) (*npool.GetReviewResponse, error) {
+	resp, err := review.Get(ctx, in)
+	if err != nil {
+		logger.Sugar().Errorw("get review error: %v", err)
+		return &npool.GetReviewResponse{}, status.Error(codes.Internal, err.Error())
+	}
+	return resp, nil
+}
+
 func (s *Server) UpdateReview(ctx context.Context, in *npool.UpdateReviewRequest) (*npool.UpdateReviewResponse, error) {
 	resp, err := review.Update(ctx, in)
 	if err != nil {

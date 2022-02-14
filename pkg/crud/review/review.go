@@ -232,3 +232,39 @@ func GetByAppDomainObjectTypeID(ctx context.Context, in *npool.GetReviewsByAppDo
 		Infos: reviews,
 	}, nil
 }
+
+func Get(ctx context.Context, in *npool.GetReviewRequest) (*npool.GetReviewResponse, error) {
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	id, err := uuid.Parse(in.GetID())
+	if err != nil {
+		return nil, xerrors.Errorf("invalid id: %v", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	infos, err := cli.
+		Review.
+		Query().
+		Where(
+			review.ID(id),
+		).
+		All(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail query review: %v", err)
+	}
+
+	var _review *npool.Review
+	for _, info := range infos {
+		_review = dbRowToReview(info)
+		break
+	}
+
+	return &npool.GetReviewResponse{
+		Info: _review,
+	}, nil
+}
