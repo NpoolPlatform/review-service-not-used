@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql"
@@ -68,7 +69,7 @@ func (rru *ReviewRuleUpdate) SetNillableCreateAt(u *uint32) *ReviewRuleUpdate {
 }
 
 // AddCreateAt adds u to the "create_at" field.
-func (rru *ReviewRuleUpdate) AddCreateAt(u uint32) *ReviewRuleUpdate {
+func (rru *ReviewRuleUpdate) AddCreateAt(u int32) *ReviewRuleUpdate {
 	rru.mutation.AddCreateAt(u)
 	return rru
 }
@@ -81,7 +82,7 @@ func (rru *ReviewRuleUpdate) SetUpdateAt(u uint32) *ReviewRuleUpdate {
 }
 
 // AddUpdateAt adds u to the "update_at" field.
-func (rru *ReviewRuleUpdate) AddUpdateAt(u uint32) *ReviewRuleUpdate {
+func (rru *ReviewRuleUpdate) AddUpdateAt(u int32) *ReviewRuleUpdate {
 	rru.mutation.AddUpdateAt(u)
 	return rru
 }
@@ -102,7 +103,7 @@ func (rru *ReviewRuleUpdate) SetNillableDeleteAt(u *uint32) *ReviewRuleUpdate {
 }
 
 // AddDeleteAt adds u to the "delete_at" field.
-func (rru *ReviewRuleUpdate) AddDeleteAt(u uint32) *ReviewRuleUpdate {
+func (rru *ReviewRuleUpdate) AddDeleteAt(u int32) *ReviewRuleUpdate {
 	rru.mutation.AddDeleteAt(u)
 	return rru
 }
@@ -317,7 +318,7 @@ func (rruo *ReviewRuleUpdateOne) SetNillableCreateAt(u *uint32) *ReviewRuleUpdat
 }
 
 // AddCreateAt adds u to the "create_at" field.
-func (rruo *ReviewRuleUpdateOne) AddCreateAt(u uint32) *ReviewRuleUpdateOne {
+func (rruo *ReviewRuleUpdateOne) AddCreateAt(u int32) *ReviewRuleUpdateOne {
 	rruo.mutation.AddCreateAt(u)
 	return rruo
 }
@@ -330,7 +331,7 @@ func (rruo *ReviewRuleUpdateOne) SetUpdateAt(u uint32) *ReviewRuleUpdateOne {
 }
 
 // AddUpdateAt adds u to the "update_at" field.
-func (rruo *ReviewRuleUpdateOne) AddUpdateAt(u uint32) *ReviewRuleUpdateOne {
+func (rruo *ReviewRuleUpdateOne) AddUpdateAt(u int32) *ReviewRuleUpdateOne {
 	rruo.mutation.AddUpdateAt(u)
 	return rruo
 }
@@ -351,7 +352,7 @@ func (rruo *ReviewRuleUpdateOne) SetNillableDeleteAt(u *uint32) *ReviewRuleUpdat
 }
 
 // AddDeleteAt adds u to the "delete_at" field.
-func (rruo *ReviewRuleUpdateOne) AddDeleteAt(u uint32) *ReviewRuleUpdateOne {
+func (rruo *ReviewRuleUpdateOne) AddDeleteAt(u int32) *ReviewRuleUpdateOne {
 	rruo.mutation.AddDeleteAt(u)
 	return rruo
 }
@@ -444,7 +445,7 @@ func (rruo *ReviewRuleUpdateOne) sqlSave(ctx context.Context) (_node *ReviewRule
 	}
 	id, ok := rruo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing ReviewRule.ID for update")}
+		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "ReviewRule.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := rruo.fields; len(fields) > 0 {

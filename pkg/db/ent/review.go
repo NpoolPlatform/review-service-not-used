@@ -30,6 +30,8 @@ type Review struct {
 	State review.State `json:"state,omitempty"`
 	// Message holds the value of the "message" field.
 	Message string `json:"message,omitempty"`
+	// Trigger holds the value of the "trigger" field.
+	Trigger string `json:"trigger,omitempty"`
 	// CreateAt holds the value of the "create_at" field.
 	CreateAt uint32 `json:"create_at,omitempty"`
 	// UpdateAt holds the value of the "update_at" field.
@@ -45,7 +47,7 @@ func (*Review) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case review.FieldCreateAt, review.FieldUpdateAt, review.FieldDeleteAt:
 			values[i] = new(sql.NullInt64)
-		case review.FieldObjectType, review.FieldDomain, review.FieldState, review.FieldMessage:
+		case review.FieldObjectType, review.FieldDomain, review.FieldState, review.FieldMessage, review.FieldTrigger:
 			values[i] = new(sql.NullString)
 		case review.FieldID, review.FieldAppID, review.FieldObjectID, review.FieldReviewerID:
 			values[i] = new(uuid.UUID)
@@ -112,6 +114,12 @@ func (r *Review) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				r.Message = value.String
 			}
+		case review.FieldTrigger:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field trigger", values[i])
+			} else if value.Valid {
+				r.Trigger = value.String
+			}
 		case review.FieldCreateAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field create_at", values[i])
@@ -172,6 +180,8 @@ func (r *Review) String() string {
 	builder.WriteString(fmt.Sprintf("%v", r.State))
 	builder.WriteString(", message=")
 	builder.WriteString(r.Message)
+	builder.WriteString(", trigger=")
+	builder.WriteString(r.Trigger)
 	builder.WriteString(", create_at=")
 	builder.WriteString(fmt.Sprintf("%v", r.CreateAt))
 	builder.WriteString(", update_at=")

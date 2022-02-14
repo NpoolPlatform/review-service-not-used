@@ -97,6 +97,14 @@ func (rrc *ReviewRuleCreate) SetID(u uuid.UUID) *ReviewRuleCreate {
 	return rrc
 }
 
+// SetNillableID sets the "id" field if the given value is not nil.
+func (rrc *ReviewRuleCreate) SetNillableID(u *uuid.UUID) *ReviewRuleCreate {
+	if u != nil {
+		rrc.SetID(*u)
+	}
+	return rrc
+}
+
 // Mutation returns the ReviewRuleMutation object of the builder.
 func (rrc *ReviewRuleCreate) Mutation() *ReviewRuleMutation {
 	return rrc.mutation
@@ -193,22 +201,22 @@ func (rrc *ReviewRuleCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (rrc *ReviewRuleCreate) check() error {
 	if _, ok := rrc.mutation.ObjectType(); !ok {
-		return &ValidationError{Name: "object_type", err: errors.New(`ent: missing required field "object_type"`)}
+		return &ValidationError{Name: "object_type", err: errors.New(`ent: missing required field "ReviewRule.object_type"`)}
 	}
 	if _, ok := rrc.mutation.Domain(); !ok {
-		return &ValidationError{Name: "domain", err: errors.New(`ent: missing required field "domain"`)}
+		return &ValidationError{Name: "domain", err: errors.New(`ent: missing required field "ReviewRule.domain"`)}
 	}
 	if _, ok := rrc.mutation.Rules(); !ok {
-		return &ValidationError{Name: "rules", err: errors.New(`ent: missing required field "rules"`)}
+		return &ValidationError{Name: "rules", err: errors.New(`ent: missing required field "ReviewRule.rules"`)}
 	}
 	if _, ok := rrc.mutation.CreateAt(); !ok {
-		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "create_at"`)}
+		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "ReviewRule.create_at"`)}
 	}
 	if _, ok := rrc.mutation.UpdateAt(); !ok {
-		return &ValidationError{Name: "update_at", err: errors.New(`ent: missing required field "update_at"`)}
+		return &ValidationError{Name: "update_at", err: errors.New(`ent: missing required field "ReviewRule.update_at"`)}
 	}
 	if _, ok := rrc.mutation.DeleteAt(); !ok {
-		return &ValidationError{Name: "delete_at", err: errors.New(`ent: missing required field "delete_at"`)}
+		return &ValidationError{Name: "delete_at", err: errors.New(`ent: missing required field "ReviewRule.delete_at"`)}
 	}
 	return nil
 }
@@ -222,7 +230,11 @@ func (rrc *ReviewRuleCreate) sqlSave(ctx context.Context) (*ReviewRule, error) {
 		return nil, err
 	}
 	if _spec.ID.Value != nil {
-		_node.ID = _spec.ID.Value.(uuid.UUID)
+		if id, ok := _spec.ID.Value.(*uuid.UUID); ok {
+			_node.ID = *id
+		} else if err := _node.ID.Scan(_spec.ID.Value); err != nil {
+			return nil, err
+		}
 	}
 	return _node, nil
 }
@@ -241,7 +253,7 @@ func (rrc *ReviewRuleCreate) createSpec() (*ReviewRule, *sqlgraph.CreateSpec) {
 	_spec.OnConflict = rrc.conflict
 	if id, ok := rrc.mutation.ID(); ok {
 		_node.ID = id
-		_spec.ID.Value = id
+		_spec.ID.Value = &id
 	}
 	if value, ok := rrc.mutation.ObjectType(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -393,6 +405,12 @@ func (u *ReviewRuleUpsert) UpdateCreateAt() *ReviewRuleUpsert {
 	return u
 }
 
+// AddCreateAt adds v to the "create_at" field.
+func (u *ReviewRuleUpsert) AddCreateAt(v uint32) *ReviewRuleUpsert {
+	u.Add(reviewrule.FieldCreateAt, v)
+	return u
+}
+
 // SetUpdateAt sets the "update_at" field.
 func (u *ReviewRuleUpsert) SetUpdateAt(v uint32) *ReviewRuleUpsert {
 	u.Set(reviewrule.FieldUpdateAt, v)
@@ -402,6 +420,12 @@ func (u *ReviewRuleUpsert) SetUpdateAt(v uint32) *ReviewRuleUpsert {
 // UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
 func (u *ReviewRuleUpsert) UpdateUpdateAt() *ReviewRuleUpsert {
 	u.SetExcluded(reviewrule.FieldUpdateAt)
+	return u
+}
+
+// AddUpdateAt adds v to the "update_at" field.
+func (u *ReviewRuleUpsert) AddUpdateAt(v uint32) *ReviewRuleUpsert {
+	u.Add(reviewrule.FieldUpdateAt, v)
 	return u
 }
 
@@ -417,7 +441,13 @@ func (u *ReviewRuleUpsert) UpdateDeleteAt() *ReviewRuleUpsert {
 	return u
 }
 
-// UpdateNewValues updates the fields using the new values that were set on create except the ID field.
+// AddDeleteAt adds v to the "delete_at" field.
+func (u *ReviewRuleUpsert) AddDeleteAt(v uint32) *ReviewRuleUpsert {
+	u.Add(reviewrule.FieldDeleteAt, v)
+	return u
+}
+
+// UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
 //	client.ReviewRule.Create().
@@ -516,6 +546,13 @@ func (u *ReviewRuleUpsertOne) SetCreateAt(v uint32) *ReviewRuleUpsertOne {
 	})
 }
 
+// AddCreateAt adds v to the "create_at" field.
+func (u *ReviewRuleUpsertOne) AddCreateAt(v uint32) *ReviewRuleUpsertOne {
+	return u.Update(func(s *ReviewRuleUpsert) {
+		s.AddCreateAt(v)
+	})
+}
+
 // UpdateCreateAt sets the "create_at" field to the value that was provided on create.
 func (u *ReviewRuleUpsertOne) UpdateCreateAt() *ReviewRuleUpsertOne {
 	return u.Update(func(s *ReviewRuleUpsert) {
@@ -530,6 +567,13 @@ func (u *ReviewRuleUpsertOne) SetUpdateAt(v uint32) *ReviewRuleUpsertOne {
 	})
 }
 
+// AddUpdateAt adds v to the "update_at" field.
+func (u *ReviewRuleUpsertOne) AddUpdateAt(v uint32) *ReviewRuleUpsertOne {
+	return u.Update(func(s *ReviewRuleUpsert) {
+		s.AddUpdateAt(v)
+	})
+}
+
 // UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
 func (u *ReviewRuleUpsertOne) UpdateUpdateAt() *ReviewRuleUpsertOne {
 	return u.Update(func(s *ReviewRuleUpsert) {
@@ -541,6 +585,13 @@ func (u *ReviewRuleUpsertOne) UpdateUpdateAt() *ReviewRuleUpsertOne {
 func (u *ReviewRuleUpsertOne) SetDeleteAt(v uint32) *ReviewRuleUpsertOne {
 	return u.Update(func(s *ReviewRuleUpsert) {
 		s.SetDeleteAt(v)
+	})
+}
+
+// AddDeleteAt adds v to the "delete_at" field.
+func (u *ReviewRuleUpsertOne) AddDeleteAt(v uint32) *ReviewRuleUpsertOne {
+	return u.Update(func(s *ReviewRuleUpsert) {
+		s.AddDeleteAt(v)
 	})
 }
 
@@ -714,7 +765,7 @@ type ReviewRuleUpsertBulk struct {
 	create *ReviewRuleCreateBulk
 }
 
-// UpdateNewValues updates the fields using the new values that
+// UpdateNewValues updates the mutable fields using the new values that
 // were set on create. Using this option is equivalent to using:
 //
 //	client.ReviewRule.Create().
@@ -816,6 +867,13 @@ func (u *ReviewRuleUpsertBulk) SetCreateAt(v uint32) *ReviewRuleUpsertBulk {
 	})
 }
 
+// AddCreateAt adds v to the "create_at" field.
+func (u *ReviewRuleUpsertBulk) AddCreateAt(v uint32) *ReviewRuleUpsertBulk {
+	return u.Update(func(s *ReviewRuleUpsert) {
+		s.AddCreateAt(v)
+	})
+}
+
 // UpdateCreateAt sets the "create_at" field to the value that was provided on create.
 func (u *ReviewRuleUpsertBulk) UpdateCreateAt() *ReviewRuleUpsertBulk {
 	return u.Update(func(s *ReviewRuleUpsert) {
@@ -830,6 +888,13 @@ func (u *ReviewRuleUpsertBulk) SetUpdateAt(v uint32) *ReviewRuleUpsertBulk {
 	})
 }
 
+// AddUpdateAt adds v to the "update_at" field.
+func (u *ReviewRuleUpsertBulk) AddUpdateAt(v uint32) *ReviewRuleUpsertBulk {
+	return u.Update(func(s *ReviewRuleUpsert) {
+		s.AddUpdateAt(v)
+	})
+}
+
 // UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
 func (u *ReviewRuleUpsertBulk) UpdateUpdateAt() *ReviewRuleUpsertBulk {
 	return u.Update(func(s *ReviewRuleUpsert) {
@@ -841,6 +906,13 @@ func (u *ReviewRuleUpsertBulk) UpdateUpdateAt() *ReviewRuleUpsertBulk {
 func (u *ReviewRuleUpsertBulk) SetDeleteAt(v uint32) *ReviewRuleUpsertBulk {
 	return u.Update(func(s *ReviewRuleUpsert) {
 		s.SetDeleteAt(v)
+	})
+}
+
+// AddDeleteAt adds v to the "delete_at" field.
+func (u *ReviewRuleUpsertBulk) AddDeleteAt(v uint32) *ReviewRuleUpsertBulk {
+	return u.Update(func(s *ReviewRuleUpsert) {
+		s.AddDeleteAt(v)
 	})
 }
 

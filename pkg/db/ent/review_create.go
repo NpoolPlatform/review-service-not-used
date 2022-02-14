@@ -65,6 +65,12 @@ func (rc *ReviewCreate) SetMessage(s string) *ReviewCreate {
 	return rc
 }
 
+// SetTrigger sets the "trigger" field.
+func (rc *ReviewCreate) SetTrigger(s string) *ReviewCreate {
+	rc.mutation.SetTrigger(s)
+	return rc
+}
+
 // SetCreateAt sets the "create_at" field.
 func (rc *ReviewCreate) SetCreateAt(u uint32) *ReviewCreate {
 	rc.mutation.SetCreateAt(u)
@@ -110,6 +116,14 @@ func (rc *ReviewCreate) SetNillableDeleteAt(u *uint32) *ReviewCreate {
 // SetID sets the "id" field.
 func (rc *ReviewCreate) SetID(u uuid.UUID) *ReviewCreate {
 	rc.mutation.SetID(u)
+	return rc
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (rc *ReviewCreate) SetNillableID(u *uuid.UUID) *ReviewCreate {
+	if u != nil {
+		rc.SetID(*u)
+	}
 	return rc
 }
 
@@ -205,39 +219,42 @@ func (rc *ReviewCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (rc *ReviewCreate) check() error {
 	if _, ok := rc.mutation.ObjectType(); !ok {
-		return &ValidationError{Name: "object_type", err: errors.New(`ent: missing required field "object_type"`)}
+		return &ValidationError{Name: "object_type", err: errors.New(`ent: missing required field "Review.object_type"`)}
 	}
 	if _, ok := rc.mutation.Domain(); !ok {
-		return &ValidationError{Name: "domain", err: errors.New(`ent: missing required field "domain"`)}
+		return &ValidationError{Name: "domain", err: errors.New(`ent: missing required field "Review.domain"`)}
 	}
 	if _, ok := rc.mutation.AppID(); !ok {
-		return &ValidationError{Name: "app_id", err: errors.New(`ent: missing required field "app_id"`)}
+		return &ValidationError{Name: "app_id", err: errors.New(`ent: missing required field "Review.app_id"`)}
 	}
 	if _, ok := rc.mutation.ObjectID(); !ok {
-		return &ValidationError{Name: "object_id", err: errors.New(`ent: missing required field "object_id"`)}
+		return &ValidationError{Name: "object_id", err: errors.New(`ent: missing required field "Review.object_id"`)}
 	}
 	if _, ok := rc.mutation.ReviewerID(); !ok {
-		return &ValidationError{Name: "reviewer_id", err: errors.New(`ent: missing required field "reviewer_id"`)}
+		return &ValidationError{Name: "reviewer_id", err: errors.New(`ent: missing required field "Review.reviewer_id"`)}
 	}
 	if _, ok := rc.mutation.State(); !ok {
-		return &ValidationError{Name: "state", err: errors.New(`ent: missing required field "state"`)}
+		return &ValidationError{Name: "state", err: errors.New(`ent: missing required field "Review.state"`)}
 	}
 	if v, ok := rc.mutation.State(); ok {
 		if err := review.StateValidator(v); err != nil {
-			return &ValidationError{Name: "state", err: fmt.Errorf(`ent: validator failed for field "state": %w`, err)}
+			return &ValidationError{Name: "state", err: fmt.Errorf(`ent: validator failed for field "Review.state": %w`, err)}
 		}
 	}
 	if _, ok := rc.mutation.Message(); !ok {
-		return &ValidationError{Name: "message", err: errors.New(`ent: missing required field "message"`)}
+		return &ValidationError{Name: "message", err: errors.New(`ent: missing required field "Review.message"`)}
+	}
+	if _, ok := rc.mutation.Trigger(); !ok {
+		return &ValidationError{Name: "trigger", err: errors.New(`ent: missing required field "Review.trigger"`)}
 	}
 	if _, ok := rc.mutation.CreateAt(); !ok {
-		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "create_at"`)}
+		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "Review.create_at"`)}
 	}
 	if _, ok := rc.mutation.UpdateAt(); !ok {
-		return &ValidationError{Name: "update_at", err: errors.New(`ent: missing required field "update_at"`)}
+		return &ValidationError{Name: "update_at", err: errors.New(`ent: missing required field "Review.update_at"`)}
 	}
 	if _, ok := rc.mutation.DeleteAt(); !ok {
-		return &ValidationError{Name: "delete_at", err: errors.New(`ent: missing required field "delete_at"`)}
+		return &ValidationError{Name: "delete_at", err: errors.New(`ent: missing required field "Review.delete_at"`)}
 	}
 	return nil
 }
@@ -251,7 +268,11 @@ func (rc *ReviewCreate) sqlSave(ctx context.Context) (*Review, error) {
 		return nil, err
 	}
 	if _spec.ID.Value != nil {
-		_node.ID = _spec.ID.Value.(uuid.UUID)
+		if id, ok := _spec.ID.Value.(*uuid.UUID); ok {
+			_node.ID = *id
+		} else if err := _node.ID.Scan(_spec.ID.Value); err != nil {
+			return nil, err
+		}
 	}
 	return _node, nil
 }
@@ -270,7 +291,7 @@ func (rc *ReviewCreate) createSpec() (*Review, *sqlgraph.CreateSpec) {
 	_spec.OnConflict = rc.conflict
 	if id, ok := rc.mutation.ID(); ok {
 		_node.ID = id
-		_spec.ID.Value = id
+		_spec.ID.Value = &id
 	}
 	if value, ok := rc.mutation.ObjectType(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -327,6 +348,14 @@ func (rc *ReviewCreate) createSpec() (*Review, *sqlgraph.CreateSpec) {
 			Column: review.FieldMessage,
 		})
 		_node.Message = value
+	}
+	if value, ok := rc.mutation.Trigger(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: review.FieldTrigger,
+		})
+		_node.Trigger = value
 	}
 	if value, ok := rc.mutation.CreateAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -490,6 +519,18 @@ func (u *ReviewUpsert) UpdateMessage() *ReviewUpsert {
 	return u
 }
 
+// SetTrigger sets the "trigger" field.
+func (u *ReviewUpsert) SetTrigger(v string) *ReviewUpsert {
+	u.Set(review.FieldTrigger, v)
+	return u
+}
+
+// UpdateTrigger sets the "trigger" field to the value that was provided on create.
+func (u *ReviewUpsert) UpdateTrigger() *ReviewUpsert {
+	u.SetExcluded(review.FieldTrigger)
+	return u
+}
+
 // SetCreateAt sets the "create_at" field.
 func (u *ReviewUpsert) SetCreateAt(v uint32) *ReviewUpsert {
 	u.Set(review.FieldCreateAt, v)
@@ -499,6 +540,12 @@ func (u *ReviewUpsert) SetCreateAt(v uint32) *ReviewUpsert {
 // UpdateCreateAt sets the "create_at" field to the value that was provided on create.
 func (u *ReviewUpsert) UpdateCreateAt() *ReviewUpsert {
 	u.SetExcluded(review.FieldCreateAt)
+	return u
+}
+
+// AddCreateAt adds v to the "create_at" field.
+func (u *ReviewUpsert) AddCreateAt(v uint32) *ReviewUpsert {
+	u.Add(review.FieldCreateAt, v)
 	return u
 }
 
@@ -514,6 +561,12 @@ func (u *ReviewUpsert) UpdateUpdateAt() *ReviewUpsert {
 	return u
 }
 
+// AddUpdateAt adds v to the "update_at" field.
+func (u *ReviewUpsert) AddUpdateAt(v uint32) *ReviewUpsert {
+	u.Add(review.FieldUpdateAt, v)
+	return u
+}
+
 // SetDeleteAt sets the "delete_at" field.
 func (u *ReviewUpsert) SetDeleteAt(v uint32) *ReviewUpsert {
 	u.Set(review.FieldDeleteAt, v)
@@ -526,7 +579,13 @@ func (u *ReviewUpsert) UpdateDeleteAt() *ReviewUpsert {
 	return u
 }
 
-// UpdateNewValues updates the fields using the new values that were set on create except the ID field.
+// AddDeleteAt adds v to the "delete_at" field.
+func (u *ReviewUpsert) AddDeleteAt(v uint32) *ReviewUpsert {
+	u.Add(review.FieldDeleteAt, v)
+	return u
+}
+
+// UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
 //	client.Review.Create().
@@ -674,10 +733,31 @@ func (u *ReviewUpsertOne) UpdateMessage() *ReviewUpsertOne {
 	})
 }
 
+// SetTrigger sets the "trigger" field.
+func (u *ReviewUpsertOne) SetTrigger(v string) *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetTrigger(v)
+	})
+}
+
+// UpdateTrigger sets the "trigger" field to the value that was provided on create.
+func (u *ReviewUpsertOne) UpdateTrigger() *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateTrigger()
+	})
+}
+
 // SetCreateAt sets the "create_at" field.
 func (u *ReviewUpsertOne) SetCreateAt(v uint32) *ReviewUpsertOne {
 	return u.Update(func(s *ReviewUpsert) {
 		s.SetCreateAt(v)
+	})
+}
+
+// AddCreateAt adds v to the "create_at" field.
+func (u *ReviewUpsertOne) AddCreateAt(v uint32) *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.AddCreateAt(v)
 	})
 }
 
@@ -695,6 +775,13 @@ func (u *ReviewUpsertOne) SetUpdateAt(v uint32) *ReviewUpsertOne {
 	})
 }
 
+// AddUpdateAt adds v to the "update_at" field.
+func (u *ReviewUpsertOne) AddUpdateAt(v uint32) *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.AddUpdateAt(v)
+	})
+}
+
 // UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
 func (u *ReviewUpsertOne) UpdateUpdateAt() *ReviewUpsertOne {
 	return u.Update(func(s *ReviewUpsert) {
@@ -706,6 +793,13 @@ func (u *ReviewUpsertOne) UpdateUpdateAt() *ReviewUpsertOne {
 func (u *ReviewUpsertOne) SetDeleteAt(v uint32) *ReviewUpsertOne {
 	return u.Update(func(s *ReviewUpsert) {
 		s.SetDeleteAt(v)
+	})
+}
+
+// AddDeleteAt adds v to the "delete_at" field.
+func (u *ReviewUpsertOne) AddDeleteAt(v uint32) *ReviewUpsertOne {
+	return u.Update(func(s *ReviewUpsert) {
+		s.AddDeleteAt(v)
 	})
 }
 
@@ -879,7 +973,7 @@ type ReviewUpsertBulk struct {
 	create *ReviewCreateBulk
 }
 
-// UpdateNewValues updates the fields using the new values that
+// UpdateNewValues updates the mutable fields using the new values that
 // were set on create. Using this option is equivalent to using:
 //
 //	client.Review.Create().
@@ -1030,10 +1124,31 @@ func (u *ReviewUpsertBulk) UpdateMessage() *ReviewUpsertBulk {
 	})
 }
 
+// SetTrigger sets the "trigger" field.
+func (u *ReviewUpsertBulk) SetTrigger(v string) *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.SetTrigger(v)
+	})
+}
+
+// UpdateTrigger sets the "trigger" field to the value that was provided on create.
+func (u *ReviewUpsertBulk) UpdateTrigger() *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.UpdateTrigger()
+	})
+}
+
 // SetCreateAt sets the "create_at" field.
 func (u *ReviewUpsertBulk) SetCreateAt(v uint32) *ReviewUpsertBulk {
 	return u.Update(func(s *ReviewUpsert) {
 		s.SetCreateAt(v)
+	})
+}
+
+// AddCreateAt adds v to the "create_at" field.
+func (u *ReviewUpsertBulk) AddCreateAt(v uint32) *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.AddCreateAt(v)
 	})
 }
 
@@ -1051,6 +1166,13 @@ func (u *ReviewUpsertBulk) SetUpdateAt(v uint32) *ReviewUpsertBulk {
 	})
 }
 
+// AddUpdateAt adds v to the "update_at" field.
+func (u *ReviewUpsertBulk) AddUpdateAt(v uint32) *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.AddUpdateAt(v)
+	})
+}
+
 // UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
 func (u *ReviewUpsertBulk) UpdateUpdateAt() *ReviewUpsertBulk {
 	return u.Update(func(s *ReviewUpsert) {
@@ -1062,6 +1184,13 @@ func (u *ReviewUpsertBulk) UpdateUpdateAt() *ReviewUpsertBulk {
 func (u *ReviewUpsertBulk) SetDeleteAt(v uint32) *ReviewUpsertBulk {
 	return u.Update(func(s *ReviewUpsert) {
 		s.SetDeleteAt(v)
+	})
+}
+
+// AddDeleteAt adds v to the "delete_at" field.
+func (u *ReviewUpsertBulk) AddDeleteAt(v uint32) *ReviewUpsertBulk {
+	return u.Update(func(s *ReviewUpsert) {
+		s.AddDeleteAt(v)
 	})
 }
 

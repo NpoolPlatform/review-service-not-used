@@ -27,6 +27,8 @@ const (
 	FieldState = "state"
 	// FieldMessage holds the string denoting the message field in the database.
 	FieldMessage = "message"
+	// FieldTrigger holds the string denoting the trigger field in the database.
+	FieldTrigger = "trigger"
 	// FieldCreateAt holds the string denoting the create_at field in the database.
 	FieldCreateAt = "create_at"
 	// FieldUpdateAt holds the string denoting the update_at field in the database.
@@ -47,6 +49,7 @@ var Columns = []string{
 	FieldReviewerID,
 	FieldState,
 	FieldMessage,
+	FieldTrigger,
 	FieldCreateAt,
 	FieldUpdateAt,
 	FieldDeleteAt,

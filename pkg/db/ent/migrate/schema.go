@@ -18,6 +18,7 @@ var (
 		{Name: "reviewer_id", Type: field.TypeUUID},
 		{Name: "state", Type: field.TypeEnum, Enums: []string{"wait", "approved", "rejected"}},
 		{Name: "message", Type: field.TypeString},
+		{Name: "trigger", Type: field.TypeString},
 		{Name: "create_at", Type: field.TypeUint32},
 		{Name: "update_at", Type: field.TypeUint32},
 		{Name: "delete_at", Type: field.TypeUint32},

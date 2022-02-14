@@ -40,6 +40,7 @@ func dbRowToReview(row *ent.Review) *npool.Review {
 		ObjectID:   row.ObjectID.String(),
 		Domain:     row.Domain,
 		CreateAt:   row.CreateAt,
+		Trigger:    row.Trigger,
 	}
 }
 
@@ -71,6 +72,7 @@ func Create(ctx context.Context, in *npool.CreateReviewRequest) (*npool.CreateRe
 		SetObjectID(uuid.MustParse(in.GetInfo().GetObjectID())).
 		SetAppID(appID).
 		SetDomain(in.GetInfo().GetDomain()).
+		SetTrigger(in.GetInfo().GetTrigger()).
 		Save(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail create review: %v", err)

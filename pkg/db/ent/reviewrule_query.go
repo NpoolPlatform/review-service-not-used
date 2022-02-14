@@ -337,6 +337,10 @@ func (rrq *ReviewRuleQuery) sqlAll(ctx context.Context) ([]*ReviewRule, error) {
 
 func (rrq *ReviewRuleQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := rrq.querySpec()
+	_spec.Node.Columns = rrq.fields
+	if len(rrq.fields) > 0 {
+		_spec.Unique = rrq.unique != nil && *rrq.unique
+	}
 	return sqlgraph.CountNodes(ctx, rrq.driver, _spec)
 }
 
@@ -407,6 +411,9 @@ func (rrq *ReviewRuleQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if rrq.sql != nil {
 		selector = rrq.sql
 		selector.Select(selector.Columns(columns...)...)
+	}
+	if rrq.unique != nil && *rrq.unique {
+		selector.Distinct()
 	}
 	for _, p := range rrq.predicates {
 		p(selector)
@@ -686,9 +693,7 @@ func (rrgb *ReviewRuleGroupBy) sqlQuery() *sql.Selector {
 		for _, f := range rrgb.fields {
 			columns = append(columns, selector.C(f))
 		}
-		for _, c := range aggregation {
-			columns = append(columns, c)
-		}
+		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
 	return selector.GroupBy(selector.Columns(rrgb.fields...)...)

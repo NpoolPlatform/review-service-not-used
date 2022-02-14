@@ -133,6 +133,13 @@ func Message(v string) predicate.Review {
 	})
 }
 
+// Trigger applies equality check predicate on the "trigger" field. It's identical to TriggerEQ.
+func Trigger(v string) predicate.Review {
+	return predicate.Review(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTrigger), v))
+	})
+}
+
 // CreateAt applies equality check predicate on the "create_at" field. It's identical to CreateAtEQ.
 func CreateAt(v uint32) predicate.Review {
 	return predicate.Review(func(s *sql.Selector) {
@@ -760,6 +767,117 @@ func MessageEqualFold(v string) predicate.Review {
 func MessageContainsFold(v string) predicate.Review {
 	return predicate.Review(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldMessage), v))
+	})
+}
+
+// TriggerEQ applies the EQ predicate on the "trigger" field.
+func TriggerEQ(v string) predicate.Review {
+	return predicate.Review(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTrigger), v))
+	})
+}
+
+// TriggerNEQ applies the NEQ predicate on the "trigger" field.
+func TriggerNEQ(v string) predicate.Review {
+	return predicate.Review(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldTrigger), v))
+	})
+}
+
+// TriggerIn applies the In predicate on the "trigger" field.
+func TriggerIn(vs ...string) predicate.Review {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Review(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldTrigger), v...))
+	})
+}
+
+// TriggerNotIn applies the NotIn predicate on the "trigger" field.
+func TriggerNotIn(vs ...string) predicate.Review {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Review(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldTrigger), v...))
+	})
+}
+
+// TriggerGT applies the GT predicate on the "trigger" field.
+func TriggerGT(v string) predicate.Review {
+	return predicate.Review(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldTrigger), v))
+	})
+}
+
+// TriggerGTE applies the GTE predicate on the "trigger" field.
+func TriggerGTE(v string) predicate.Review {
+	return predicate.Review(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldTrigger), v))
+	})
+}
+
+// TriggerLT applies the LT predicate on the "trigger" field.
+func TriggerLT(v string) predicate.Review {
+	return predicate.Review(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldTrigger), v))
+	})
+}
+
+// TriggerLTE applies the LTE predicate on the "trigger" field.
+func TriggerLTE(v string) predicate.Review {
+	return predicate.Review(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldTrigger), v))
+	})
+}
+
+// TriggerContains applies the Contains predicate on the "trigger" field.
+func TriggerContains(v string) predicate.Review {
+	return predicate.Review(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldTrigger), v))
+	})
+}
+
+// TriggerHasPrefix applies the HasPrefix predicate on the "trigger" field.
+func TriggerHasPrefix(v string) predicate.Review {
+	return predicate.Review(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldTrigger), v))
+	})
+}
+
+// TriggerHasSuffix applies the HasSuffix predicate on the "trigger" field.
+func TriggerHasSuffix(v string) predicate.Review {
+	return predicate.Review(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldTrigger), v))
+	})
+}
+
+// TriggerEqualFold applies the EqualFold predicate on the "trigger" field.
+func TriggerEqualFold(v string) predicate.Review {
+	return predicate.Review(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldTrigger), v))
+	})
+}
+
+// TriggerContainsFold applies the ContainsFold predicate on the "trigger" field.
+func TriggerContainsFold(v string) predicate.Review {
+	return predicate.Review(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldTrigger), v))
 	})
 }
 

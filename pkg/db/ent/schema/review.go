@@ -32,6 +32,7 @@ func (Review) Fields() []ent.Field {
 				constant.StateApproved,
 				constant.StateRejected),
 		field.String("message"),
+		field.String("trigger"),
 		field.Uint32("create_at").
 			DefaultFunc(func() uint32 {
 				return uint32(time.Now().Unix())

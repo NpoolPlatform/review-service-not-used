@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql"
@@ -69,6 +70,12 @@ func (ru *ReviewUpdate) SetMessage(s string) *ReviewUpdate {
 	return ru
 }
 
+// SetTrigger sets the "trigger" field.
+func (ru *ReviewUpdate) SetTrigger(s string) *ReviewUpdate {
+	ru.mutation.SetTrigger(s)
+	return ru
+}
+
 // SetCreateAt sets the "create_at" field.
 func (ru *ReviewUpdate) SetCreateAt(u uint32) *ReviewUpdate {
 	ru.mutation.ResetCreateAt()
@@ -85,7 +92,7 @@ func (ru *ReviewUpdate) SetNillableCreateAt(u *uint32) *ReviewUpdate {
 }
 
 // AddCreateAt adds u to the "create_at" field.
-func (ru *ReviewUpdate) AddCreateAt(u uint32) *ReviewUpdate {
+func (ru *ReviewUpdate) AddCreateAt(u int32) *ReviewUpdate {
 	ru.mutation.AddCreateAt(u)
 	return ru
 }
@@ -98,7 +105,7 @@ func (ru *ReviewUpdate) SetUpdateAt(u uint32) *ReviewUpdate {
 }
 
 // AddUpdateAt adds u to the "update_at" field.
-func (ru *ReviewUpdate) AddUpdateAt(u uint32) *ReviewUpdate {
+func (ru *ReviewUpdate) AddUpdateAt(u int32) *ReviewUpdate {
 	ru.mutation.AddUpdateAt(u)
 	return ru
 }
@@ -119,7 +126,7 @@ func (ru *ReviewUpdate) SetNillableDeleteAt(u *uint32) *ReviewUpdate {
 }
 
 // AddDeleteAt adds u to the "delete_at" field.
-func (ru *ReviewUpdate) AddDeleteAt(u uint32) *ReviewUpdate {
+func (ru *ReviewUpdate) AddDeleteAt(u int32) *ReviewUpdate {
 	ru.mutation.AddDeleteAt(u)
 	return ru
 }
@@ -202,7 +209,7 @@ func (ru *ReviewUpdate) defaults() {
 func (ru *ReviewUpdate) check() error {
 	if v, ok := ru.mutation.State(); ok {
 		if err := review.StateValidator(v); err != nil {
-			return &ValidationError{Name: "state", err: fmt.Errorf("ent: validator failed for field \"state\": %w", err)}
+			return &ValidationError{Name: "state", err: fmt.Errorf(`ent: validator failed for field "Review.state": %w`, err)}
 		}
 	}
 	return nil
@@ -273,6 +280,13 @@ func (ru *ReviewUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: review.FieldMessage,
+		})
+	}
+	if value, ok := ru.mutation.Trigger(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: review.FieldTrigger,
 		})
 	}
 	if value, ok := ru.mutation.CreateAt(); ok {
@@ -378,6 +392,12 @@ func (ruo *ReviewUpdateOne) SetMessage(s string) *ReviewUpdateOne {
 	return ruo
 }
 
+// SetTrigger sets the "trigger" field.
+func (ruo *ReviewUpdateOne) SetTrigger(s string) *ReviewUpdateOne {
+	ruo.mutation.SetTrigger(s)
+	return ruo
+}
+
 // SetCreateAt sets the "create_at" field.
 func (ruo *ReviewUpdateOne) SetCreateAt(u uint32) *ReviewUpdateOne {
 	ruo.mutation.ResetCreateAt()
@@ -394,7 +414,7 @@ func (ruo *ReviewUpdateOne) SetNillableCreateAt(u *uint32) *ReviewUpdateOne {
 }
 
 // AddCreateAt adds u to the "create_at" field.
-func (ruo *ReviewUpdateOne) AddCreateAt(u uint32) *ReviewUpdateOne {
+func (ruo *ReviewUpdateOne) AddCreateAt(u int32) *ReviewUpdateOne {
 	ruo.mutation.AddCreateAt(u)
 	return ruo
 }
@@ -407,7 +427,7 @@ func (ruo *ReviewUpdateOne) SetUpdateAt(u uint32) *ReviewUpdateOne {
 }
 
 // AddUpdateAt adds u to the "update_at" field.
-func (ruo *ReviewUpdateOne) AddUpdateAt(u uint32) *ReviewUpdateOne {
+func (ruo *ReviewUpdateOne) AddUpdateAt(u int32) *ReviewUpdateOne {
 	ruo.mutation.AddUpdateAt(u)
 	return ruo
 }
@@ -428,7 +448,7 @@ func (ruo *ReviewUpdateOne) SetNillableDeleteAt(u *uint32) *ReviewUpdateOne {
 }
 
 // AddDeleteAt adds u to the "delete_at" field.
-func (ruo *ReviewUpdateOne) AddDeleteAt(u uint32) *ReviewUpdateOne {
+func (ruo *ReviewUpdateOne) AddDeleteAt(u int32) *ReviewUpdateOne {
 	ruo.mutation.AddDeleteAt(u)
 	return ruo
 }
@@ -518,7 +538,7 @@ func (ruo *ReviewUpdateOne) defaults() {
 func (ruo *ReviewUpdateOne) check() error {
 	if v, ok := ruo.mutation.State(); ok {
 		if err := review.StateValidator(v); err != nil {
-			return &ValidationError{Name: "state", err: fmt.Errorf("ent: validator failed for field \"state\": %w", err)}
+			return &ValidationError{Name: "state", err: fmt.Errorf(`ent: validator failed for field "Review.state": %w`, err)}
 		}
 	}
 	return nil
@@ -537,7 +557,7 @@ func (ruo *ReviewUpdateOne) sqlSave(ctx context.Context) (_node *Review, err err
 	}
 	id, ok := ruo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Review.ID for update")}
+		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Review.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := ruo.fields; len(fields) > 0 {
@@ -606,6 +626,13 @@ func (ruo *ReviewUpdateOne) sqlSave(ctx context.Context) (_node *Review, err err
 			Type:   field.TypeString,
 			Value:  value,
 			Column: review.FieldMessage,
+		})
+	}
+	if value, ok := ruo.mutation.Trigger(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: review.FieldTrigger,
 		})
 	}
 	if value, ok := ruo.mutation.CreateAt(); ok {
