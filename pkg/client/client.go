@@ -32,6 +32,22 @@ func withCRUD(ctx context.Context, handler handler) (cruder.Any, error) {
 	return handler(_ctx, cli)
 }
 
+func CreateReview(ctx context.Context, in *npool.Review) (*npool.Review, error) {
+	info, err := withCRUD(ctx, func(_ctx context.Context, cli npool.ReviewServiceClient) (cruder.Any, error) {
+		resp, err := cli.CreateReview(ctx, &npool.CreateReviewRequest{
+			Info: in,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Info, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return info.(*npool.Review), nil
+}
+
 func GetDomainReviews(ctx context.Context, appID, domain, objectType string) ([]*npool.Review, error) {
 	infos, err := withCRUD(ctx, func(_ctx context.Context, cli npool.ReviewServiceClient) (cruder.Any, error) {
 		resp, err := cli.GetReviewsByAppDomain(ctx, &npool.GetReviewsByAppDomainRequest{
