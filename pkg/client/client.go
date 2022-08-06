@@ -64,6 +64,22 @@ func UpdateReview(ctx context.Context, in *npool.Review) (*npool.Review, error) 
 	return info.(*npool.Review), nil
 }
 
+func GetReview(ctx context.Context, id string) (*npool.Review, error) {
+	info, err := withCRUD(ctx, func(_ctx context.Context, cli npool.ReviewServiceClient) (cruder.Any, error) {
+		resp, err := cli.GetReview(ctx, &npool.GetReviewRequest{
+			ID: id,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Info, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return info.(*npool.Review), nil
+}
+
 func GetDomainReviews(ctx context.Context, appID, domain, objectType string) ([]*npool.Review, error) {
 	infos, err := withCRUD(ctx, func(_ctx context.Context, cli npool.ReviewServiceClient) (cruder.Any, error) {
 		resp, err := cli.GetReviewsByAppDomain(ctx, &npool.GetReviewsByAppDomainRequest{
