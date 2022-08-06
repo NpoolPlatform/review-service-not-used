@@ -48,3 +48,22 @@ func GetDomainReviews(ctx context.Context, appID, domain, objectType string) ([]
 	}
 	return infos.([]*npool.Review), nil
 }
+
+func GetObjectReviews(ctx context.Context, appID, domain, objectType, objectID string) ([]*npool.Review, error) {
+	infos, err := withCRUD(ctx, func(_ctx context.Context, cli npool.ReviewServiceClient) (cruder.Any, error) {
+		resp, err := cli.GetReviewsByAppDomainObjectTypeID(ctx, &npool.GetReviewsByAppDomainObjectTypeIDRequest{
+			AppID:      appID,
+			Domain:     domain,
+			ObjectType: objectType,
+			ObjectID:   objectID,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Infos, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return infos.([]*npool.Review), nil
+}
