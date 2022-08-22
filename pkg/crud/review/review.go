@@ -61,10 +61,17 @@ func Create(ctx context.Context, in *npool.CreateReviewRequest) (*npool.CreateRe
 
 	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
 	defer cancel()
-
+	id := uuid.New()
+	if in.GetInfo().GetID() != "" {
+		id, err = uuid.Parse(in.GetInfo().GetID())
+		if err != nil {
+			return nil, err
+		}
+	}
 	info, err := cli.
 		Review.
 		Create().
+		SetID(id).
 		SetObjectType(in.GetInfo().GetObjectType()).
 		SetState("wait").
 		SetMessage("").
