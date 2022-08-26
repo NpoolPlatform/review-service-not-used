@@ -3,6 +3,8 @@ package schema
 import (
 	"time"
 
+	"entgo.io/ent/schema/index"
+
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
 
@@ -58,5 +60,7 @@ func (Review) Edges() []ent.Edge {
 
 // Indexs of the Review.
 func (Review) Indexs() []ent.Index {
-	return nil
+	return []ent.Index{
+		index.Fields("object_id", "update_at"),
+	}
 }

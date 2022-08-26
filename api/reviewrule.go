@@ -1,3 +1,4 @@
+//go:build !codeanalysis
 // +build !codeanalysis
 
 package api
@@ -9,7 +10,7 @@ import (
 
 	npool "github.com/NpoolPlatform/message/npool/review-service"
 
-	"github.com/NpoolPlatform/review-service/pkg/crud/review-rule" //nolint
+	reviewrule "github.com/NpoolPlatform/review-service/pkg/crud/review-rule" //nolint
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
