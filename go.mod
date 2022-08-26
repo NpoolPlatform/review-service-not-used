@@ -3,7 +3,7 @@ module github.com/NpoolPlatform/review-service
 go 1.16
 
 require (
-	entgo.io/ent v0.10.1
+	entgo.io/ent v0.11.2
 	github.com/NpoolPlatform/api-manager v0.0.0-20220205130236-69d286e72dba
 	github.com/NpoolPlatform/cloud-hashing-goods v0.0.0-20211224023221-a715aef93510
 	github.com/NpoolPlatform/cloud-hashing-inspire v0.0.0-20211224023242-bd6da3111653
@@ -16,7 +16,6 @@ require (
 	github.com/streadway/amqp v1.0.0
 	github.com/stretchr/testify v1.7.1-0.20210427113832-6241f9ab9942
 	github.com/urfave/cli/v2 v2.3.0
-	golang.org/x/sys v0.0.0-20220207234003-57398862261d // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
 	google.golang.org/grpc v1.46.0
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.2.0
